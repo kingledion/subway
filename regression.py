@@ -20,15 +20,15 @@ def std_features(X, mean, std):
     return(X)
 
 # Read in data; merge into two datasets
-with open("/opt/school/stat672/subway/boston_stations.csv") as csvin:
+with open("./gendata/boston_stations.csv") as csvin:
     sdata = pd.read_csv(csvin)
-with open('/opt/school/stat672/subway/boston_subway_ridership.csv') as csvin:
+with open('./gendata/boston_subway_ridership.csv') as csvin:
     rdata = pd.read_csv(csvin, delimiter = ';', quotechar = "'", names = ['name', 'riders'])
 data1 = pd.merge(sdata, rdata, how = 'inner', on='name')
     
-with open("/opt/school/stat672/subway/chicago_stations.csv") as csvin:
+with open("./gendata/chicago_stations.csv") as csvin:
     sdata = pd.read_csv(csvin)  
-with open('/opt/school/stat672/subway/chicago_subway_ridership.csv') as csvin:
+with open('./gendata/chicago_subway_ridership.csv') as csvin:
     rdata = pd.read_csv(csvin,  delimiter = ';', quotechar = "'", names = ['name', 'riders'])  
 data2 = pd.merge(sdata, rdata, how = 'inner', on='name')
     

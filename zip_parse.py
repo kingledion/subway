@@ -54,7 +54,7 @@ def read_files():
     query += " emp INT, emp_pay INT, area FLOAT, location POINT, households INT)"
     zip_cursor.execute(query)
     
-    with open('./data/zip_population.csv', 'r') as f: 
+    with open('./sourcedata/zip_population.csv', 'r') as f: 
         rdr = csv.reader(f, delimiter=',')
         next(rdr) # not using a dictreader, skip the column headers
     
@@ -64,7 +64,7 @@ def read_files():
     print('read population')
     
     	
-    with open('./data/zip_employment.txt', 'r') as f:
+    with open('./sourcedata/zip_employment.txt', 'r') as f:
         rdr = csv.reader(f, delimiter = ',', quotechar = '"')
         next(rdr) # not using a dictreader, skip the column headers
         
@@ -83,7 +83,7 @@ def read_files():
                 
     print('read employment')    
     
-    with open('./data/zip_geography.txt', 'r') as f:
+    with open('./sourcedata/zip_geography.txt', 'r') as f:
         rdr = csv.reader(f, delimiter = '\t')
         next(rdr)
         
@@ -95,7 +95,7 @@ def read_files():
             
     print('read geography')
     
-    with open('./data/ACS_15_5YR_B11011_with_ann.csv', 'r') as f:
+    with open('./sourcedata/ACS_15_5YR_B11011_with_ann.csv', 'r') as f:
         rdr = csv.reader(f, delimiter = ',', quotechar = '"')
         next(rdr)
         next(rdr)

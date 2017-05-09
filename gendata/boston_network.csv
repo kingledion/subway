@@ -1,0 +1,127 @@
+'Orange';'Oak Grove';;'Malden Center';2
+'Orange';'Malden Center';;'Wellington';3
+'Orange';'Wellington';;'Sullivan Square';3
+'Orange';'Sullivan Square';;'Community College';2
+'Orange';'Community College';;'North Station';2
+'Orange';'North Station';;'Haymarket';1
+'Orange';'Haymarket';;'State';2
+'Orange';'State';;'Downtown Crossing';2
+'Orange';'Downtown Crossing';;'Chinatown';2
+'Orange';'Chinatown';;'Tufts Medical Center';1.5
+'Orange';'Tufts Medical Center';;'Back Bay';2
+'Orange';'Back Bay';;'Mass Ave';2.5
+'Orange';'Mass Ave';;'Ruggles';2
+'Orange';'Ruggles';;'Roxbury Crossing';2
+'Orange';'Roxbury Crossing';;'Jackson Square';2
+'Orange';'Jackson Square';;'Stony Brook';1
+'Orange';'Stony Brook';;'Green';2
+'Orange';'Green';;'Forest Hills';2
+'Orange';'North Station';'Green';'North Station';3.5
+'Orange';'Haymarket';'Green';'Haymarket';3.5
+'Orange';'State';'Blue';'State';2.5
+'Orange';'Downtown Crossing';'Red';'Downtown Crossing';2.5
+'Red';'Alewife';;'Davis';3.5
+'Red';'Davis';;'Porter';2.5
+'Red';'Porter';;'Harvard';3
+'Red';'Harvard';;'Central';3.5
+'Red';'Central';;'Kendall/MIT';2.5
+'Red';'Kendall/MIT';;'Charles/MGH';2.5
+'Red';'Charles/MGH';;'Park Street';3
+'Red';'Park Street';;'Downtown Crossing';2
+'Red';'Downtown Crossing';;'South Station';2.5
+'Red';'South Station';;'Broadway';3
+'Red';'Broadway';;'Andrew';2.5
+'Red';'Andrew';;'JFK/UMass';2.5
+'Red';'JFK/UMass';;'Savin Hill';2
+'Red';'Savin Hill';;'Fields Corner';3
+'Red';'Fields Corner';;'Shawmut';2
+'Red';'Shawmut';;'Ashmont/Peabody Sq.';2.5
+'Red';'JFK/UMass';;'North Quincy';7
+'Red';'North Quincy';;'Wollaston';2.5
+'Red';'Wollaston';;'Quincy Center';3
+'Red';'Quincy Center';;'Quincy Adams';3.5
+'Red';'Quincy Adams';;'Braintree';4
+'Red';'Park Street';'Green';'Park Street';2
+'Red';'Downtown Crossing';'Orange';'Downtown Crossing';3
+'Blue';'Bowdoin';;'Government Center';2
+'Blue';'Government Center';;'State';2
+'Blue';'State';;'Aquarium';2
+'Blue';'Aquarium';;'Maverick';2.5
+'Blue';'Maverick';;'Airport';2
+'Blue';'Airport';;'Wood Island';2
+'Blue';'Wood Island';;'Orient Heights';2
+'Blue';'Orient Heights';;'Suffolk Downs';2
+'Blue';'Suffolk Downs';;'Beachmont';2
+'Blue';'Beachmont';;'Revere Beach';2
+'Blue';'Revere Beach';;'Wonderland';2
+'Blue';'State';'Orange';'State';3
+'Blue';'Government Center';'Green';'Government Center';2
+'Green';'Lechmere';;'Science Park';3.5
+'Green';'Science Park';;'North Station';2.5
+'Green';'North Station';;'Haymarket';2
+'Green';'Haymarket';;'Government Center';1.5
+'Green';'Government Center';;'Park Street';2
+'Green';'Park Street';;'Boylston Street';1
+'Green';'Boylston Street';;'Arlington';2
+'Green';'Arlington';;'Copley';1
+'Green';'Copley';;'Prudential';2
+'Green';'Prudential';;'Symphony';2
+'Green';'Symphony';;'Northeastern';2.5
+'Green';'Northeastern';;'Museum of Fine Arts';2
+'Green';'Museum of Fine Arts';;'Longwood Medical';2
+'Green';'Longwood Medical';;Brigham Cirle';2
+'Green';'Brigham Cirle';;'Fenwood Road';1.5
+'Green';'Fenwood Road';;'Mission Park';1.5
+'Green';'Mission Park';;'Riverway';1.5
+'Green';'Riverway';;'Back of the Hill';1.5
+'Green';'Back of the Hill';;'Heath St.';1.5
+'Green';'Copley';;'Hynes Convention Center';2.5
+'Green';'Hynes Convention Center';;'Kenmore';5.5
+'Green';'Kenmore';;'Fenway';6
+'Green';'Fenway';;'Longwood';2
+'Green';'Longwood';;'Brookline Village';2
+'Green';'Brookline Village';;'Brookline Hills';2
+'Green';'Brookline Hills';;'Beaconsfield';2
+'Green';'Beaconsfield';;'Reservoir';2
+'Green';'Reservoir';;'Chestnut Hill';2
+'Green';'Chestnut Hill';;'Newton Centre';2
+'Green';'Newton Centre';;'Newton Highlands';2
+'Green';'Newton Highlands';;'Eliot';2
+'Green';'Eliot';;'Waban';3
+'Green';'Waban';;'Woodland';3
+'Green';'Woodland';;'Riverside Terminal';3
+'Green';'Kenmore';;'St. Marys Street';4.5
+'Green';'St. Marys Street';;'Hawes Street';1.5
+'Green';'Hawes Street';;'Kent Street';1.5
+'Green';'Kent Street';;'Saint Paul Street';1.5
+'Green';'Saint Paul Street';;'Coolidge Corner';1.5
+'Green';'Coolidge Corner';;'Summit Ave';1.5
+'Green';'Summit Ave';;'Brandon Hall';1.5
+'Green';'Brandon Hall';;'Fairbanks Street';1.5
+'Green';'Fairbanks Street';;'Washington Square';1.5
+'Green';'Washington Square';;'Tappan Street';1.5
+'Green';'Tappan Street';;'Dean Road';1.5
+'Green';'Dean Road';;'Englewood Ave';1.5
+'Green';'Englewood Ave';;'Cleveland Circle';1.5
+'Green';'Kenmore';;'Blanford Street';5
+'Green';'Blanford Street';;'Boston University East';1.5
+'Green';'Boston University East';;'Boston University Central';1.5
+'Green';'Boston University Central';;'Boston University West';1.5
+'Green';'Boston University West';;'St. Paul Street';1.5
+'Green';'St. Paul Street';;'Pleasant Steet';1.5
+'Green';'Pleasant Steet';;'Babcock Street';1.5
+'Green';'Babcock Street';;'Packards Corner';1.5
+'Green';'Packards Corner';;'Harvard Ave';1.5
+'Green';'Harvard Ave';;'Griggs Street';1.5
+'Green';'Griggs Street';;'Allston Street';1.5
+'Green';'Allston Street';;'Warren Street';1.5
+'Green';'Warren Street';;'Washington Street';1.5
+'Green';'Washington Street';;'Sutherland Road';1.5
+'Green';'Sutherland Road';;'Chiswick Road';1.5
+'Green';'Chiswick Road';;'Chestnut Hill Ave';1.5
+'Green';'Chestnut Hill Ave';;'South Street';1
+'Green';'South Street';;'Boston College';1
+'Green';'North Station';'Orange';'North Station';3
+'Green';'Haymarket';'Orange';'Haymarket';3
+'Green';'Government Center';'Blue';'Government Center';2.5
+'Green';'Park Street';'Red';'Park Street';2.5

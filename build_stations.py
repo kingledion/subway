@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import subway_utils as su, csv , numpy as np, networkx as nx, re
+import subway_utils as su, csv , numpy as np, networkx as nx
 from rtree import index
 from math import cos, radians, pi
 import shapely.geometry as shpgeo, shapefile, pandas as pd
@@ -69,7 +69,7 @@ def calculate_areas(stations, idx, shp):
     ns_deg = 1.0/110.574
 
     for s in stations:
-        n = 100 # done 1000
+        n = 1000 # done 1000
         # calculate lon degrees to 1km
         ew_deg = 1.0/111.320/cos(radians(s['lat']))
     
@@ -166,9 +166,10 @@ def add_station_network(df, G):
         
         for old, new in nfields:
             
-            df['15' + new] = df.loc[df['name'].isin(within15), old].sum()
-            df['30' + new] = df.loc[df['name'].isin(within30), old].sum()
-            df['60' + new] = df.loc[df['name'].isin(within60), old].sum()   
+            df.set_value(df['name'] == s, '15' + new, df.loc[df['name'].isin(within15), old].sum())
+            df.set_value(df['name'] == s, '30' + new, df.loc[df['name'].isin(within30), old].sum())
+            df.set_value(df['name'] == s, '60' + new, df.loc[df['name'].isin(within60), old].sum())
+ 
             
 #def write_stations(stations, filename):
 #
@@ -182,13 +183,13 @@ def add_station_network(df, G):
 # Load station geo data; build station lists; build station geoindices
 # Load station network
     
-bstations, bidx = build_station_index('/opt/school/stat672/subway/boston_subwaygeo.csv')
-cstations, cidx = build_station_index('/opt/school/stat672/subway/chicago_subwaygeo.csv')
+bstations, bidx = build_station_index('./gendata/boston_subwaygeo.csv')
+cstations, cidx = build_station_index('./gendata/chicago_subwaygeo.csv')
 print("Density estimate and index built")
 
 # load station network maps
-bnetwork = loadnetwork('/opt/school/stat672/subway/boston_network.csv')
-cnetwork = loadnetwork('/opt/school/stat672/subway/chicago_network.csv')
+bnetwork = loadnetwork('./gendata/boston_network.csv')
+cnetwork = loadnetwork('./gendata/chicago_network.csv')
 
 #############################################
 # Load shapefiles, calculate available walking (1km) and driving (15km) areas
@@ -201,7 +202,8 @@ calculate_areas(cstations, cidx, shpgeo.shape(sf.shape(19).__geo_interface__))
 print("Areas calculated")
 
 ###############################################
-# Convert to datafram and multiply densities by areas to get counts
+# Convert to datafram and multiply densities by#write_stations(bstations, "/opt/school/stat672/subway/boston_stations.csv")    
+#write_stations(cstations, "/opt/school/stat672/subway/chicago_stations.csv")   areas to get counts
 
 bframe = to_dataframe(bstations)
 cframe = to_dataframe(cstations)
@@ -218,8 +220,6 @@ print("Station network data added")
 ###############################################
 # Write staions to csv files
         
-bframe.to_csv("/opt/school/stat672/subway/boston_stations.csv") 
-cframe.to_csv("/opt/school/stat672/subway/chicago_stations.csv")     
+bframe.to_csv("./gendata/boston_stations.csv") 
+cframe.to_csv("./gendata/chicago_stations.csv")     
            
-#write_stations(bstations, "/opt/school/stat672/subway/boston_stations.csv")    
-#write_stations(cstations, "/opt/school/stat672/subway/chicago_stations.csv")  
