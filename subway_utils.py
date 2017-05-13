@@ -68,7 +68,7 @@ def est_adjacent(cursor, s_lon, s_lat, startzip=None, src_radius=1):
     rlist = get_nearby_zips(cursor, s_lon, s_lat, startzip)
     
     zip_list = [({'x_dist': (z['lat']-s_lat)*111.045, 'y_dist': (z['lon']-s_lon)*111.045*np.cos(np.radians(s_lat)), 'dist': d*111.045, 'radius': sqrt(z['area'])}, z) for d, z in rlist]
-    
+       
     nearest_list = []
 
     for z, obj in zip_list:
@@ -76,7 +76,7 @@ def est_adjacent(cursor, s_lon, s_lat, startzip=None, src_radius=1):
         mp = max(projs) if projs else 0
         if  z['dist']/2 < (src_radius + z['radius']) and z['dist']/3 < (src_radius + z['radius'] - mp):
             nearest_list.append((z, obj))
-                     
+
     return [o for x, o in nearest_list]
     
 def est_density(cursor, lon, lat):
@@ -84,12 +84,18 @@ def est_density(cursor, lon, lat):
     adj = est_adjacent(cursor, lon, lat)
 
     data = [(haversine(z['lon'], z['lat'], lon, lat), z['pop']/z['area'], z['emp']/z['area'], z['pay']/z['area'], z['house']/z['area'], z['area']) for z in adj]
+
+    dist_total = sum(1/d[0] for d in data)
+    popdensity = sum(d[1]/d[0] for d in data)/dist_total
+    empdensity = sum(d[2]/d[0] for d in data)/dist_total
+    paydensity = sum(d[3]/d[0] for d in data)/dist_total
+    housedensity = sum(d[4]/d[0] for d in data)/dist_total
     
-    dist_total = sum(d[-1]/d[0] for d in data)
-    popdensity = sum(d[1]*d[-1]/d[0] for d in data)/dist_total
-    empdensity = sum(d[2]*d[-1]/d[0] for d in data)/dist_total
-    paydensity = sum(d[3]*d[-1]/d[0] for d in data)/dist_total
-    housedensity = sum(d[4]*d[-1]/d[0] for d in data)/dist_total
+#    dist_total = sum(d[-1]/d[0] for d in data)
+#    popdensity = sum(d[1]*d[-1]/d[0] for d in data)/dist_total
+#    empdensity = sum(d[2]*d[-1]/d[0] for d in data)/dist_total
+#    paydensity = sum(d[3]*d[-1]/d[0] for d in data)/dist_total
+#    housedensity = sum(d[4]*d[-1]/d[0] for d in data)/dist_total
       
     return {'popdensity': popdensity, 'empdensity': empdensity, 'paydensity': paydensity, 'housedensity': housedensity}
     

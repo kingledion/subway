@@ -69,7 +69,7 @@ def calculate_areas(stations, idx, shp):
     ns_deg = 1.0/110.574
 
     for s in stations:
-        n = 1000 # done 1000
+        n = 10000 
         # calculate lon degrees to 1km
         ew_deg = 1.0/111.320/cos(radians(s['lat']))
     
@@ -162,13 +162,11 @@ def add_station_network(df, G):
 
         within15 = get_nearby_nodes(G, 15, nodenames)
         within30 = get_nearby_nodes(G, 30, nodenames)
-        within60 = get_nearby_nodes(G, 60, nodenames)
         
         for old, new in nfields:
             
             df.set_value(df['name'] == s, '15' + new, df.loc[df['name'].isin(within15), old].sum())
             df.set_value(df['name'] == s, '30' + new, df.loc[df['name'].isin(within30), old].sum())
-            df.set_value(df['name'] == s, '60' + new, df.loc[df['name'].isin(within60), old].sum())
  
             
 #def write_stations(stations, filename):
