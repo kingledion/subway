@@ -6,54 +6,56 @@ translate = {'A': 10, 'B': 60, 'C': 175, 'E': 375, 'F': 750, 'G': 1750, 'H': 375
 #################################################################
 # NOTE
 #   Requires mysql installed on your computer using the standard ports
-#   For mysql, create a database named 'zipcode' and a user 
-#   with username 'dbuser' and password 'dbpass'. This user must be 
-#   given 'GRANT ALL ON zipcode'.
-#   Alternately, make your own username, password, and database and 
-#   enter into the connect statements (copy paste should suffice)
+#   For mysql, create a database and a user 
+#   with username and password as defined below. This user must be 
+#   given 'GRANT ALL ON db_name'.
+
+
+dbuser = 'dbuser'
+dbpass = 'dbpass'
+db = 'zipcode'
+
+# List of all data fields being filled with census data. MySQL data type is 'INT'.
+fields = ['pop', 'emp', 'emp_pay', 'households']
+fieldstr = ", ".join(['area'] + fields)
+
 
 def main():
-    sqlhaversine()
+
+    zip_db = mysql.connector.connect(user='dbuser', password='dbpass', database='zipcode')
+    zip_cursor = zip_db.cursor()   
+        
+    create_db(zip_db, zip_cursor)
+    
     data = read_files()
     data = assign_zips(data)
-    insert_data(data)
-    fix_no_geo_data()
-    merge_smalls() 
+    insert_data(zip_db, zip_cursor, data)
+    #fix_no_geo_data()
+    #merge_smalls() 
     #gen_adjacents()
     
     
-def sqlhaversine():
-
-    zip_db = mysql.connector.connect(user='dbuser', password='dbpass', database='zipcode')
-    zip_cursor = zip_db.cursor()
+def create_db(zip_db, zip_cursor):
+    
+    zip_cursor.execute("DROP TABLE IF EXISTS zipcodes;")
+    censusfields = [f + " INT" for f in fields]
+    sql = "CREATE TABLE zipcodes (zipcode VARCHAR(8) NOT NULL PRIMARY KEY, name VARCHAR(32), "
+    sql += "area FLOAT, {0}, location POINT)".format(", ".join(censusfields))
+    zip_cursor.execute(sql)
         
     zip_cursor.execute("DROP FUNCTION IF EXISTS haversine;")
     sql = "CREATE FUNCTION haversine(lat1 FLOAT, lon1 FLOAT, lat2 FLOAT, lon2 FLOAT) RETURNS FLOAT NO SQL DETERMINISTIC COMMENT "
     sql += "'Returns the distance in degrees on the Earth between two known points of latitude and longitude' BEGIN "
     sql += "RETURN DEGREES(ACOS(COS(RADIANS(lat1)) * COS(RADIANS(lat2)) * COS(RADIANS(lon2) - RADIANS(lon1)) + SIN(RADIANS(lat1)) * SIN(RADIANS(lat2))));"
     sql += "END;"
-    
     zip_cursor.execute(sql)
+    
     zip_db.commit()
     
     
 def read_files():
     data = {}
-    
-    # open the database
-    zip_db = mysql.connector.connect(user='dbuser', password='dbpass', database='zipcode')
-    zip_cursor = zip_db.cursor()
-    
-    try:
-        zip_cursor.execute("DROP TABLE zipcodes;")
-    except mysql.connector.errors.ProgrammingError as e:
-        pass
-        
-    
-    query = "CREATE TABLE zipcodes (zip_code VARCHAR(8) NOT NULL PRIMARY KEY, name VARCHAR(32), pop INT,"
-    query += " emp INT, emp_pay INT, area FLOAT, location POINT, households INT)"
-    zip_cursor.execute(query)
-    
+       
     with open('./sourcedata/zip_population.csv', 'r') as f: 
         rdr = csv.reader(f, delimiter=',')
         next(rdr) # not using a dictreader, skip the column headers
@@ -90,7 +92,7 @@ def read_files():
         for line in rdr:
             
             d = data.get(line[0], {})
-            d.update({'area': float(line[1]) / 1000000, 'location': "GeomFromText('POINT({0} {1})')".format(line[6].rstrip("\n"), line[5])})
+            d.update({'area': float(line[1]) / 1000000, 'location': "ST_GEOMFROMTEXT('POINT({0} {1})')".format(line[6].rstrip("\n"), line[5])})
             data[line[0]] = d
             
     print('read geography')
@@ -107,8 +109,18 @@ def read_files():
             
     print('read housholds')
     
+    for key in data:
+        data[key].update({'zipcode': key})
+    
     return data
-        
+
+def merge_data(primary, toadd):
+    keys = list(set(primary.keys()) | set(toadd.keys()) - set(['zipcode', 'name', 'area', 'location']))
+    for k in keys:
+        if k in primary and k in toadd:
+            primary[k] = primary[k] + toadd[k]
+        elif k in toadd:
+            primary[k] = toadd[k]
     
 # Resolve high employment data with no geo location:
 def assign_zips(data):
@@ -117,39 +129,39 @@ def assign_zips(data):
             print("This one has a pop! {0}".format(key))
             input()
         else:
-            data[zip_assigns[key]]['emp'] += data[key]['emp']
-            data[zip_assigns[key]]['emp_pay'] += data[key]['emp_pay']
+            merge_data(data[zip_assigns[key]], data[key])
             del data[key]
             
     return data
             
         
-def insert_data(data):
-    
-    zip_db = mysql.connector.connect(user='dbuser', password='dbpass', database='zipcode')
-    zip_cursor = zip_db.cursor()
-    
-    key_names = ['name', 'pop', 'emp', 'emp_pay', 'area', 'location', 'households']    
-    
-    query = "INSERT INTO zipcodes ({0}) VALUES({1});"
+def insert_data(zip_db, zip_cursor, data):
+       
+    key_names = ['zipcode', 'name', 'area'] + fields + ['location']       
+    query = "INSERT INTO zipcodes ({0}) VALUES ({1});".format(", ".join(key_names), ",".join(["%s"]*len(key_names)))
     
     count = 0
     total = len(data)
+    add_vals = []
     
     for key in data:
               
         count += 1
-        print("Adding {0} of {1}".format(count, total))
+        #print("Adding {0} of {1}".format(count, total))
         
         d = data[key]
-        add_keys = ['zip_code'] + [k for k in key_names if k in d]
-        add_vals = ["'" + str(key) + "'"] + ["'" + str(d[k]) + "'" if k != 'location' else str(d[k]) for k in key_names if k in d]
-        
-        #print(query.format(", ".join(add_keys), ", ".join(add_vals)))
-        zip_cursor.execute(query.format(", ".join(add_keys), ", ".join(add_vals)))
-        
+        vals = [d[k] if k in d else "" for k in key_names]
+        add_vals.append(["'" + str(v) + "'" for v in vals[:2]] + vals[2:]) #zipcode and area need to be strings
 
-    
+        #print(add_vals[-1])
+        query_cmd = "INSERT INTO zipcodes ({0}) VALUES ({1});".format(", ".join(key_names))
+        print(query_cmd)
+        print("INSERT INTO zipcodes ({0}) VALUES ({1});".format(", ".join(key_names), ",".join([str(x) for x in add_vals[-1]])))
+        print(query)
+        print(add_vals[-1:])        
+        zip_cursor.executemany(query, add_vals[-1:])
+
+
     zip_db.commit()
     
 

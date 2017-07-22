@@ -1,0 +1,82 @@
+Papers to read:
+
+>>Nan Hu et al. Impacts of land use and amenities on public transport use, urban planning and design, Land Use Policy (2016). DOI: 10.1016/j.landusepol.2016.06.004 
+	NOTE: Ridership from land use classifications, comparing decision trees, cosine similarity, and svm. SVM is found to be inferior (Singapore) 
+
+??Decraene, J., Monterola, C., Lee, G. K. K. & Hung, T. G. G. A quantitative procedure for the spatial characterization of urban land use, International Journal of Modern Physics C 24, 1250092 (2013). www.worldscientific.com/doi/abs/10.1142/S0129183112500921?journalCode=ijmpc 
+	NOTE: Can't find journal?
+
+--Bhattacharya, S., Thithakkitnukoon, S., Nurmi, P., Klami, A., Veloso, M., Bento, C., Gaussian process-based predictive modeling for bus ridership, UbiComp '13 Adjunct, 2013
+	NOTE: Uses Gaussian Process Model, doesn't seem to prove anything
+
+++Yao, X., Where are public transit needed -- Examining potential demand for public transit for commuting trips, Computers, Enviornment, and Urban Systems, 2007.
+	NOTE: Analyzes what factors are important to transportation ridership (Atlanta)
+
+>>Baek, J., Sohn, K., Deep-Learning Architectures to Forecast Bus Ridership at the Stop and Stop-to-Stop Levels for Dense and Crowded Bus Networks, Applied Artificial Intelligence, 2016
+	NOTE: Neural net application for bus stops in Seoul
+
+--Chin, S., Kahn, M., Moon, H., Estimating the Gains for new Rail Transit Investment: A Machine Learning Tree Approach, NBER Working paper No. 23326, 2017
+	NOTE: Deals with the effects of transit on real estate
+
+>>Li, X., Liu, Y., Gao, Z., Liu, D., Decision Tree Based Station-Level Rail Transit Ridership Forecasting, Journal Of Urban Planning and Development, 2016
+	NOTE: Ridership using decision trees based on land use classifications. Print and use (Chongqing)
+
+??Zhang, T., Bus Stop Usage Evaluation and BRT Station Selection Strategy by Machine Learning Methods, Dissertation University of ALbany, 2014
+	NOTE: Can't find a good copy, probably not relevant
+
+--Oztaysi,B, Yanik,S,  Kahraman, C., Forecasting passenger volumes in transit
+systems using support vector Machines: the Case of Istanbul, Journal of Multiple-Valued
+Logic & Soft Computing, Vol. 25, pp. 215–235, 2015
+	NOTE: Uses SVM-RBF regression to predict hourly ridership based on daily ridership (ISTANBUL)
+
+--Owen, A. D., and Philips, G. D. A. P. (1987). “An econometric investiga-
+tion into the characteristics of railway passenger demand.” J. Transp.
+Econ. Policy, 21, 231–253.
+	NOTE: Inter-city rail
+
+++Guerra, E., Cervero, R., and Tischler, D. (2011). “The half-mile circle:
+Does it best represent transit station catchments?” Univ. of California,
+Berkeley, CA.
+	NOTE: Discusses best distance for catchements. Quarter mile for jobs, half mile for population
+
+++Gutierrez, J., Cardozo, O. D., and Garcia-Palomares, J. C. (2011). “Transit
+ridership forecasting at station level: An approach based on distance-
+decay weighted regression.” J. Transp. Geogr., 19(6), 1081–1092.
+	NOTE: Directly applicable, uses Madrid; a distance decay model for proximity to relevant stations
+
+??Duduta, N. (2013). “Direct ridership model of Mexico City’s BRT and
+metro systems.” Transp. Res. Rec., 2394(1), 93–99.
+	NOTE: Applicable to the developing world
+
+++Kuby, M., Barranda, A., and Upchurch, C. (2004). “Factors influencing
+light-rail station boardings in the United States.” Transp. Res. Part
+A, 38(3), 223–247.
+
+Chu, X. (2004). “Ridership models at the stop level.” National Center for
+Transit Research, Center for Urban Transportation Research, Univ. of
+South Florida, Tampa, FL.
+
+Sung, H. J., and Oh, J. T. (2011). “Transit-oriented development in a high-
+density city: Identifying its association with transit ridership in Seoul,
+Korea.” Cities, 28(1), 70–82.
+
+Putman, S.H., 2013. Integrated Urban Models Volume 1: Policy Analysis of Trans-
+portation and Land Use (RLE: The City), vol. 1. Routledge.
+
+Beimborn, E., Horowitz, A., Vijayan, S., Bordewin, M., 1999 May. An Overview: Land
+Use and Economic Development in Statewide Transportation Planning. Tech.
+Rep., U.S. Department of Transportation, Federal Highway Administration.
+
+Choi, J., Lee, Y., Kim, T., Sohn, K., 2012. An analysis of metro ridership at the station-
+to-station level in Seoul. Transportation 39 (3), 705–722.
+
+Bento, A. M., Cropper, M., Mobarak, A. M., & Vinha, K. (2005). The eﬀects of urban spatial structure on traveldemand in the United States. Review of Economic and Statistics, 87(3), 466–478.
+
+Murray, A. T. (2001). Strategic analysis of public transport coverage. Socio-Economic Planning Sciences, 35,175–188.
+
+Murray, A. T. (2005). Geography in coverage modeling: exploiting spatial structure to address complementarypartial service of areas. Annals of the Association of American Geographers, 95(4), 761–772.
+
+Jiang, B., Claramunt, C., & Batty, M. (1999). Geometric accessibility and geographic information: Extendingdesktop GIS to space syntax. Computers, Environment and Urban Systems, 23(2), 127–146
+
+
+

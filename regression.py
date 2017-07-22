@@ -153,7 +153,7 @@ def test1stOrder():
         print("Train=Chicago; Test=Boston: {0:.3f}, {1:.3f}".format(*scorePolySVR(c, X2std, y2std, X1std, y1std)))
         
     for c in [0.08]:
-        print('\nSigmoid SVR (C = {0})'.format(c))
+        print('\nSigmoid SVR (C = {0})'.format(c)); 
         print("Train=Boston; Test=Chicago: {0:.3f}, {1:.3f}".format(*scoreSigSVR(c, X1std, y1std, X2std, y2std)))
         print("Train=Chicago; Test=Boston: {0:.3f}, {1:.3f}".format(*scoreSigSVR(c, X2std, y2std, X1std, y1std)))
     
@@ -162,37 +162,32 @@ def bestFeaturesTest():
     
     # list of all fields
     fields = ['popnear', 'housenear', 'empnear', 'paynear', 'popwalk', 'housewalk', 'empwalk', 'paywalk', 'popdrive', 'housedrive', 'parking',
-          '15empnet','30empnet','60empnet','15housenet','30housenet','60housenet','15paynet','30paynet','60paynet','15popnet','30popnet','60popnet']
+          '15empnet','30empnet','15housenet','30housenet','15paynet','30paynet','15popnet','30popnet']
     
     # get data
     Xbos, ybos, Xchi, ychi = getData(fields)
-    #Xbosstd, ybosstd, Xchistd, ychistd = standardize(Xbos, ybos, Xchi, ychi)[:4]
+    Xbosstd, ybosstd, Xchistd, ychistd = standardize(Xbos, ybos, Xchi, ychi)[:4]
     
     featurescores = []
-    featurecoeff = {f: [] for f in fields}
-    
+   
     # loop through all features selecting that feature from X
     for name, i in zip(fields, range(len(fields))):
         #print(i)
         
-        Xb = np.reshape(Xbos[:,i], (-1,1)); Xc = np.reshape(Xchi[:,i], (-1,1))
+        Xb = np.reshape(Xbosstd[:,i], (-1,1)); Xc = np.reshape(Xchistd[:,i], (-1,1))
         
-        b2cErr1, b2cErr2, b2cCoeff = scoreLsq(Xb, ybos, Xc, ychi)
-        c2bErr1, c2bErr2, c2bCoeff = scoreLsq(Xc, ychi, Xb, ybos)
+        b2cErr1, b2cErr2, b2cCoeff = scoreLsq(Xb, ybosstd, Xc, ychistd)
+        c2bErr1, c2bErr2, c2bCoeff = scoreLsq(Xc, ychistd, Xb, ybosstd)
               
-        featurescores.append((name, np.mean([b2cErr1, b2cErr2, c2bErr1, c2bErr2])))
-        featurecoeff[name].extend([np.asscalar(i) for i in [b2cCoeff, c2bCoeff]])
-        
-    for name, error in sorted(featurescores, key=lambda x: x[1]):
-        print(name, error)
-        print(["{0:.3f}".format(j) for j in featurecoeff[name] + [np.mean(featurecoeff[name])]])
-        
+        featurescores.append((name, np.mean([b2cErr2,c2bErr2]), *[np.asscalar(i) for i in [b2cCoeff, c2bCoeff]]))
+
+    return featurescores    
+    
 def simpleTest(): 
     
-    #fields = ['popnear', 'housenear', 'empnear', 'paynear', 'popwalk', 'housewalk', 'empwalk', 'paywalk', 'popdrive', 'housedrive', 'parking',
-    #      '15empnet','30empnet','60empnet','15housenet','30housenet','60housenet','15paynet','30paynet','60paynet','15popnet','30popnet','60popnet']
-    fields = ['empnear']
-    #fields = ['popnear', 'housenear', 'empnear', 'paynear', 'popwalk', 'housewalk', 'empwalk', 'paywalk', 'popdrive', 'housedrive', 'parking']
+    fields = ['popnear', 'housenear', 'empnear', 'paynear', 'popwalk', 'housewalk', 'empwalk', 'paywalk', 'popdrive', 'housedrive', 'parking',
+          '15empnet','30empnet','15housenet','30housenet','15paynet','30paynet','15popnet','30popnet']
+ 
     Xbos, ybos, Xchi, ychi = getData(fields)       
     bosFrame, chiFrame = getData(fields, dataframe=True)
 
@@ -203,7 +198,7 @@ def simpleTest():
     #sc1 = 1-ssres/sstot
     coeff, resid, rank, s = np.linalg.lstsq(Xbos, ybos)
     predicted = np.dot(Xchi, coeff)
-    sstot = sum((ychi - np.ones(ychi.shape)*np.mean(ychi))**2)
+#    sstot = sum((ychi - np.ones(ychi.shape)*np.mean(ychi))**2)
     ssres = sum((ychi - predicted)**2)
     chiFrame['predicted'] = predicted
     
