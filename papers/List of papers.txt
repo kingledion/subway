@@ -52,31 +52,15 @@ metro systems.” Transp. Res. Rec., 2394(1), 93–99.
 light-rail station boardings in the United States.” Transp. Res. Part
 A, 38(3), 223–247.
 
-Chu, X. (2004). “Ridership models at the stop level.” National Center for
-Transit Research, Center for Urban Transportation Research, Univ. of
-South Florida, Tampa, FL.
-
-Sung, H. J., and Oh, J. T. (2011). “Transit-oriented development in a high-
+>>Sung, H. J., and Oh, J. T. (2011). “Transit-oriented development in a high-
 density city: Identifying its association with transit ridership in Seoul,
 Korea.” Cities, 28(1), 70–82.
+	NOTE: Seoul using land use data
 
-Putman, S.H., 2013. Integrated Urban Models Volume 1: Policy Analysis of Trans-
-portation and Land Use (RLE: The City), vol. 1. Routledge.
-
-Beimborn, E., Horowitz, A., Vijayan, S., Bordewin, M., 1999 May. An Overview: Land
-Use and Economic Development in Statewide Transportation Planning. Tech.
-Rep., U.S. Department of Transportation, Federal Highway Administration.
-
-Choi, J., Lee, Y., Kim, T., Sohn, K., 2012. An analysis of metro ridership at the station-
-to-station level in Seoul. Transportation 39 (3), 705–722.
-
-Bento, A. M., Cropper, M., Mobarak, A. M., & Vinha, K. (2005). The eﬀects of urban spatial structure on traveldemand in the United States. Review of Economic and Statistics, 87(3), 466–478.
-
-Murray, A. T. (2001). Strategic analysis of public transport coverage. Socio-Economic Planning Sciences, 35,175–188.
-
-Murray, A. T. (2005). Geography in coverage modeling: exploiting spatial structure to address complementarypartial service of areas. Annals of the Association of American Geographers, 95(4), 761–772.
-
-Jiang, B., Claramunt, C., & Batty, M. (1999). Geometric accessibility and geographic information: Extendingdesktop GIS to space syntax. Computers, Environment and Urban Systems, 23(2), 127–146
+??Liu, C., Erdogan, S., Ma, T., and Ducca, F. W. (2014). “How to increase rail
+ridership in Maryland? Direct ridership models (DRM) for policy guid-
+ance.” TRB 93rd Annual Meeting Compendium of Papers, Transporta-
+tion Research Board, Washington, DC, 3414–3417.
 
 
 
