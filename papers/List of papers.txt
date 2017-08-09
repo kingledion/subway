@@ -48,6 +48,10 @@ decay weighted regression.” J. Transp. Geogr., 19(6), 1081–1092.
 metro systems.” Transp. Res. Rec., 2394(1), 93–99.
 	NOTE: Applicable to the developing world
 
+?? (ALTERNATE) Duduta, N. (2013). “Direct ridership model of Mexico City’s BRT and
+metro systems.” Transportation Research Board 92nd Annual Meeting,
+Washington, DC.
+
 ++Kuby, M., Barranda, A., and Upchurch, C. (2004). “Factors influencing
 light-rail station boardings in the United States.” Transp. Res. Part
 A, 38(3), 223–247.
@@ -57,10 +61,14 @@ density city: Identifying its association with transit ridership in Seoul,
 Korea.” Cities, 28(1), 70–82.
 	NOTE: Seoul using land use data
 
-??Liu, C., Erdogan, S., Ma, T., and Ducca, F. W. (2014). “How to increase rail
+??Liu, C., Erdogan, S., Ma, T., and Ducca, F. W. (2016). “How to increase rail
 ridership in Maryland? Direct ridership models (DRM) for policy guid-
-ance.” TRB 93rd Annual Meeting Compendium of Papers, Transporta-
-tion Research Board, Washington, DC, 3414–3417.
+ance.” Journal of Urban Planning and Development 142(4):04016017
+
+Li, J., Yang, G., Co, J., and Li, L. (2015). “Forecasting method for urban
+rail transit ridership at the station-level using a weighted population var-
+iable and genetic algorithm back propagation neural network.” 5th Int.
+Conf. on Transportation Engineering.
 
 
 
