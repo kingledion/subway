@@ -17,8 +17,6 @@ db = 'zipcode'
 
 # List of all data fields being filled with census data. MySQL data type is 'INT'.
 fields = ['pop', 'emp', 'emp_pay', 'households']
-fieldstr = ", ".join(['area'] + fields)
-
 
 def main():
 
@@ -30,15 +28,17 @@ def main():
     data = read_files()
     data = assign_zips(data)
     insert_data(zip_db, zip_cursor, data)
-    #fix_no_geo_data()
+    fix_no_geo_data()
     #merge_smalls() 
     #gen_adjacents()
+    
+
     
     
 def create_db(zip_db, zip_cursor):
     
     zip_cursor.execute("DROP TABLE IF EXISTS zipcodes;")
-    censusfields = [f + " INT" for f in fields]
+    censusfields = [f + " INT DEFAULT 0" for f in fields]
     sql = "CREATE TABLE zipcodes (zipcode VARCHAR(8) NOT NULL PRIMARY KEY, name VARCHAR(32), "
     sql += "area FLOAT, {0}, location POINT)".format(", ".join(censusfields))
     zip_cursor.execute(sql)
@@ -74,7 +74,7 @@ def read_files():
     
             if line[3] == 'D' or line[3] == 'S':
                 emp = translate[line[2]]
-                emp_pay = emp * 60
+                emp_pay = emp * 40
             else:
                 emp = int(line[4])
                 emp_pay = int(line[8])
@@ -107,7 +107,7 @@ def read_files():
             d.update({'households': int(line[3])})
             data[line[1]] = d
             
-    print('read housholds')
+    print('read households')
     
     for key in data:
         data[key].update({'zipcode': key})
@@ -115,7 +115,7 @@ def read_files():
     return data
 
 def merge_data(primary, toadd):
-    keys = list(set(primary.keys()) | set(toadd.keys()) - set(['zipcode', 'name', 'area', 'location']))
+    keys = list((set(primary.keys()) | set(toadd.keys())) - set(['zipcode', 'name', 'location']))
     for k in keys:
         if k in primary and k in toadd:
             primary[k] = primary[k] + toadd[k]
@@ -136,32 +136,27 @@ def assign_zips(data):
             
         
 def insert_data(zip_db, zip_cursor, data):
-       
+          
     key_names = ['zipcode', 'name', 'area'] + fields + ['location']       
-    query = "INSERT INTO zipcodes ({0}) VALUES ({1});".format(", ".join(key_names), ",".join(["%s"]*len(key_names)))
-    
-    count = 0
-    total = len(data)
-    add_vals = []
+    query = "INSERT INTO zipcodes ({0}) VALUES ({1});"
+
+    count = 0  
     
     for key in data:
-              
+        
         count += 1
-        #print("Adding {0} of {1}".format(count, total))
         
         d = data[key]
-        vals = [d[k] if k in d else "" for k in key_names]
-        add_vals.append(["'" + str(v) + "'" for v in vals[:2]] + vals[2:]) #zipcode and area need to be strings
+        vals = [d[k] if k in d else 0 for k in key_names]
+        use_fields = [key_names[i] for i in range(len(key_names)) if vals[i]]
+        use_vals = [v for v in vals if v]
+        # USE BATCHING!!!! SO SLOW!!!
+        zip_cursor.execute(query.format(", ".join(use_fields), ", ".join(["'" + str(v) + "'" for v in use_vals[:2]]+[str(v) for v in use_vals[2:]])))
 
-        #print(add_vals[-1])
-        query_cmd = "INSERT INTO zipcodes ({0}) VALUES ({1});".format(", ".join(key_names))
-        print(query_cmd)
-        print("INSERT INTO zipcodes ({0}) VALUES ({1});".format(", ".join(key_names), ",".join([str(x) for x in add_vals[-1]])))
-        print(query)
-        print(add_vals[-1:])        
-        zip_cursor.executemany(query, add_vals[-1:])
+        prog = count / len(data)
+        print("\rInserting into database: [{0:10s}] {1:.1f}%".format('#' * int(prog * 10) , prog*100), end="", flush=True)
 
-
+    print()
     zip_db.commit()
     
 
@@ -172,39 +167,47 @@ def fix_no_geo_data():
     zip_db = mysql.connector.connect(user='dbuser', password='dbpass', database='zipcode')
     zip_cursor = zip_db.cursor()
     
-    zip_cursor.execute("SELECT name, SUM(emp), SUM(emp_pay) FROM zipcodes WHERE location IS NULL GROUP BY name ORDER BY sum(emp) DESC;")
+    field_sums = ", ".join(["SUM({0})".format(f) for f in fields])
     
-    city_list = [x for x in zip_cursor.fetchall()]
+    zip_cursor.execute("SELECT name, {0} FROM zipcodes WHERE location IS NULL GROUP BY name;".format(field_sums))
+    
+    city_list = [(row[0], row[1:]) for row in zip_cursor.fetchall()]
 
-    inc = 0
-    for name, emp, emp_pay in city_list:
-        inc += 1
+    count = 0
+    for name, field_vals in city_list:
+        count += 1
         
-        zip_cursor.execute("SELECT COUNT(name) FROM zipcodes WHERE name = '{0}';".format(name))
-        count = zip_cursor.fetchone()[0]
+        zip_cursor.execute("SELECT zipcode, (emp + pop) / area AS density FROM zipcodes WHERE name = '{0}' and area IS NOT NULL ORDER BY density;".format(name))
+        zip_list = zip_cursor.fetchall()
         
-        if count > 0:
-            zip_list = get_zip_list(zip_cursor, name, 16000)   
+        if len(zip_list) > 0:
+            i = 0
+            while i < len(zip_list) and zip_list[i][1] > 10000:
+                i+= 1
+            if i == 0:
+                while i < len(zip_list) and zip_list[i][1] > 2000:
+                    i += 1
+            if i > 0:
+                zip_list = [z[0] for z in zip_list[:i]]
+            else:
+                zip_list = [z[0] for z in zip_list]
+
+            updates = [(fld, val/len(zip_list)) for fld, val in zip(fields, field_vals)]
+            update_string = ", ".join(["{0} = {0} + {1}".format(fld, val) for fld, val in updates])
+            zip_cursor.execute("UPDATE zipcodes SET {0} WHERE zipcode in ({1});".format(update_string,  ", ".join(zip_list)))
         else:
-            zip_list = []
-                   
-        if len(zip_list) != 0:
-            print("{1}:{2}: Updating {0}".format(name, inc, len(city_list)))
-            zip_cursor.execute("UPDATE zipcodes SET emp = emp + {0}, emp_pay = emp_pay + {1} WHERE zip_code in ({2});".format(int(emp/len(zip_list)), int(emp_pay/len(zip_list)), ", ".join(zip_list)))
-        else:
-            print("{0}:{1}".format(inc, len(city_list)))
+            pass
+            # WHAT ARE WE DOING HERE???? WE ARE LETTING THESE ZIP CODES JUST DROP
+
+        prog = count/len(city_list)
+        print("\rResolving null areas: [{0:10s}] {1:.1f}%".format('#' * int(prog * 10) , prog*100), end="", flush=True)
         
+    print()
     zip_db.commit()
     
     zip_cursor.execute("DELETE FROM zipcodes WHERE location IS NULL;")
     zip_db.commit() 
-    
-    zip_cursor.execute("UPDATE zipcodes SET emp = 0 WHERE emp IS NULL;")
-    zip_db.commit()
-    
-    zip_cursor.execute("UPDATE zipcodes SET emp_pay = 0 WHERE emp_pay IS NULL;")
-    zip_db.commit()
-    
+       
     zip_db = mysql.connector.connect(user='root', password='city4533', database='zipcode')
     zip_cursor = zip_db.cursor()
     
@@ -213,14 +216,8 @@ def fix_no_geo_data():
     zip_db.commit()       
 
             
-def get_zip_list(zip_cursor, name, threshold):
-    zip_cursor.execute("SELECT zip_code FROM zipcodes WHERE NAME = '{0}' AND (emp + pop) / area > {1}".format(name, threshold))
-    zip_list = [x[0] for x in zip_cursor.fetchall()]
-    if len(zip_list) == 0 and threshold > 100:
-        return get_zip_list(zip_cursor, name, int(float(threshold)/4))
-    else:
-        return zip_list
-        
+
+# Not going to use this any more due to use of zip shape files     
 def merge_smalls():
     
     zip_db = mysql.connector.connect(user='dbuser', password='dbpass', database='zipcode')
