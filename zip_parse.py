@@ -177,20 +177,17 @@ def fix_no_geo_data():
     for name, field_vals in city_list:
         count += 1
         
-        zip_cursor.execute("SELECT zipcode, (emp + pop) / area AS density FROM zipcodes WHERE name = '{0}' and area IS NOT NULL ORDER BY density;".format(name))
+        zip_cursor.execute("SELECT zipcode, emp / area AS density FROM zipcodes WHERE name = '{0}' and area IS NOT NULL ORDER BY density desc;".format(name))
         zip_list = zip_cursor.fetchall()
         
         if len(zip_list) > 0:
             i = 0
-            while i < len(zip_list) and zip_list[i][1] > 10000:
+            while i < len(zip_list) and zip_list[i][1] > 1000:
                 i+= 1
-            if i == 0:
-                while i < len(zip_list) and zip_list[i][1] > 2000:
-                    i += 1
             if i > 0:
                 zip_list = [z[0] for z in zip_list[:i]]
             else:
-                zip_list = [z[0] for z in zip_list]
+                zip_list = ["'" + z[0] + "'" for z in zip_list]
 
             updates = [(fld, val/len(zip_list)) for fld, val in zip(fields, field_vals)]
             update_string = ", ".join(["{0} = {0} + {1}".format(fld, val) for fld, val in updates])
