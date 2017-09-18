@@ -1,7 +1,7 @@
-import mysql.connector, csv, subway_utils as su
+import mysql.connector, subway_utils as su
 from subway_assignments import zip_assigns
+import parse_functions as pf
 
-translate = {'A': 10, 'B': 60, 'C': 175, 'E': 375, 'F': 750, 'G': 1750, 'H': 3750, 'I': 7500, 'J': 17500, 'K': 37500, 'L': 75000, 'M': 125000}
 
 #################################################################
 # NOTE
@@ -16,7 +16,7 @@ dbpass = 'dbpass'
 db = 'zipcode'
 
 # List of all data fields being filled with census data. MySQL data type is 'INT'.
-fields = ['pop', 'emp', 'emp_pay', 'households']
+fields = ['pop', 'emp', 'emp_pay', 'households', 'hospital', 'university']
 
 def main():
 
@@ -54,63 +54,26 @@ def create_db(zip_db, zip_cursor):
     
     
 def read_files():
+    
     data = {}
-       
-    with open('./sourcedata/zip_population.csv', 'r') as f: 
-        rdr = csv.reader(f, delimiter=',')
-        next(rdr) # not using a dictreader, skip the column headers
-    
-        for line in rdr:
-            data[line[0]] = {'pop': int(line[1])}
-        
-    print('read population')
-    
-    	
-    with open('./sourcedata/zip_employment.txt', 'r') as f:
-        rdr = csv.reader(f, delimiter = ',', quotechar = '"')
-        next(rdr) # not using a dictreader, skip the column headers
-        
-        for line in rdr:
-    
-            if line[3] == 'D' or line[3] == 'S':
-                emp = translate[line[2]]
-                emp_pay = emp * 40
+   
+    # Loop through all 'read_xxx' functions and run them all; combine the returned data    
+    for fn in [func for func in dir(pf) if func.startswith("read_")]:   
+        for key,val in getattr(pf, fn)().items():
+            if key in data:
+                data[key].update(val)
             else:
-                emp = int(line[4])
-                emp_pay = int(line[8])
-               
-            d = data.get(line[0], {})
-            d.update({'name': line[1], 'emp': emp, 'emp_pay': emp_pay})
-            data[line[0]] = d
-                
-    print('read employment')    
-    
-    with open('./sourcedata/zip_geography.txt', 'r') as f:
-        rdr = csv.reader(f, delimiter = '\t')
-        next(rdr)
-        
-        for line in rdr:
-            
-            d = data.get(line[0], {})
-            d.update({'area': float(line[1]) / 1000000, 'location': "ST_GEOMFROMTEXT('POINT({0} {1})')".format(line[6].rstrip("\n"), line[5])})
-            data[line[0]] = d
-            
-    print('read geography')
-    
-    with open('./sourcedata/ACS_15_5YR_B11011_with_ann.csv', 'r') as f:
-        rdr = csv.reader(f, delimiter = ',', quotechar = '"')
-        next(rdr)
-        next(rdr)
-        
-        for line in rdr:
-            d = data.get(line[1], {})
-            d.update({'households': int(line[3])})
-            data[line[1]] = d
-            
-    print('read households')
-    
+                data[key] = val
+        print("Finished parsing", fn)
+       
+    # Ensure all values get the zipcode tag, no matter what source they were read from
     for key in data:
         data[key].update({'zipcode': key})
+        
+    # Loop through all 'postproc_xxx' functions and run them all; combine the returned data    
+    for fn in [func for func in dir(pf) if func.startswith("postproc_")]:   
+        data = getattr(pf, fn)(data)
+        print("Finished post processing", fn)
     
     return data
 
