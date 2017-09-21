@@ -1,0 +1,6 @@
+University - 6112 (Junior Colleges), 6113 (Colleges), 6114 (Business Schools), 61161 (Fine Arts)
+Hospitals - 622 (Hospitals)
+Finance - 52 (Finance and Insurance), 51111 (Bank Holding Companies)
+Business - 551112 (Other Holding Companies), 551114 (Corporate HQ), 54 (Professional Services), 533 (Intangible Asset Lessors)
+Recreation - 71 (Arts, Entertainment, Recreation)
+

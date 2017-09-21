@@ -16,7 +16,7 @@ dbpass = 'dbpass'
 db = 'zipcode'
 
 # List of all data fields being filled with census data. MySQL data type is 'INT'.
-fields = ['pop', 'emp', 'emp_pay', 'households', 'hospital', 'university']
+fields = ['pop', 'emp', 'emp_pay', 'households', 'hospital', 'university', 'finance', 'business', 'entertainment']
 
 def main():
 

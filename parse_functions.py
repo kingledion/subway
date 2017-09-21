@@ -88,6 +88,16 @@ def read_universities():
 def read_hospitals():
     return parse_by_establishment('./sourcedata/Hospital_by_zip_15.csv', 'hosp')
 
+def read_finance():
+    return parse_by_establishment('./sourcedata/Finance_by_zip_15.csv', 'fin')
+    
+def read_business():
+    return parse_by_establishment('./sourcedata/Business_by_zip_15.csv', 'bus')
+
+def read_entertainment():
+    return parse_by_establishment('./sourcedata/Entertainment_by_zip_15.csv', 'ent')
+    
+
     
 def parse_by_establishment(fname, tag):
     store_codes = {'260': '{0}_1k'.format(tag)}
@@ -141,11 +151,20 @@ def postproc_establishments(old_data):
             hosp_1k = vals.pop('hosp_1k', 0)
             uni_sum = vals.pop('uni_sum', 0)
             uni_1k = vals.pop('uni_1k', 0)
+            fin_sum = vals.pop('fin_sum', 0)
+            fin_1k = vals.pop('fin_1k', 0)
+            bus_sum = vals.pop('bus_sum', 0)
+            bus_1k = vals.pop('bus_1k', 0)
+            ent_sum = vals.pop('ent_sum', 0)
+            ent_1k = vals.pop('ent_1k', 0)
             
             onek_est = max(int((vals['emp'] - estab_sum)/estab_1k), 1000) if estab_1k else 0
             
             vals['hospital'] = hosp_sum + hosp_1k * onek_est
-            vals['university'] = uni_sum + uni_1k * onek_est          
+            vals['university'] = uni_sum + uni_1k * onek_est   
+            vals['finance'] = fin_sum + fin_1k * onek_est  
+            vals['business'] = bus_sum + bus_1k * onek_est  
+            vals['entertainment'] = ent_sum + ent_1k * onek_est  
             
             new_data[zcode] = vals
                         
