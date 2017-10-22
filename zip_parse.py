@@ -16,7 +16,7 @@ dbpass = 'dbpass'
 db = 'zipcode'
 
 # List of all data fields being filled with census data. MySQL data type is 'INT'.
-fields = ['pop', 'emp', 'emp_pay', 'households', 'hospital', 'university', 'finance', 'business', 'entertainment']
+fields = su.feature_names
 
 def main():
 
@@ -140,7 +140,7 @@ def fix_no_geo_data():
     for name, field_vals in city_list:
         count += 1
         
-        zip_cursor.execute("SELECT zipcode, emp / area AS density FROM zipcodes WHERE name = '{0}' and area IS NOT NULL ORDER BY density desc;".format(name))
+        zip_cursor.execute("SELECT zipcode, employment / area AS density FROM zipcodes WHERE name = '{0}' and area IS NOT NULL ORDER BY density desc;".format(name))
         zip_list = zip_cursor.fetchall()
         
         if len(zip_list) > 0:

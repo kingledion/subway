@@ -4,7 +4,7 @@ Created on Sat Sep 16 13:51:56 2017
 
 @author: dhartig
 """
-import csv, re
+import csv, re, shapefile
 
 # Based on BP_2015_00CZ1.tzt from American Factfinder; used for Employment_by_zip_15
 translate = {'a': 10, 'b': 60, 'c': 175, 'e': 375, 'f': 750, 'g': 1750, 'h': 3750, 'i': 7500, 'j': 17500, 'k': 37500, 'l': 75000}
@@ -24,12 +24,13 @@ def zip_from_geoid(geoid):
 # dict do not collide. 
 def read_population():
     data = {}
-    with open('./sourcedata/zip_population.csv', 'r') as f: 
-        rdr = csv.reader(f, delimiter=',')
+    with open('./sourcedata/Population_by_zip_15.csv', 'r') as f: 
+        rdr = csv.reader(f, delimiter = ',', quotechar = '"')
         next(rdr) # not using a dictreader, skip the column headers
     
         for line in rdr:
-            data[line[0]] = {'pop': int(line[1])}
+            zcode = zip_from_geoid(line[0])
+            data[zcode] = {'population': int(line[1]), 'pop_child': int(line[1]) - int(line[2]), 'pop_old': int(line[3])}
     
     return data
     
@@ -51,33 +52,50 @@ def read_employment():
                 emp = int(line[3])
                 emp_pay = int(line[5])
            
-            data[zcode] = {'name': name, 'emp': emp, 'emp_pay': emp_pay}
+            data[zcode] = {'name': name, 'employment': emp, 'emp_pay': emp_pay}
            
     return data
    
 def read_geography():
     data = {}
-    with open('./sourcedata/zip_geography.txt', 'r') as f:
-        rdr = csv.reader(f, delimiter = '\t')
-        next(rdr)
-        
-        for line in rdr:
-            data[line[0]] = {'area': float(line[1]) / 1000000, 'location': "ST_GEOMFROMTEXT('POINT({0} {1})')".format(line[6].rstrip("\n"), line[5])}
-    
+    sf = shapefile.Reader("/opt/ziplfs/tl_2014_us_zcta510.shp")
+    for r in sf.records():
+        zcode, area, lat, lon = (r[i] for i in [0, 5, 7, 8])
+        data[zcode] = {'area': float(area)/1000000, 'location': "ST_GEOMFROMTEXT('POINT({0} {1})')".format(float(lat), float(lon))} 
     return data
 
 
 def read_households():
     data = {}
-    with open('./sourcedata/ACS_15_5YR_B11011_with_ann.csv', 'r') as f:
+    with open('./sourcedata/Households_by_zip_15.csv', 'r') as f:
         rdr = csv.reader(f, delimiter = ',', quotechar = '"')
-        next(rdr)
-        next(rdr)
+        next(rdr) # not using a dictreader, skip the column headers
         
         for line in rdr:
-            data[line[1]] = {'households': int(line[3])}
+            zcode = zip_from_geoid(line[0])
+            data[zcode] = {'household': int(line[1]), 'family': int(line[2]), 'house_w_child': int(line[3])}
 
     return data
+    
+def read_poverty():
+    data = {}
+    with open('./sourcedata/Poverty_by_zip_15.csv', 'r') as f:
+        rdr = csv.reader(f, delimiter = ',', quotechar = '"')
+        next(rdr) # not using a dictreader, skip the column headers
+        
+        for line in rdr:
+            zcode = zip_from_geoid(line[0])
+            data[zcode] = {'bachelors': int(line[2]), 
+                            'labor_force': int(line[3]), 
+                            'employed': int(line[4]),
+                            'emp_full_time': int(line[5]),
+                            'pop_poor': int(line[6]),
+                            'pop_rich': int(line[1]) - int(line[7])}
+
+    return data
+    
+    
+    
 
 def read_establishments():
     return parse_by_establishment('./sourcedata/Establishments_by_zip_15.csv', 'estab')
@@ -85,8 +103,8 @@ def read_establishments():
 def read_universities():
     return parse_by_establishment('./sourcedata/University_by_zip_15.csv', 'uni')
     
-def read_hospitals():
-    return parse_by_establishment('./sourcedata/Hospital_by_zip_15.csv', 'hosp')
+def read_medical():
+    return parse_by_establishment('./sourcedata/Medical_by_zip_15.csv', 'med')
 
 def read_finance():
     return parse_by_establishment('./sourcedata/Finance_by_zip_15.csv', 'fin')
@@ -96,6 +114,9 @@ def read_business():
 
 def read_entertainment():
     return parse_by_establishment('./sourcedata/Entertainment_by_zip_15.csv', 'ent')
+    
+def read_hospitality():
+    return parse_by_establishment('./sourcedata/Hospitality_by_zip_15.csv', 'hosp')
     
 
     
@@ -124,9 +145,9 @@ def parse_by_establishment(fname, tag):
                 last_zip = zcode
                 loop_data = {}
             if line[1] in store_codes:
-                loop_data[store_codes[line[1]]] = loop_data.get(store_codes[line[1]], 0) + int(line[3])
+                loop_data[store_codes[line[1]]] = loop_data.get(store_codes[line[1]], 0) + int(line[2])
             elif line[1] in est_codes:
-                loop_data['{0}_sum'.format(tag)] = loop_data.get('{0}_sum'.format(tag), 0) + int(line[3]) * est_codes[line[1]]
+                loop_data['{0}_sum'.format(tag)] = loop_data.get('{0}_sum'.format(tag), 0) + int(line[2]) * est_codes[line[1]]
                 
         if '{0}_sum'.format(tag) in loop_data and loop_data['{0}_sum'.format(tag)] > 0:
             if zcode in data:
@@ -134,6 +155,28 @@ def parse_by_establishment(fname, tag):
             else:
                 data[zcode] = loop_data
         
+    return data
+    
+def read_housing():
+    data = {}
+    with open('./sourcedata/Housing_by_zip_15.csv', 'r') as f:
+        rdr = csv.reader(f, delimiter = ',', quotechar = '"')
+        next(rdr) # not using a dictreader, skip the column headers
+        
+        for line in rdr:
+            zcode = zip_from_geoid(line[0])
+            data[zcode] = {'hunits': int(line[1]), 
+                            'hunits_vacant': int(line[2]), 
+                            'hunits_detached': int(line[3]),
+                            'hunits_attached': int(line[4]) + int(line[5]),
+                            'hunits_medium': int(line[6]) + int(line[7]), # 3-9 units per housing structure
+                            'hunits_large': int(line[8]) + int(line[9]), # 10+ units per housing structure
+                            'hunits_old': int(line[19]), # built 1939 or before
+                            'hunits_new': int(line[10]) + int(line[11]) + int(line[12]), #built 2000 or later
+                            'hunits_owner': int(line[20]),
+                            'hunits_renter': int(line[21])}
+                            #'hunits_mortgage': int(line[22])} Thats dumb
+
     return data
         
 
@@ -157,14 +200,17 @@ def postproc_establishments(old_data):
             bus_1k = vals.pop('bus_1k', 0)
             ent_sum = vals.pop('ent_sum', 0)
             ent_1k = vals.pop('ent_1k', 0)
+            med_sum = vals.pop('med_sum', 0)
+            med_1k = vals.pop('med_1k', 0)
             
-            onek_est = max(int((vals['emp'] - estab_sum)/estab_1k), 1000) if estab_1k else 0
+            onek_est = max(int((vals['employment'] - estab_sum)/estab_1k), 1000) if estab_1k else 0
             
-            vals['hospital'] = hosp_sum + hosp_1k * onek_est
+            vals['hospitality'] = hosp_sum + hosp_1k * onek_est
             vals['university'] = uni_sum + uni_1k * onek_est   
             vals['finance'] = fin_sum + fin_1k * onek_est  
             vals['business'] = bus_sum + bus_1k * onek_est  
             vals['entertainment'] = ent_sum + ent_1k * onek_est  
+            vals['medical'] = med_sum + med_1k * onek_est
             
             new_data[zcode] = vals
                         

@@ -3,6 +3,7 @@
 import subway_utils as su, csv , numpy as np, networkx as nx
 from rtree import index
 from math import cos, radians, pi
+from collections import Counter
 import shapely.geometry as shpgeo, shapefile, pandas as pd
 
 db, cursor = su.opendb()
@@ -36,15 +37,24 @@ class station:
     def getfields(self):
         return [k for k in self._data]
         
+    def setDataDict(self, newdict):
+        self._data.update(newdict)
+        
     def getDataDict(self): # Inelegant solution!
         return self._data
 
 def near_station(station, idx, pts):
     return [next(idx.nearest((*p, *p), 1, objects='raw')) == station for p in pts]   
     
-def in_shape(state, pts):
-    return [state.contains(shpgeo.Point(*p)) for p in pts]
+def which_shape(records, lon, lat):
+    for zcode, s in records:
+        if s.contains(shpgeo.Point(lon, lat)):
+            return zcode
+    return 0
     
+#def in_shape(state, pts):
+#    return [state.contains(shpgeo.Point(*p)) for p in pts]
+       
 def build_station_index(filename):
     with open(filename, 'r') as csvin:
         rdr = csv.reader(csvin, delimiter = ';', quotechar = "'")
@@ -54,71 +64,94 @@ def build_station_index(filename):
         
         for row in rdr:
             if len(row) == 4:
-                d = su.est_density(cursor, float(row[2]), float(row[1]))
-                s = station(row[1], row[2], {**d, **{'name': row[0]}, **{'parking': row[3]}})     
+                s = station(row[1], row[2], {'name': row[0], 'parking': row[3]})     
                 stations.append(s)
                 idx.insert(0, (s['lon'], s['lat'], s['lon'], s['lat']), s)
                 
             elif row:
-                print(row)
+                print("Bad row in {0}:".format(filename), row)
                             
     return stations, idx
        
-def calculate_areas(stations, idx, shp):
-    # calculate latitude degrees to 1 km
-    ns_deg = 1.0/110.574
-
-    for s in stations:
-        n = 10000 
-        # calculate lon degrees to 1km
-        ew_deg = 1.0/111.320/cos(radians(s['lat']))
+def calculate_areas(stations, idx, sf):
     
+    # Get list of all station lats and lons
+    coords = [(s['lon'], s['lat']) for s in stations]
+    lons = [l[0] for l in coords]
+    lats = [l[1] for l in coords]
+    
+    # Calculate lat and lon degrees to1 km of distance
+    ns_deg = 1.0/110.574 
+    ew_deg = 1.0/111.320/cos(radians(np.mean(lats))) # approximation is good enough
+    
+    # max box to select zipcodes from 
+    min_lon, max_lon = min(lons) - 10 * ew_deg, max(lons) + 10 * ew_deg
+    min_lat, max_lat = min(lats) - 10 * ns_deg, max(lats) + 10 * ns_deg
+    
+    # helper function to select zipcodes from box
+    def nearby(lon, lat):
+        return True if lon > min_lon and lon < max_lon and lat > min_lat and lat < max_lat else False
+
+    shps = [(r[0], shpgeo.shape(sf.shape(i).__geo_interface__)) for i, r in enumerate(sf.records()) if nearby(float(r[8]), float(r[7]))] 
+    
+    # list of all feature names
+    features = su.get_feature_names()
+   
+    for s in stations:
+        n = 1000
+        area = pi # 3.14 km^2 is area within 1km of a point
+    
+        # Creates random point within 1km of a central point
         Theta = np.random.randn(n, 2)
         R = np.sqrt(np.random.rand(n))
         vectors = Theta * np.stack([R*ew_deg / np.linalg.norm(Theta, axis=1), R*ns_deg / np.linalg.norm(Theta, axis=1)], axis=1)
         
-        # pts in a 1km area
+        # pts in a 1km area    
         pts = [(v[0] + s['lon'], v[1] + s['lat']) for v in vectors]
-        walk = [1 if a else 0 for a in in_shape(shp, pts)]
-        wcount = sum(walk)
-        near = sum(1 if a and b else 0 for a, b in zip(near_station(s, idx, pts), walk))
+        
+        # walk determine which shape each point is in; if in no shape (such as in water) then zcode is 0
+        # near further adds zeros for each zcode where the point is closer to some other station than s
+        walk = [which_shape(shps, lon, lat) for lon, lat in pts]
+        near = [zcode if is_near else 0 for zcode, is_near in zip(walk, near_station(s, idx, pts))]      
+        
+        # Count the number of time each zip code appears in walk or near
+        walk = Counter(walk)
+        near = Counter(near)
+        
+        # Remove counts for 0; the code for no zipcode found or another station is closer
+        del walk[0]
+        del near[0]
+        
+        # Get densities for zips of interest, along with list of all features
+        all_zips = set(walk.keys() | near.keys())
+        densities, maxima = su.get_zip_densities(all_zips)
 
-        s['narea'] = near*pi/n # area of a 1km radius circle is pi
-        s['warea'] = wcount*pi/n
+        # Area for each zip cannot exceed the maximum area of that zipcode. This is particularly relevant for water surface area
+        walk = {zcode: min(maxima[zcode], counts * area / n) for zcode, counts in walk.items()}
+        near = {zcode: min(maxima[zcode], counts * area / n) for zcode, counts in near.items()}
         
-        # pts in 15km area
-        pts = [(v[0]*15 + s['lon'], v[1]*15 + s['lat']) for v in vectors]
-        drive = sum(1 if a and b else 0 for a, b in zip(near_station(s, idx, pts), in_shape(shp, pts)))
-        s['darea'] = drive*225*pi/n
+        for f in features:
+            s['walk_{0}'.format(f)] = sum([densities[zcode][f] * zarea for zcode, zarea in walk.items()])
+            s['near_{0}'.format(f)] = sum([densities[zcode][f] * zarea for zcode, zarea in near.items()])
         
-        print(s['name'], "{0:.2f}".format(wcount*pi/n), "{0:.2f}".format(near*pi/n), "{0:.2f}".format(drive*225*pi/n))
-        
-#def calculate_totals(stations):
-#    fields = stations[0].getfields()
-#    dfields = [f for f in fields if f.endswith('density')]
-#    for s in stations:
-#        for d in dfields:
-#            name = d.split('density')[0]
-#            
-#            s[name + 'near'] = int(s[d] * s['narea'])
-#            s[name + 'walk'] = int(s[d] * s['warea'])
-#            s[name + 'drive'] = int(s[d] * s['darea'])
+        print(s['name'])
+        print('Walking area', sum([v for k, v in walk.items()]))
+        for z in walk:
+            print("\t{0}: {1}".format(z, walk[z]))
+        print('Nearby area', sum([v for k, v in near.items()]))
+        for z in near:
+            print("\t{0}: {1}".format(z, near[z]))
             
+
+        
+            
+        
+                
 def to_dataframe(stations):
     list_of_dict = [s.getDataDict() for s in stations] # There must be a better way!
     df = pd.DataFrame(list_of_dict)
-    dfields = [f for f in list(df) if f.endswith('density')]
-    
-    for d in dfields:
-        name = d.split('density')[0]
-        df[name + 'near'] = df[d] * df['narea']
-        df[name + 'walk'] = df[d] * df['warea']
-        df[name + 'drive'] = df[d] * df['darea']
-
     return df
     
-    
-            
 def loadnetwork(filename):
     G = nx.MultiDiGraph()    
     
@@ -134,7 +167,6 @@ def loadnetwork(filename):
                     #print([(src_l + src_s, src_l + tar_s), (src_l + tar_s, src_l + src_s)])
                     G.add_edge(src_l + ":" + src_s, src_l + ":" + tar_s, weight = float(w))
                     G.add_edge(src_l + ":" + tar_s, src_l + ":" + src_s, weight = float(w))
-                    #G.add_edges_from([(src_l + src_s, src_l + tar_s), (src_l + tar_s, tar_l + src_s)], weight=w)
                 elif src_s == tar_s:
                     # This means transfer between lines on the same station
                     # Add only this one direction (other should be defined separate)
@@ -154,8 +186,7 @@ def get_nearby_nodes(G, r, names):
 def add_station_network(df, G):
     stations = df['name'] 
     
-    dfields = [f for f in list(df) if f.endswith('near')]
-    nfields = [(d, d.split("near")[0] + 'net') for d in dfields]
+    features = su.get_feature_names()
     
     for s in stations:
         nodenames = [x for x in G.nodes() if x.split(":")[1] == s]
@@ -163,10 +194,10 @@ def add_station_network(df, G):
         within15 = get_nearby_nodes(G, 15, nodenames)
         within30 = get_nearby_nodes(G, 30, nodenames)
         
-        for old, new in nfields:
+        for fname in features:
             
-            df.set_value(df['name'] == s, '15' + new, df.loc[df['name'].isin(within15), old].sum())
-            df.set_value(df['name'] == s, '30' + new, df.loc[df['name'].isin(within30), old].sum())
+            df.set_value(df['name'] == s, '15net_{0}'.format(fname), df.loc[df['name'].isin(within15), "near_{0}".format(fname)].sum())
+            df.set_value(df['name'] == s, '30net_{0}'.format(fname), df.loc[df['name'].isin(within30), "near_{0}".format(fname)].sum())
  
             
 #def write_stations(stations, filename):
@@ -176,48 +207,42 @@ def add_station_network(df, G):
 #        wrtr.writerow(fields)
 #        for s in stations:
 #            wrtr.writerow([s[f] for f in fields])
+            
 
-################################################
-# Load station geo data; build station lists; build station geoindices
-# Load station network
+
+################################################          
+# Format of filenames is (name, station geos csv input, station network and ridership csv input, station data output)  
+#                        NOTE: name is only used for printing status updates to screen
+in_city_list = [('Boston', './gendata/boston_subwaygeo.csv', './gendata/boston_network.csv', "./gendata/boston_stations.csv"),
+                ('Chicago', './gendata/chicago_subwaygeo.csv', './gendata/chicago_network.csv', "./gendata/chicago_stations.csv")]
+
+# load shapefile of all zipcodes in the US
+sf = shapefile.Reader("/opt/ziplfs/tl_2014_us_zcta510.shp")
+
+for name, geo_in, network_in, stations_out in in_city_list:
     
-bstations, bidx = build_station_index('./gendata/boston_subwaygeo.csv')
-cstations, cidx = build_station_index('./gendata/chicago_subwaygeo.csv')
-print("Density estimate and index built")
+    # Load station geo data; build station lists; build station geoindices
+    stations, idx = build_station_index(geo_in)
+    print("{0} density estimate and index built".format(name))
 
-# load station network maps
-bnetwork = loadnetwork('./gendata/boston_network.csv')
-cnetwork = loadnetwork('./gendata/chicago_network.csv')
+    # load station network maps
+    network = loadnetwork(network_in)
+    print("{0} network built".format(name))
 
-#############################################
-# Load shapefiles, calculate available walking (1km) and driving (15km) areas
-    
-# load shapefile of states in question (index 32 = MA, 19 = IL)
-sf = shapefile.Reader('./shapes/cb_2015_us_state_20m')
+    # Calculate available walking and areas
+    calculate_areas(stations, idx, sf)
+    print("{0} station data calculated".format(name))
 
-calculate_areas(bstations, bidx, shpgeo.shape(sf.shape(32).__geo_interface__))
-calculate_areas(cstations, cidx, shpgeo.shape(sf.shape(19).__geo_interface__))
-print("Areas calculated")
+    # Convert to dataframe
+    dframe = to_dataframe(stations)
+    print("{0} converted to dataframe".format(name))
 
-###############################################
-# Convert to datafram and multiply densities by#write_stations(bstations, "/opt/school/stat672/subway/boston_stations.csv")    
-#write_stations(cstations, "/opt/school/stat672/subway/chicago_stations.csv")   areas to get counts
-
-bframe = to_dataframe(bstations)
-cframe = to_dataframe(cstations)
-print("Converted to dataframes")
-
-##############################################
-# Add nearby stations on the network to station data
-
-add_station_network(bframe, bnetwork)
-add_station_network(cframe, cnetwork)
-print("Station network data added")
-
-        
-###############################################
-# Write staions to csv files
-        
-bframe.to_csv("./gendata/boston_stations.csv") 
-cframe.to_csv("./gendata/chicago_stations.csv")     
+    # Add nearby stations on the network to station data
+    add_station_network(dframe, network)
+    print("Station network data added")
+     
+    # Write staions data to csv file      
+    dframe.to_csv(stations_out) 
+    print("Station data written; done with {0}".format(name))
+  
            

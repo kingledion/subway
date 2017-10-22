@@ -7,6 +7,69 @@ Created on Mon Mar  7 18:14:33 2016
 from math import sqrt, radians, cos, sin, asin
 import numpy as np, mysql.connector
 
+
+# List of all data fields being filled with census data. MySQL data type is 'INT'.
+feature_names = ['population', 
+                  'pop_child', 
+                  'pop_old', 
+                  'household', 
+                  'family', 
+                  'house_w_child',
+                  'bachelors',
+                  'labor_force',
+                  'employed',
+                  'emp_full_time',
+                  'pop_poor',
+                  'pop_rich',
+                  'employment', 
+                  'emp_pay', 
+                  'medical',
+                  'hospitality', 
+                  'university', 
+                  'finance', 
+                  'business', 
+                  'entertainment',
+                  'hunits',
+                  'hunits_vacant',
+                  'hunits_detached',
+                  'hunits_attached', 
+                  'hunits_medium',
+                  'hunits_large',
+                  'hunits_old',
+                  'hunits_new',
+                  'hunits_owner',
+                  'hunits_renter']
+
+def get_feature_names():
+    return feature_names
+                  
+def get_zip_densities(zcodes):
+    db, cursor = opendb()
+    
+    query= "SELECT zipcode, area, {0} from zipcodes where zipcode in ({1});"
+    density_fields = ", ".join(["{0} / area as {0}_density".format(f) for f in feature_names])
+    zip_list = ", ".join([str(z) for z in zcodes])
+    
+    densities = {}
+    maxima = {}
+    cursor.execute(query.format(density_fields, zip_list))
+    for row in cursor.fetchall():
+        zcode = row[0]
+        densities[zcode] = {}
+        maxima[zcode] = row[1]
+        for key, data in zip(feature_names, row[2:]):
+            densities[zcode][key] = data
+            
+    # Format of results is a dictionary keyed by zipcode. The value of each zipcode
+    # dictionary, keyed by field. A call to results[zcode][field_name] will yield
+    # the density of field_name within that zipcode.
+            
+    return densities, maxima
+            
+        
+        
+    
+
 class BadDatabaseException(Exception):
     pass
 
