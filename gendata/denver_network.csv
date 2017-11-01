@@ -1,0 +1,145 @@
+'W';'Union Station';;'Pepsi Center-Elitch Gardens';2.5
+'W';'Pepsi Center-Elitch Gardens';;'Sports Authority-Mile High';1.5
+'W';'Sports Authority-Mile High';;'Auraria West';1.5
+'W';'Auraria West';;'Decatur-Federal';3.5
+'W';'Decatur-Federal';;'Knox';2
+'W';'Knox';;'Perry';1.5
+'W';'Perry';;'Sheridan';2
+'W';'Sheridan';;'Lamar';2.5
+'W';'Lamar';;'Wadsworth';2.5
+'W';'Wadsworth';;'Garrison';2
+'W';'Garrison';;'Oak';3
+'W';'Oak';;'Federal Center';4.5
+'W';'Federal Center';;'Red Rocks Comm College';4.5
+'W';'Red Rocks Comm College';;'Jeffco Government Center';5.5
+'W';'Auraria West';'C';'Auraria West';15
+'W';'Auraria West';'E';'Auraria West';7.5
+'C';'Union Station';;'Pepsi Center-Elitch Gardens';2.5
+'C';'Pepsi Center-Elitch Gardens';;'Sports Authority-Mile High';1.5
+'C';'Sports Authority-Mile High';;'Auraria West';1.5
+'C';'Auraria West';;'10th-Osage';3
+'C';'10th-Osage';;'Alameda';3
+'C';'Alameda';;'I25-Broadway';2
+'C';'I25-Broadway';;'Evans';3
+'C';'Evans';;'Englewood';3
+'C';'Englewood';;'Oxford-Sheridan';2.5
+'C';'Oxford-Sheridan';;'Littleton-Downtown';3
+'C';'Littleton-Downtown';;'Littleton-Mineral';4
+'C';'Auraria West';'W';'Auraria West';7.5
+'C';'Auraria West';'E';'Auraria West';7.5
+'C';'10th-Osage';'D';'10th-Osage';6
+'C';'10th-Osage';'E';'10th-Osage';7.5
+'C';'10th-Osage';'F';'10th-Osage';10
+'C';'10th-Osage';'H';'10th-Osage';7.5
+'C';'I25-Broadway';'D';'I25-Broadway';6
+'C';'I25-Broadway';'E';'I25-Broadway';7.5
+'C';'I25-Broadway';'F';'I25-Broadway';10
+'C';'I25-Broadway';'H';'I25-Broadway';7.5
+'D';'30th Downing';;'27th-Welton';1.5
+'D';'27th-Welton';;'25th-Welton';2
+'D';'25th-Welton';;'20th-Welton';3
+'D';'20th Welton';;'18th;2
+'D';'18th';;'16th';2.5
+'D';'16th';;'Theatre-Convention Center';2
+'D';'Theatre-Convention Center';;'Auraria-Colfax';2.5
+'D';'Auraria-Colfax';;'10th-Osage';4
+'D';'10th-Osage';;'Alameda';3
+'D';'Alameda';;'I25-Broadway';2
+'D';'I25-Broadway';;'Evans';3
+'D';'Evans';;'Englewood';3
+'D';'Englewood';;'Oxford-Sheridan';2.5
+'D';'Oxford-Sheridan';;'Littleton-Downtown';3
+'D';'Littleton-Downtown';;'Littleton-Mineral';4
+'D';'Auraria-Colfax';'F';'Auraria-Colfax';10
+'D';'Auraria-Colfax';'H';'Auraria-Colfax';7.5
+'D';'10th-Osage';'C';'10th-Osage';15
+'D';'10th-Osage';'E';'10th-Osage';7.5
+'D';'10th-Osage';'F';'10th-Osage';10
+'D';'10th-Osage';'H';'10th-Osage';7.5
+'D';'I25-Broadway';'C';'I25-Broadway';15
+'D';'I25-Broadway';'E';'I25-Broadway';7.5
+'D';'I25-Broadway';'F';'I25-Broadway';10
+'D';'I25-Broadway';'H';'I25-Broadway';7.5
+'E';'Union Station';;'Pepsi Center-Elitch Gardens';2.5
+'E';'Pepsi Center-Elitch Gardens';;'Sports Authority-Mile High';1.5
+'E';'Sports Authority-Mile High';;'Auraria West';1.5
+'E';'Auraria West';;'10th-Osage';3
+'E';'10th-Osage';;'Alameda';3
+'E';'Alameda';;'I25-Broadway';2
+'E';'I25-Broadway';;'Louisiana-Pearl';3
+'E';'Louisiana-Pearl';;'University of Denver';2
+'E';'University of Denver';;'Colorado';3
+'E';'Colorado';;'Yale';2
+'E';'Yale';;'Southmoor';3
+'E';'Southmoor';;'Belleview';3.5
+'E';'Belleview';;'Orchard';2
+'E';'Orchard';;'Arapahoe-Village Center';2
+'E';'Arapahoe-Village Center';;'Dry Creek';2.5
+'E';'Dry Creek';;'County Line';3.5
+'E';'County Line';;'Lincoln';2
+'E';'Auraria West';'W';'Auraria West';7.5
+'E';'Auraria West';'C';'Auraria West';15
+'E';'10th-Osage';'C';'10th-Osage';15
+'E';'10th-Osage';'D';'10th-Osage';6
+'E';'10th-Osage';'F';'10th-Osage';10
+'E';'10th-Osage';'H';'10th-Osage';7.5
+'E';'I25-Broadway';'C';'I25-Broadway';15
+'E';'I25-Broadway';'D';'I25-Broadway';6
+'E';'I25-Broadway';'F';'I25-Broadway';10
+'E';'I25-Broadway';'H';'I25-Broadway';7.5
+'E';'Southmoor';'F';'Southmoor';10
+'E';'Southmoor';'H';'Southmoor';7.5
+'F';'18th';;'16th';2.5
+'F';'16th';;'Theatre-Convention Center';2
+'F';'Theatre-Convention Center';;'Auraria-Colfax';2.5
+'F';'Auraria-Colfax';;'10th-Osage';4
+'F';'10th-Osage';;'Alameda';3
+'F';'Alameda';;'I25-Broadway';2
+'F';'I25-Broadway';;'Louisiana-Pearl';3
+'F';'Louisiana-Pearl';;'University of Denver';2
+'F';'University of Denver';;'Colorado';3
+'F';'Colorado';;'Yale';2
+'F';'Yale';;'Southmoor';3
+'F';'Southmoor';;'Belleview';3.5
+'F';'Belleview';;'Orchard';2
+'F';'Orchard';;'Arapahoe-Village Center';2.5
+'F';'Arapahoe-Village Center';;'Dry Creek';2
+'F';'Dry Creek';;'County Line';3
+'F';'County Line';;'Lincoln';3
+'F';'Auraria-Colfax';'D';'10th-Osage';6
+'F';'Auraria-Colfax';'H';'10th-Osage';7.5
+'F';'10th-Osage';'C';'10th-Osage';15
+'F';'10th-Osage';'D';'10th-Osage';6
+'F';'10th-Osage';'E';'10th-Osage';7.5
+'F';'10th-Osage';'H';'10th-Osage';7.5
+'F';'I25-Broadway';'C';'I25-Broadway';15
+'F';'I25-Broadway';'D';'I25-Broadway';6
+'F';'I25-Broadway';'E';'I25-Broadway';7.5
+'F';'I25-Broadway';'H';'I25-Broadway';7.5
+'F';'Southmoor';'E';'Southmoor';7.5
+'F';'Southmoor';'H';'Southmoor';7.5
+'H';'18th';;'16th';2.5
+'H';'16th';;'Theatre-Convention Center';2
+'H';'Theatre-Convention Center';;'Auraria-Colfax';2.5
+'H';'Auraria-Colfax';;'10th-Osage';3.5
+'H';'10th-Osage';;'Alameda';3
+'H';'Alameda';;'I25-Broadway';2.5
+'H';'I25-Broadway';;'Louisiana-Pearl';2.5
+'H';'Louisiana-Pearl';;'University of Denver';2.5
+'H';'University of Denver';;'Colorado';3
+'H';'Colorado';;'Yale';2
+'H';'Yale';;'Southmoor';3
+'H';'Southmoor';;'Dayton';4
+'H';'Dayton';;'Nine Mile';3.5
+'H';'Auraria-Colfax';'D';'Auraria-Colfax';6
+'H';'Auraria-Colfax';'F';'Auraria-Colfax';10
+'H';'10th-Osage';'C';'10th-Osage';15
+'H';'10th-Osage';'D';'10th-Osage';6
+'H';'10th-Osage';'E';'10th-Osage';7.5
+'H';'10th-Osage';'F';'10th-Osage';10
+'H';'I25-Broadway';'C';'I25-Broadway';15
+'H';'I25-Broadway';'D';'I25-Broadway';6
+'H';'I25-Broadway';'E';'I25-Broadway';7.5
+'H';'I25-Broadway';'F';'I25-Broadway';10
+'H';'Southmoor';'E';'Southmoor';7.5
+'H';'Southmoor';'F';'Southmoor';10

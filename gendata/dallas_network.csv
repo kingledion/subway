@@ -1,0 +1,144 @@
+'Red';'Parker Road';;'Downtown Plano';3
+'Red';'Downtown Plano';;'Cityline-Bush';2
+'Red';'Cityline-Bush';;'Gatalyn Park';2
+'Red';'Gatalyn Park';;'Arapaho Center';3
+'Red';'Arapaho Center';;'Spring Valley';3
+'Red';'Spring Valley';;'LBJ-Central';2.5
+'Red';'LBJ-Central';;'Forest Lane';2
+'Red';'Forest Lane';;'Walnut Hill';3
+'Red';'Walnut Hill';;'Park Lane';2
+'Red';'Park Lane';;'Lovers Lane';3.5
+'Red';'Lovers Lane';;'Mockingbird';2.5
+'Red';'Mockingbird';;'CityPlace-Uptown';4
+'Red';'CityPlace-Uptown';;'Pearl-Arts';3.5
+'Red';'Pearl-Arts';;'St. Paul';2
+'Red';'St. Paul';;'Akard';2
+'Red';'Akard';;'West End';2
+'Red';'West End';;'Union Station';2.5
+'Red';'Union Station';;'Convention Center';2.5
+'Red';'Convention Center';;'Cedars';2
+'Red';'Cedars';;'8th & Corinth';4
+'Red';'8th & Corinth';;'Dallas Zoo';2
+'Red';'Dallas Zoo';;'Tyler-Vernon';4
+'Red';'Tyler-Vernon';;'Hampton';2
+'Red';'Hampton';;'Westmoreland;2.5
+'Red';'Parker Road';'Orange';'Parker Road';7.5
+'Red';'Lovers Lane';'Orange';'Lovers Lane';7.5
+'Red';'Mockingbird';'Orange';'Mockingbird';7.5
+'Red';'Mockingbird';'Blue';'Mockingbird';7.5
+'Red';'CityPlace-Uptown';'Orange';'CityPlace-Uptown';7.5
+'Red';'CityPlace-Uptown';'Blue';'CityPlace-Uptown';7.5
+'Red';'Pearl-Arts';'Orange';'Pearl-Arts';7.5
+'Red';'Pearl-Arts';'Blue';'Pearl-Arts';7.5
+'Red';'Pearl-Arts';'Green';'Pearl-Arts';7.5
+'Red';'West End';'Orange';'West End';7.5
+'Red';'West End';'Blue';'West End';7.5
+'Red';'West End';'Green';'West End';7.5
+'Red';'Union Station';'Blue';'Union Station';7.5
+'Red';'8th & Corinth';'Blue';'8th & Corinth';7.5
+'Orange';'Parker Road';;'Downtown Plano';3
+'Orange';'Downtown Plano';;'Cityline-Bush';2
+'Orange';'Cityline-Bush';;'Gatalyn Park';2
+'Orange';'Gatalyn Park';;'Arapaho Center';3
+'Orange';'Arapaho Center';;'Spring Valley';3
+'Orange';'Spring Valley';;'LBJ-Central';2.5
+'Orange';'LBJ-Central';;'Forest Lane';2
+'Orange';'Forest Lane';;'Walnut Hill';3
+'Orange';'Walnut Hill';;'Park Lane';2.5
+'Orange';'Park Lane';;'Lovers Lane';3.5
+'Orange';'Lovers Lane';;'Mockingbird';2.5
+'Orange';'Mockingbird';;'CityPlace-Uptown';4
+'Orange';'CityPlace-Uptown';;'Pearl-Arts';3.5
+'Orange';'Pearl-Arts';;'St. Paul';2
+'Orange';'St. Paul';;'Akard';2
+'Orange';'Akard';;'West End';2
+'Orange';'West End';;'Victory';3.5
+'Orange';'Victory';;'Market Center';3
+'Orange';'Market Center';;'SMD-Parkland';2.5
+'Orange';'SMD-Parkland';;'Inwood-Love Field';2
+'Orange';'Inwood-Love Field';;'Burbank';5
+'Orange';'Burbank';;'Bachman';3
+'Orange';'Bachman';;'University of Dallas';6.5
+'Orange';'University of Dallas';;'Las Colinas Urban Center';5
+'Orange';'Las Colinas Urban Center';;'Irving Convention Center';2.5
+'Orange';'Irving Convention Center';;'North Lake College';5
+'Orange';'North Lake College';;'Belt Line';4
+'Orange';'Belt Line';'DFW-Airport';7.5
+'Orange';'Parker Road';'Red';'Parker Road';7.5
+'Orange';'Lovers Lane';'Red';'Lovers Lane';7.5
+'Orange';'Mockingbird';'Red';'Mockingbird';7.5
+'Orange';'Mockingbird';'Blue';'Mockingbird';7.5
+'Orange';'CityPlace-Uptown';'Red';'CityPlace-Uptown';7.5
+'Orange';'CityPlace-Uptown';'Blue';'CityPlace-Uptown';7.5
+'Orange';'Pearl-Arts';'Red';'Pearl-Arts';7.5
+'Orange';'Pearl-Arts';'Blue';'Pearl-Arts';7.5
+'Orange';'Pearl-Arts';'Green';'Pearl-Arts';7.5
+'Orange';'West End';'Red';'West End';7.5
+'Orange';'West End';'Blue';'West End';7.5
+'Orange';'West End';'Green';'West End';7.5
+'Orange';'Victory';'Green';'Victory';7.5
+'Orange';'Bachman';'Green';'Bachman';7.5
+'Blue';'Downtown Rowlett';;'Downtown Garland';7
+'Blue';'Downtown Garland';;'Forest-Juniper';4
+'Blue';'Forest-Juniper';;'LBJ-Skillman';3
+'Blue';'LBJ-Skillman';;'Lake Highlands';4
+'Blue';'Lake Highlands';;'White Rock';3
+'Blue';'White Rock';;'Mockingbird';4
+'Blue';'Mockingbird';;'CityPlace-Uptown';4
+'Blue';'CityPlace-Uptown';;'Pearl-Arts';3.5
+'Blue';'Pearl-Arts';;'St. Paul';2
+'Blue';'St. Paul';;'Akard';2
+'Blue';'Akard';;'West End';2
+'Blue';'West End';;'Union Station';2.5
+'Blue';'Union Station';;'Convention Center';2.5
+'Blue';'Convention Center';;'Cedars';2
+'Blue';'Cedars';;'8th & Corinth';4
+'Blue';'8th & Corinth';;'Morrell';2
+'Blue';'Morrell';;'Illinois';2.5
+'Blue';'Illinois';;'Keist';3
+'Blue';'Keist';;'VA Medical Center';3
+'Blue';'VA Medical Center';;'Camp Ledbetter';2.5
+'Blue';'Mockingbird';'Orange';'Mockingbird';7.5
+'Blue';'Mockingbird';'Red';'Mockingbird';7.5
+'Blue';'CityPlace-Uptown';'Orange';'CityPlace-Uptown';7.5
+'Blue';'CityPlace-Uptown';'Red';'CityPlace-Uptown';7.5
+'Blue';'Pearl-Arts';'Orange';'Pearl-Arts';7.5
+'Blue';'Pearl-Arts';'Red';'Pearl-Arts';7.5
+'Blue';'Pearl-Arts';'Green';'Pearl-Arts';7.5
+'Blue';'West End';'Orange';'West End';7.5
+'Blue';'West End';'Red';'West End';7.5
+'Blue';'West End';'Green';'West End';7.5
+'Blue';'Union Station';'Red';'Union Station';7.5
+'Blue';'8th & Corinth';'Red';'8th & Corinth';7.5
+'Green';'Buckner';;'Lake June';4
+'Green';'Lake June';;'Lawnview';6
+'Green';'Lawnview';;'Hatcher';3
+'Green';'Hatcher';;'MLK';4
+'Green';'MLK';;'Fair Park';3
+'Green';'Fair Park';;'Baylor Medical Center';4
+'Green';'Baylor Medical Center';;'Deep Ellum';2
+'Green';'Deep Ellum';;'Pearl-Arts';2
+'Green';'Pearl-Arts';;'St. Paul';2
+'Green';'St. Paul';;'Akard';2
+'Green';'Akard';;'West End';2
+'Green';'West End';;'Victory';4
+'Green';'Victory';;'Market Center';3
+'Green';'Market Center';;'SMD-Parkland';2
+'Green';'SMD-Parkland';;'Inwood-Love Field';2
+'Green';'Inwood-Love Field';;'Burbank';5
+'Green';'Burbank';;'Bachman';3
+'Green';'Bachman';;'Walnut Hill-Denton';4
+'Green';'Walnut Hill-Denton';;'Royal Lane';3
+'Green';'Royal Lane';;'Farmer's Branch';4
+'Green';'Farmer's Branch';;'Downtown Carrollton';5
+'Green';'Downtown Carrollton';;'Trinity Mills';4
+'Green';'Trinity Mills';;'North Carrollton-Frankford';2
+'Green';'Pearl-Arts';'Red';'Pearl-Arts';7.5
+'Green';'Pearl-Arts';'Blue';'Pearl-Arts';7.5
+'Green';'Pearl-Arts';'Orange';'Pearl-Arts';7.5
+'Green';'West End';'Red';'West End';7.5
+'Green';'West End';'Blue';'West End';7.5
+'Green';'West End';'Orange';'West End';7.5
+'Green';'Victory';'Orange';'Victory';7.5
+'Green';'Bachman';'Orange';'Bachman';7.5
+

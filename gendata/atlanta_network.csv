@@ -1,0 +1,75 @@
+'Red';'North Springs';;'Sandy Springs';2
+'Red';'Sandy Springs';;'Dunwoody';2
+'Red';'Dunwoody';;'Medical Center';2
+'Red';'Medical Center';;'Buckhead';5
+'Red';'Buckhead';;'Lindergh Center';4
+'Red';'Lindergh Center';;'Arts Center';4
+'Red';'Arts Center';;'Midtown';2
+'Red';'Midtown';;'North Avenue';1
+'Red';'North Avenue';;'Civic Center';1.5
+'Red';'Civic Center';;'Peachtree Center';1
+'Red';'Peachtree Center';;'Five Points';1.5
+'Red';'Five Points';;'Garnett';2.5
+'Red';'Garnett';;'West End';2.5
+'Red';'West End';;'Oakland City';2
+'Red';'Oakland City';;'Lakewood-Fort McPherson';2
+'Red';'Lakewood-Fort McPherson';;'East Point';3
+'Red';'East Point';;'College Park';3
+'Red';'College Park';;'Airport';2
+'Red';'Lindergh Center';'Gold';'Lindergh Center';5
+'Red';'Five Points';'Gold';'Five Points';5
+'Red';'Five Points';'Blue';'Five Points';5
+'Red';'Five Points';'Green';'Five Points';5
+'Gold';'Doraville';;'Chamblee';3
+'Gold';'Chamblee';;'Brookhaven-Oglethorpe University';4
+'Gold';'Brookhaven-Oglethorpe University';;'Lenox';3
+'Gold';'Lenox';;'Lindergh Center';3
+'Gold';'Lindergh Center';;'Arts Center';4
+'Gold';'Arts Center';;'Midtown';2
+'Gold';'Midtown';;'North Avenue';1
+'Gold';'North Avenue';;'Civic Center';2
+'Gold';'Civic Center';;'Peachtree Center';1
+'Gold';'Peachtree Center';;'Five Points';1.5
+'Gold';'Five Points';;'Garnett';2.5
+'Gold';'Garnett';;'West End';2.5
+'Gold';'West End';;'Oakland City';2
+'Gold';'Oakland City';;'Lakewood-Fort McPherson';2
+'Gold';'Lakewood-Fort McPherson';;'East Point';3
+'Gold';'East Point';;'College Park';3
+'Gold';'College Park';;'Airport';2
+'Gold';'Lindergh Center';'Red';'Lindergh Center';5
+'Gold';'Five Points';'Red';'Five Points';5
+'Gold';'Five Points';'Blue';'Five Points';5
+'Gold';'Five Points';'Green';'Five Points';5
+'Blue';'Indian Creek';;'Kensington';2
+'Blue';'Kensington';;'Avondale';3
+'Blue';'Avondale';;'Decatur';4
+'Blue';'Decatur';;'East Lake';3
+'Blue';'East Lake';;'Edgewood-Candler Park';3
+'Blue';'Edgewood-Candler Park';;'Inman Park-Reynoldstown';2
+'Blue';'Inman Park-Reynoldstown';;'King Memorial';3
+'Blue';'King Memorial';;'Georgia State';2
+'Blue';'Georgia State';;'Five Points';1
+'Blue';'Five Points';;'Dome-GWCC-Philips-CNN';1
+'Blue';'Dome-GWCC-Philips-CNN';;'Vine City';1
+'Blue';'Vine City';;'Ashby';;1
+'Blue';'Ashby';;'West Lake';3
+'Blue';'West Lake';;'H.E. Holmes';3
+'Blue';'Edgewood-Candler Park';'Green';'Edgewood-Candler Park';
+'Blue';'Five Points';'Red';'Five Points';5
+'Blue';'Five Points';'Gold';'Five Points';5
+'Blue';'Five Points';'Green';'Five Points';5
+'Blue';'Ashby';'Green';'Ashby';5
+'Green';'Edgewood-Candler Park';;'Inman Park-Reynoldstown';2
+'Green';'Inman Park-Reynoldstown';;'King Memorial';3
+'Green';'King Memorial';;'Georgia State';2
+'Green';'Georgia State';;'Five Points';1
+'Green';'Five Points';;'Dome-GWCC-Philips-CNN';1
+'Green';'Dome-GWCC-Philips-CNN';;'Vine City';1
+'Green';'Vine City';;'Ashby';1
+'Green';'Ashby';;'Bankhead';4
+'Green';'Edgewood-Candler Park';'Blue';'Edgewood-Candler Park';5
+'Green';'Five Points';'Red';'Five Points';5
+'Green';'Five Points';'Gold';'Five Points';5
+'Green';'Five Points';'Blue';'Five Points';5
+'Green';'Ashby';'Blue';'Ashby';5
