@@ -98,7 +98,7 @@ def calculate_areas(stations, idx, sf):
     features = su.get_feature_names()
    
     for s in stations:
-        n = 1000
+        n = 100
         area = pi # 3.14 km^2 is area within 1km of a point
     
         # Creates random point within 1km of a central point
@@ -165,21 +165,28 @@ def loadnetwork(filename):
                     # This means stations on the same line. Add both directions
                     # on the directed graph and  src_l = tar_l.
                     #print([(src_l + src_s, src_l + tar_s), (src_l + tar_s, src_l + src_s)])
-                    G.add_edge(src_l + ":" + src_s, src_l + ":" + tar_s, weight = float(w))
-                    G.add_edge(src_l + ":" + tar_s, src_l + ":" + src_s, weight = float(w))
+                        G.add_edge(src_l + ":" + src_s, src_l + ":" + tar_s, weight = float(w))
+                        G.add_edge(src_l + ":" + tar_s, src_l + ":" + src_s, weight = float(w))
                 elif src_s == tar_s:
                     # This means transfer between lines on the same station
                     # Add only this one direction (other should be defined separate)
-                    G.add_edge(src_l + ":" + src_s, tar_l + ":" + tar_s, weight = float(w))
-                
+                    try:
+                        G.add_edge(src_l + ":" + src_s, tar_l + ":" + tar_s, weight = float(w))
+                    except ValueError as e:
+                        print(row)
+                        raise e
+                        
+                        raise e
             elif row:
                 print(row)
                 
     return G
     
 def get_nearby_nodes(G, r, names):
+    #print(names)
     graphs = [nx.ego_graph(G, x, radius = r, distance='weight') for x in names]
     g =  graphs[0] if len(graphs) <= 1 else nx.compose_all(graphs) # should I be using compose or union?
+        
     return set([x.split(":")[1] for x in g.nodes()])
     
             
@@ -189,6 +196,7 @@ def add_station_network(df, G):
     features = su.get_feature_names()
     
     for s in stations:
+        print(s)
         nodenames = [x for x in G.nodes() if x.split(":")[1] == s]
 
         within15 = get_nearby_nodes(G, 15, nodenames)
@@ -213,8 +221,12 @@ def add_station_network(df, G):
 ################################################          
 # Format of filenames is (name, station geos csv input, station network and ridership csv input, station data output)  
 #                        NOTE: name is only used for printing status updates to screen
-in_city_list = [('Boston', './gendata/boston_subwaygeo.csv', './gendata/boston_network.csv', "./gendata/boston_stations.csv"),
-                ('Chicago', './gendata/chicago_subwaygeo.csv', './gendata/chicago_network.csv', "./gendata/chicago_stations.csv")]
+in_city_list = [#('Boston', './gendata/boston_subwaygeo.csv', './gendata/boston_network.csv', "./gendata/boston_stations.csv"),
+                #('Chicago', './gendata/chicago_subwaygeo.csv', './gendata/chicago_network.csv', "./gendata/chicago_stations.csv"),
+                #('Atlanta', './gendata/atlanta_subwaygeo.csv', './gendata/atlanta_network.csv', "./gendata/atlanta_stations.csv"),
+                #('Los Angeles', './gendata/la_subwaygeo.csv', './gendata/la_network.csv', "./gendata/la_stations.csv"),
+                ('Dallas', './gendata/dallas_subwaygeo.csv', './gendata/dallas_network.csv', "./gendata/dallas_stations.csv"),
+                ('Denver', './gendata/denver_subwaygeo.csv', './gendata/denver_network.csv', "./gendata/denver_stations.csv")]
 
 # load shapefile of all zipcodes in the US
 sf = shapefile.Reader("/opt/ziplfs/tl_2014_us_zcta510.shp")

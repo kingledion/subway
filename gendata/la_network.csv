@@ -1,0 +1,107 @@
+'Blue';'Downtown Long Beach-1st';;'Pacific-5th';3.5
+'Blue';'Pacific-5th';;'Anaheim';4.5
+'Blue';'Anaheim';;'Pacific Coast Highway';3.5
+'Blue';'Pacific Coast Highway';;'Willow';4
+'Blue';'Willow';;'Wardlaw';2
+'Blue';'Wardlaw';;'Del Amo';3.5
+'Blue';'Del Amo';;'Artesia';3
+'Blue';'Artesia';;'Compton';3
+'Blue';'Compton';;'Willowbrook-Rosa Parks';4
+'Blue';'Willowbrook-Rosa Parks';;'103rd-Watts';2
+'Blue';'103rd-Watts';;'Firestone';2.5
+'Blue';'Firestone';;'Florence';2
+'Blue';'Florence';;'Slauson';2
+'Blue';'Slauson';;'Vernon';2.5
+'Blue';'Vernon';;'Washington';2.5
+'Blue';'Washington';;'San Pedro Street';4
+'Blue';'San Pedro Street';;'Grand-LATTC';3.5
+'Blue';'Grand-LATTC';;'Pico';3.5
+'Blue';'Pico';;'7th Street-Metro Center';2.5
+'Blue';'Willowbrook-Rosa Parks';'Green';'Willowbrook-Rosa Parks';4
+'Blue';'Pico';'Expo';'Pico';3
+'Blue';'7th Street-Metro Center';'Expo';'7th Street-Metro Center';3
+'Blue';'7th Street-Metro Center';'Purple';'7th Street-Metro Center';5
+'Blue';'7th Street-Metro Center';'Red';'7th Street-Metro Center';5
+'Purple';'Wilshire-Western';;'Wilshire-Normandie';2
+'Purple';'Wilshire-Normandie';;'Wilshire-Vermont';2
+'Purple';'Wilshire-Vermont';;'Westlake-MacArthur Park';2
+'Purple';'Westlake-MacArthur Park';;'7th Street-Metro Center';2
+'Purple';'7th Street-Metro Center';;'Pershing Square';1.5
+'Purple';'Pershing Square';;'Civic Center-Grand Park';1
+'Purple';'Civic Center-Grand Park';;'Union Station';2.5
+'Purple';'Wilshire-Vermont';'Red';'Wilshire-Vermont';5
+'Purple';'7th Street-Metro Center';'Red';'7th Street-Metro Center';5
+'Purple';'7th Street-Metro Center';'Blue';'7th Street-Metro Center';3
+'Purple';'7th Street-Metro Center';'Expo';'7th Street-Metro Center';3
+'Purple';'Union Station';'Red';'Union Station';5
+'Purple';'Union Station';'Gold';'Union Station';3.5
+'Red';'North Hollywood';;'North Hollywood';4
+'Red';'Universal City-Studio City';;'Hollywood-Highland';4
+'Red';'Hollywood-Highland';;'Hollywood-Vine';2
+'Red';'Hollywood-Vine';;'Hollywood-Western';2.5
+'Red';'Hollywood-Western';;'Vermont-Sunset';2
+'Red';'Vermont-Sunset';;'Vermont-Santa Monica';1
+'Red';'Vermont-Santa Monica';;'Vermont-Beverly';1.5
+'Red';'Vermont-Beverly';;'Wilshire-Vermont';2.5
+'Red';'Wilshire-Vermont';;'Westlake-MacArthur Park';2
+'Red';'Westlake-MacArthur Park';;'7th Street-Metro Center';2
+'Red';'7th Street-Metro Center';;'Pershing Square';1.5
+'Red';'Pershing Square';;'Civic Center-Grand Park';1
+'Red';'Civic Center-Grand Park';;'Union Station';2.5
+'Red';'Wilshire-Vermont';'Purple';'Wilshire-Vermont';5
+'Red';'7th Street-Metro Center';'Purple';'7th Street-Metro Center';5
+'Red';'7th Street-Metro Center';'Blue';'7th Street-Metro Center';3
+'Red';'7th Street-Metro Center';'Expo';'7th Street-Metro Center';3
+'Red';'Union Station';'Purple';'Union Station';5
+'Red';'Union Station';'Gold';'Union Station';3.5
+'Green';'Redondo Beach';;'Douglas';2.5
+'Green';'Douglas';;'El Segundo';2
+'Green';'El Segundo';;'Mariposa';2
+'Green';'Mariposa';;'Aviation-LAX';2
+'Green';'Aviation-LAX';;'Hawthorne-Lennox';2.5
+'Green';'Hawthorne-Lennox';;'Crenshaw-I105';3
+'Green';'Crenshaw-I105';;'Vermont-Athens';2.5
+'Green';'Vermont-Athens';;'Harbor Freeway';2
+'Green';'Harbor Freeway';;'Avalon-I105';2
+'Green';'Avalon-I105';;'Willowbrook-Rosa Parks';2
+'Green';'Willowbrook-Rosa Parks';;'Long Beach Blvd';4.5
+'Green';'Long Beach Blvd';;'Lakewood';5
+'Green';'Lakewood';;'Norwalk';3.5
+'Green';'Willowbrook-Rosa Parks';'Blue';'Willowbrook-Rosa Parks';3
+'Gold';'Atlantic';;'East LA Civic Center';1.5
+'Gold';'East LA Civic Center';;'Maravilla';1.5
+'Gold';'Maravilla';;'Indiana';4.5
+'Gold';'Indiana';;'Soto';2.5
+'Gold';'Soto';;'Mariachi-Boyle Heights';2
+'Gold';'Mariachi-Boyle Heights';;'Pico-Aliso';2
+'Gold';'Pico-Aliso';;'Little Tokyo-Arts';4
+'Gold';'Little Tokyo-Arts';;'Union Station';4
+'Gold';'Union Station';;'Chinatown';1.5
+'Gold';'Chinatown';;'Lincoln-Cypress';4
+'Gold';'Lincoln-Cypress';;'Heritage Square';1.5
+'Gold';'Heritage Square';;'Southwest Museum';2
+'Gold';'Southwest Museum';;'Highland Park';3.5
+'Gold';'Highland Park';;'South Pasadena-Mission';3.5
+'Gold';'South Pasadena-Mission';;'Fillmore';3.5
+'Gold';'Fillmore';;'Del Mar';2
+'Gold';'Del Mar';;'Memorial Park';1
+'Gold';'Memorial Park';;'Lake';2
+'Gold';'Lake';;'Allen';2
+'Gold';'Allen';;'Sierra Madre Villa';3
+'Gold';'Union Station';'Red';'Union Station';5
+'Gold';'Union Station';'Purple';'Union Station';5
+'Expo';'Culver City';;'La Cienega-Jefferson';2.5
+'Expo';'La Cienega-Jefferson';;'Expo-La Brea';2
+'Expo';'Expo-La Brea';;'Farmdale';1.5
+'Expo';'Farmdale';;'Expo-Crenshaw';2
+'Expo';'Expo-Crenshaw';;'Expo-Western';4
+'Expo';'Expo-Western';;'Expo-Vermont';3
+'Expo';'Expo-Vermont';;'Expo Park-USC';2
+'Expo';'Expo Park-USC';;'Jefferson-USC';2
+'Expo';'Jefferson-USC';;'LATTC-Ortho Institute-23rd';3
+'Expo';'LATTC-Ortho Institute-23rd';;'Pico';4
+'Expo';'Pico';;'7th Street-Metro Center';2.5
+'Expo';'Pico';'Blue';'Pico';3
+'Expo';'7th Street-Metro Center';'Blue';'7th Street-Metro Center';3
+'Expo';'7th Street-Metro Center';'Purple';'7th Street-Metro Center';5
+'Expo';'7th Street-Metro Center';'Red';'7th Street-Metro Center';5

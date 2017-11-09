@@ -21,7 +21,7 @@
 'Red';'8th & Corinth';;'Dallas Zoo';2
 'Red';'Dallas Zoo';;'Tyler-Vernon';4
 'Red';'Tyler-Vernon';;'Hampton';2
-'Red';'Hampton';;'Westmoreland;2.5
+'Red';'Hampton';;'Westmoreland';2.5
 'Red';'Parker Road';'Orange';'Parker Road';7.5
 'Red';'Lovers Lane';'Orange';'Lovers Lane';7.5
 'Red';'Mockingbird';'Orange';'Mockingbird';7.5
@@ -63,7 +63,7 @@
 'Orange';'Las Colinas Urban Center';;'Irving Convention Center';2.5
 'Orange';'Irving Convention Center';;'North Lake College';5
 'Orange';'North Lake College';;'Belt Line';4
-'Orange';'Belt Line';'DFW-Airport';7.5
+'Orange';'Belt Line';;'DFW-Airport';7.5
 'Orange';'Parker Road';'Red';'Parker Road';7.5
 'Orange';'Lovers Lane';'Red';'Lovers Lane';7.5
 'Orange';'Mockingbird';'Red';'Mockingbird';7.5
