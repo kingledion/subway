@@ -87,6 +87,8 @@ def calculate_areas(stations, idx, sf):
     # max box to select zipcodes from 
     min_lon, max_lon = min(lons) - 10 * ew_deg, max(lons) + 10 * ew_deg
     min_lat, max_lat = min(lats) - 10 * ns_deg, max(lats) + 10 * ns_deg
+    print(min_lon, max_lon)
+    print(min_lat, max_lat)
     
     # helper function to select zipcodes from box
     def nearby(lon, lat):
@@ -98,7 +100,7 @@ def calculate_areas(stations, idx, sf):
     features = su.get_feature_names()
    
     for s in stations:
-        n = 100
+        n = 1000
         area = pi # 3.14 km^2 is area within 1km of a point
     
         # Creates random point within 1km of a central point
@@ -135,12 +137,12 @@ def calculate_areas(stations, idx, sf):
             s['near_{0}'.format(f)] = sum([densities[zcode][f] * zarea for zcode, zarea in near.items()])
         
         print(s['name'])
-        print('Walking area', sum([v for k, v in walk.items()]))
-        for z in walk:
-            print("\t{0}: {1}".format(z, walk[z]))
+        #print('Walking area', sum([v for k, v in walk.items()]))
+        #for z in walk:
+        #    print("\t{0}: {1}".format(z, walk[z]))
         print('Nearby area', sum([v for k, v in near.items()]))
-        for z in near:
-            print("\t{0}: {1}".format(z, near[z]))
+        #for z in near:
+        #    print("\t{0}: {1}".format(z, near[z]))
             
 
         
@@ -174,8 +176,6 @@ def loadnetwork(filename):
                         G.add_edge(src_l + ":" + src_s, tar_l + ":" + tar_s, weight = float(w))
                     except ValueError as e:
                         print(row)
-                        raise e
-                        
                         raise e
             elif row:
                 print(row)
@@ -221,10 +221,10 @@ def add_station_network(df, G):
 ################################################          
 # Format of filenames is (name, station geos csv input, station network and ridership csv input, station data output)  
 #                        NOTE: name is only used for printing status updates to screen
-in_city_list = [#('Boston', './gendata/boston_subwaygeo.csv', './gendata/boston_network.csv', "./gendata/boston_stations.csv"),
-                #('Chicago', './gendata/chicago_subwaygeo.csv', './gendata/chicago_network.csv', "./gendata/chicago_stations.csv"),
-                #('Atlanta', './gendata/atlanta_subwaygeo.csv', './gendata/atlanta_network.csv', "./gendata/atlanta_stations.csv"),
-                #('Los Angeles', './gendata/la_subwaygeo.csv', './gendata/la_network.csv', "./gendata/la_stations.csv"),
+in_city_list = [('Boston', './gendata/boston_subwaygeo.csv', './gendata/boston_network.csv', "./gendata/boston_stations.csv"),
+                ('Chicago', './gendata/chicago_subwaygeo.csv', './gendata/chicago_network.csv', "./gendata/chicago_stations.csv"),
+                ('Atlanta', './gendata/atlanta_subwaygeo.csv', './gendata/atlanta_network.csv', "./gendata/atlanta_stations.csv"),
+                ('Los Angeles', './gendata/la_subwaygeo.csv', './gendata/la_network.csv', "./gendata/la_stations.csv"),
                 ('Dallas', './gendata/dallas_subwaygeo.csv', './gendata/dallas_network.csv', "./gendata/dallas_stations.csv"),
                 ('Denver', './gendata/denver_subwaygeo.csv', './gendata/denver_network.csv', "./gendata/denver_stations.csv")]
 

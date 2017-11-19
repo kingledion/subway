@@ -1,45 +1,45 @@
-'Union Station';39.755;-105.003
-'Pepsi Center-Elitch Gardens';39.749;-105.009
-'Sports Authority-Mile High';39.743;-105.013
-'Auraria West';39.742;-105.011
-'Decatur-Federal';39.737;-105.024
-'Knox';39.736;-105.033
-'Perry';39.735;-105.040
-'Sheridan';39.735;-105.053
-'Lamar';39.737;-105.066
-'Wadsworth';39.737;-105.082
-'Garrison';39.737;-105.100
-'Oak';39.737;-105.120
-'Federal Center';39.720;-105.129
-'Red Rocks Comm College';39.725;-105.152
-'Jeffco Government Center';39.727;-105.201
-'10th-Osage';39.732;-105.006
-'Alameda';39.708;-104.993
-'I25-Broadway';39.701;-104.990
-'Evans';39.678;-104.993
-'Englewood';39.655;-105.000
-'Oxford-Sheridan';39.643;-105.005
-'Littleton-Downtown';39.612;-105.015
-'Littleton-Mineral';39.580;-105.025
-'Auraria-Colfax';39.470;-105.002
-'Theatre-Convention Center';39.744;-104.996
-'16th';39.746;-104.993
-'18th';39.747;-104.991
-'20th Welton';39.748;-104.987
-'25th-Welton';39.753;-104.979
-'27th-Welton';39.755;-104.978
-'30th Downing';39.759;-104.974
-'Louisiana-Pearl';39.693;-104.978
-'University of Denver';39.685;-104.965
-'Colorado';39.680;-104.938
-'Yale';39.669;-104.927
-'Southmoor';39.649;-104.916
-'Dayton';39.643;-104.878
-'Nine Mile';39.657;-104.845
-'Belleview';39.628;-104.904
-'Orchard';39.614;-104.896
-'Arapahoe-Village Center';39.600;-104.889
-'Dry Creek';39.579;-104.877
-'County Line';39.562;-104.873
-'Lincoln';39.545;-104.870
+'Union Station';39.755;-105.003;0
+'Pepsi Center-Elitch Gardens';39.749;-105.009;0
+'Sports Authority-Mile High';39.743;-105.013;0
+'Auraria West';39.742;-105.011;0
+'Decatur-Federal';39.737;-105.024;1
+'Knox';39.736;-105.033;0
+'Perry';39.735;-105.040;0
+'Sheridan';39.735;-105.053;1
+'Lamar';39.737;-105.066;0
+'Wadsworth';39.737;-105.082;1
+'Garrison';39.737;-105.100;0
+'Oak';39.737;-105.120;1
+'Federal Center';39.720;-105.129;1
+'Red Rocks Comm College';39.725;-105.152;0
+'Jeffco Government Center';39.727;-105.201;1
+'10th-Osage';39.732;-105.006;0
+'Alameda';39.708;-104.993;0
+'I25-Broadway';39.701;-104.990;1
+'Evans';39.678;-104.993;1
+'Englewood';39.655;-105.000;1
+'Oxford-Sheridan';39.643;-105.005;0
+'Littleton-Downtown';39.612;-105.015;1
+'Littleton-Mineral';39.580;-105.025;1
+'Auraria-Colfax';39.470;-105.002;0
+'Theatre-Convention Center';39.744;-104.996;0
+'16th';39.746;-104.993;0
+'18th';39.747;-104.991;0
+'20th-Welton';39.748;-104.987;0
+'25th-Welton';39.753;-104.979;0
+'27th-Welton';39.755;-104.978;0
+'30th-Downing';39.759;-104.974;1
+'Louisiana-Pearl';39.693;-104.978;0
+'University of Denver';39.685;-104.965;1
+'Colorado';39.680;-104.938;1
+'Yale';39.669;-104.927;1
+'Southmoor';39.649;-104.916;1
+'Dayton';39.643;-104.878;1
+'Nine Mile';39.657;-104.845;1
+'Belleview';39.628;-104.904;1
+'Orchard';39.614;-104.896;1
+'Arapahoe-Village Center';39.600;-104.889;1
+'Dry Creek';39.579;-104.877;1
+'County Line';39.562;-104.873;1
+'Lincoln';39.545;-104.870;1
 

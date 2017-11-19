@@ -35,10 +35,10 @@
 'C';'I25-Broadway';'E';'I25-Broadway';7.5
 'C';'I25-Broadway';'F';'I25-Broadway';10
 'C';'I25-Broadway';'H';'I25-Broadway';7.5
-'D';'30th Downing';;'27th-Welton';1.5
+'D';'30th-Downing';;'27th-Welton';1.5
 'D';'27th-Welton';;'25th-Welton';2
 'D';'25th-Welton';;'20th-Welton';3
-'D';'20th Welton';;'18th;2
+'D';'20th-Welton';;'18th;2
 'D';'18th';;'16th';2.5
 'D';'16th';;'Theatre-Convention Center';2
 'D';'Theatre-Convention Center';;'Auraria-Colfax';2.5
