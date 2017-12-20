@@ -5,7 +5,7 @@ Created on Mon Mar  7 18:14:33 2016
 @author: dhartig
 """
 from math import sqrt, radians, cos, sin, asin
-import numpy as np, mysql.connector
+import numpy as np, mysql.connector, warnings
 
 
 # List of all data fields being filled with census data. MySQL data type is 'INT'.
@@ -179,8 +179,31 @@ def haversine(lon1, lat1, lon2, lat2):
     r = 6371 # Radius of earth in kilometers. Use 3956 for miles
     return c * r
     
+def std_features(X, mean, std):
+    X = X - mean
+    with warnings.catch_warnings():
+        warnings.filterwarnings('error')
+        try:
+            X = X/std
+        except Warning as warn:
+            X = np.nan_to_num(X)
+    return(X)
     
 
+# Standardize X2 and y2 according to X1, y1
+def standardize(X1, y1, X2, y2):
+
+    # Standardize X values
+    xmn, xst = np.mean(X1, axis=0), np.std(X1, axis=0)
+    X1std = std_features(X1, xmn, xst)
+    X2std = std_features(X2, xmn, xst)
+    
+    # Standardize y vlues
+    ymn, yst = np.mean(y1), np.std(y1)
+    y1std = std_features(y1, ymn, yst)
+    y2std = std_features(y2, ymn, yst)
+    
+    return X1std, y1std, X2std, y2std, xmn, xst, ymn, yst
 
 
 
