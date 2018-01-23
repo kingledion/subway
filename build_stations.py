@@ -170,7 +170,7 @@ def loadnetwork(filename):
                         G.add_edge(src_l + ":" + src_s, src_l + ":" + tar_s, weight = float(w))
                         G.add_edge(src_l + ":" + tar_s, src_l + ":" + src_s, weight = float(w))
                 elif src_s == tar_s:
-                    # This means transfer between lines on the same station
+                    # This m0eans transfer between lines on the same station
                     # Add only this one direction (other should be defined separate)
                     try:
                         G.add_edge(src_l + ":" + src_s, tar_l + ":" + tar_s, weight = float(w))
@@ -201,11 +201,13 @@ def add_station_network(df, G):
 
         within15 = get_nearby_nodes(G, 15, nodenames)
         within30 = get_nearby_nodes(G, 30, nodenames)
+        within60 = get_nearby_nodes(G, 60, nodenames)
         
         for fname in features:
             
             df.set_value(df['name'] == s, '15net_{0}'.format(fname), df.loc[df['name'].isin(within15), "near_{0}".format(fname)].sum())
             df.set_value(df['name'] == s, '30net_{0}'.format(fname), df.loc[df['name'].isin(within30), "near_{0}".format(fname)].sum())
+            df.set_value(df['name'] == s, '60net_{0}'.format(fname), df.loc[df['name'].isin(within60), "near_{0}".format(fname)].sum())
  
             
 #def write_stations(stations, filename):
@@ -254,7 +256,7 @@ for name, geo_in, network_in, stations_out in in_city_list:
     print("Station network data added")
      
     # Write staions data to csv file      
-    dframe.to_csv(stations_out) 
+    dframe.to_csv(stations_out, index=False) 
     print("Station data written; done with {0}".format(name))
   
            

@@ -168,7 +168,7 @@ def read_housing():
             data[zcode] = {'hunits': int(line[1]), 
                             'hunits_vacant': int(line[2]), 
                             'hunits_detached': int(line[3]),
-                            'hunits_attached': int(line[4]) + int(line[5]),
+                            'hunits_attached': int(line[4]) + int(line[5]), # Rowhome and duplex
                             'hunits_medium': int(line[6]) + int(line[7]), # 3-9 units per housing structure
                             'hunits_large': int(line[8]) + int(line[9]), # 10+ units per housing structure
                             'hunits_old': int(line[19]), # built 1939 or before
