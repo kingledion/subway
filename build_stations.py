@@ -152,6 +152,11 @@ def calculate_areas(stations, idx, sf):
 def to_dataframe(stations):
     list_of_dict = [s.getDataDict() for s in stations] # There must be a better way!
     df = pd.DataFrame(list_of_dict)
+    
+    # Deal with special cases
+    if 'Aquarium' in df['name']: # Aquarium counts too much water area, needs to be reduced
+        cols = list(df.columns.difference(['lat', 'lon', 'name', 'riders', 'parking']))  
+        df.loc[df['name'] == 'Aquarium', cols] = df[cols][df['name'] == 'Aquarium'].divide(3)
     return df
     
 def loadnetwork(filename):

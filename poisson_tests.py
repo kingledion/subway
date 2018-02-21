@@ -64,12 +64,12 @@ def linearPlot(cols, Xtrain, ytrain, Xtest, ytest):
     
     model = sm.GLM(ytrain, Xtrain, family=sm.families.Gaussian())
     results = model.fit()
-    
-    return [], results.predict(Xtest)
+       
+    return results.params[cols].values, results.predict(Xtest)
 
 df = loadData(citylist)    
 #cols = list(df.columns.difference(['lat', 'lon', 'name', 'riders']))  
-cols = ['near_population', 'near_employment']  
+cols = ['walk_employment', 'near_employment']  
 scoreAllCV(linearPlot, cols)
     
     
