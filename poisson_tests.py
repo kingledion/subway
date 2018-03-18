@@ -8,7 +8,8 @@ Created on Sat Feb 10 08:20:19 2018
 
 from regression import loadData, citylist, scoreAllCV
 from matplotlib import pyplot as plt
-import statsmodels.api as sm, numpy as np,  sklearn.metrics as metrics
+import statsmodels.api as sm, numpy as np, sklearn.linear_model as lm, sklearn.metrics as metrics
+from statsmodels.regression.quantile_regression import QuantReg
 #from sklearn.preprocessing import StandardScaler
 #from pyglmnet import GLM
 import glmnet_python
@@ -42,7 +43,7 @@ def poissonNet(cols, Xtrain, ytrain, Xtest, ytest):
 #     
 #     print(y_pred[0])
 #     print(y_pred.size, ytest.size)
-#     
+#     linear regression
 #     for i in range(10):
 #         print("Pseudo-R^2:", i,  metrics.r2_score(ytest, y_pred[i]))
 #     
@@ -54,22 +55,44 @@ def poissonNet(cols, Xtrain, ytrain, Xtest, ytest):
     
 def poissonPlot(cols, Xtrain, ytrain, Xtest, ytest):
     
-    model = sm.GLM(ytrain, Xtrain, family=sm.families.Poisson())
+    Xtrain = sm.add_constant(Xtrain)
+    Xtest = sm.add_constant(Xtest)
+    
+    model = sm.GLM(ytrain, Xtrain, family=sm.families.Poisson(), link =sm.families.links.identity())
     results = model.fit()
     
-    return [],  results.predict(Xtest)
+    return results.predict(Xtest)
 
 
 def linearPlot(cols, Xtrain, ytrain, Xtest, ytest):
     
-    model = sm.GLM(ytrain, Xtrain, family=sm.families.Gaussian())
-    results = model.fit()
+    Xtrain = sm.add_constant(Xtrain)
+    Xtest = sm.add_constant(Xtest)
+    
+    #print(ytrain.shape, Xtrain.shape)
+    
+    #model = sm.GLM(ytrain, Xtrain, family=sm.families.Gaussian())
+    #results = model.fit()
+    model = QuantReg(ytrain, Xtrain)
+    results = model.fit(q=0.5)
+    
+    #print("Coefficient:", results.params[cols].values)
        
-    return results.params[cols].values, results.predict(Xtest)
+    return results.predict(Xtest)
 
-df = loadData(citylist)    
+df = loadData(citylist, droptransfer=True)    
 #cols = list(df.columns.difference(['lat', 'lon', 'name', 'riders']))  
-cols = ['walk_employment', 'near_employment']  
-scoreAllCV(linearPlot, cols)
+cols = [['walk_employment'],
+        ['near_employment'],
+        ['walk_population'],
+        ['near_population'],
+        ['walk_employment', 'walk_population'],
+        ['near_employment', 'near_population']           
+        ]  
+
+#cols = [['near_employment', 'near_population']]
+
+#cols = [list(df.columns.difference(['lat', 'lon', 'name', 'riders']))]
+scoreAllCV(poissonPlot, cols)
     
     

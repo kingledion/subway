@@ -1,0 +1,63 @@
+Minneapolis Example:
+
+https://blogs.mprnews.org/cities/2014/07/green-line-ridership-up-in-second-week/ (accessed 10 March 2018)
+
+https://docs.google.com/spreadsheets/d/1p18XgzhVL_TTFXn6l4opAcQojGnH7pg-q7DWLs1D0bo/edit#gid=0
+
+
+
+﻿Ridership Data:
+
+Los Angeles:   http://libraryarchives.metro.net/DPGTL/Ridership/RailActivityByStationFY2014.xls (Counts transfer boarding)
+
+Chicago: http://www.transitchicago.com/assets/1/ridership_reports/2015_Annual.pdf (Does not count transfer boarding)
+
+Atlanta: http://documents.atlantaregional.com/transportation/TFB_2014_v17.pdf (Transfer counts unsure)
+
+Boston: http://archives.lib.state.ma.us/bitstream/handle/2452/266319/ocm18709282-2014.pdf?sequence=1&isAllowed=y (Both counts and doesn’t count)
+
+Denver: http://www.rtd-denver.com/documents/serviced/lrt-activity-08-2015.pdf and https://www.rtd-denver.com/documents/serviced/lrt-activity-Jan-April-2016.pdf (Counts transfer boarding)
+
+Dallas: https://www.dart.org/about/dartreferencebookmar16.pdf (Transfer counts unsure)
+
+Feature Data: 
+
+(From American Community Survey 2015, 5 year estimates)
+Population – Table DP05, Item HC01_VC03
+Population, 18 and under –  Table DP05, Item HC01_VC03 – Item HC01_VC32
+Population, 65 and over – Table DP05, Item HC01_VC37
+Housholds – Table S1101, Item HC01_EST_VC02
+Households with Children – Table S1101, Item HC01_EST_VC06
+Families – Table S1101, Item HC01_EST_VC010
+Population with at least Bachelors degree – Table S1701, Item HC01_EST_VC34
+Population in labor force – Table S1701, Item HC01_EST_VC37
+Employed population – Table S1701, Item HC01_EST_VC38
+Full-time employed population – Table S1701, Item HC01_EST_VC47
+Population living at greater than 500% of poverty level – Table S1701, Item HC01_EST_VC56
+Population living at less than 200% of poverty level – Table S1701, Item HC01_EST_VC01 -  HC01_EST_VC59
+Housing units – Table DP04, Item HC01_VC03
+Single-family detached housing units – Table DP04, Item HC01_VC14
+Housing units in duplexes or townhouses – Table DP04, Items HC01_VC15 + HC01_VC16
+Housing units in structures of 3-9 – Table DP04, Item HC01_VC17 + HC01_VC18
+Housing units in structures of 10+ – Table DP04, Item HC01_VC19 + HC01_VC20
+Housing units built before 1940 – Table DP04, Item HC01_VC36
+Housing units built after 2000 – Table DP04, Item HC01_VC27 + HC01_VC28 + HC01_VC29
+Housing units occupied by owner – Table DP04, Item HC01_VC65
+Housing units occupied by renter – Table DP66
+
+(From Business Patterns 2015)
+Number of Jobs – Table CB1500CZ11, Item ‘EMP’
+Total pay of all jobs – Table CB1500CZ11, Item ‘PAYANN’
+Number of jobs at hospitals - Table CB1500CZ21, NAICS code 622, Estimated from establishment sizes
+Number of jobs at universities - Table CB1500CZ21, NAICS code 6113, Estimated from establishment sizes
+Number of jobs in hospitalitiy field - Table CB1500CZ21, NAICS code 72, Estimated from establishment sizes
+Number of jobs in finance field - Table CB1500CZ21, NAICS code 52, Estimated from establishment sizes
+Number of jobs in professional fields - Table CB1500CZ21, NAICS code 54, Estimated from establishment sizes
+Number of jobs in entertainment field - Table CB1500CZ21, NAICS code 71, Estimated from establishment sizes
+
+
+
+
+
+
+
