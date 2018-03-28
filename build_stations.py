@@ -176,14 +176,7 @@ def calculate_areas(stations, idx, sf):
                 near_stat_dict[nhash] = near_stat_dict.get(nhash, 0) + 1 / len(nlist)
                 
         stassigns = [(stadict[shash]['name'], shash, count) for shash, count in near_stat_dict.items()]
-        
-        #for name, shash, count in sorted(stassigns, key=lambda x: x[2], reverse=True):
-        #    print(name, int(count))
-        #if not stassigns:
-        #    print("None found")
-        #else:
-        #    input()
-        
+               
         for name, shash, cnt in stassigns:
             prop = cnt/num_points
             s = stadict[shash]

@@ -38,7 +38,9 @@ feature_names = ['population',
                   'hunits_old',
                   'hunits_new',
                   'hunits_owner',
-                  'hunits_renter']
+                  'hunits_renter',
+                  'foreign_born',
+                  'students']
 
 def get_feature_names():
     return feature_names

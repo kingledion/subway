@@ -109,8 +109,8 @@ if __name__ == "__main__":
         
     # greedily find the best set of n    
     used = []
-    for i in range(20):
-        scoremap = [(c, scoreCV(LADF, pairs, list(used) + [c])) for c in set(cols) - set(used)]
+    for i in range(25):
+        scoremap = [(c, scoreCV(lstSqF, pairs, list(used) + [c])) for c in set(cols) - set(used)]
         name, scores = sorted(scoremap, key=lambda x: np.mean(x[1]))[-1]
         print("&{4}&{0}&{1:.4f}&{2:.4f}&{3:.4f}\\\\".format(name, np.mean([x[0] for x in scores]), np.mean([x[1] for x in scores]), np.mean([x[2] for x in scores]), i+1))
         #print("Selected variable:", name)

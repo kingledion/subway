@@ -41,9 +41,11 @@ Housing units in duplexes or townhouses – Table DP04, Items HC01_VC15 + HC01_V
 Housing units in structures of 3-9 – Table DP04, Item HC01_VC17 + HC01_VC18
 Housing units in structures of 10+ – Table DP04, Item HC01_VC19 + HC01_VC20
 Housing units built before 1940 – Table DP04, Item HC01_VC36
-Housing units built after 2000 – Table DP04, Item HC01_VC27 + HC01_VC28 + HC01_VC29
+Housing units built after 2000 – Table DP04, Items HC01_VC27 + HC01_VC28 + HC01_VC29
 Housing units occupied by owner – Table DP04, Item HC01_VC65
-Housing units occupied by renter – Table DP66
+Housing units occupied by renter – Table DP04, Item HC01_VC66
+Foreign born population - Table B05002, Item HD01_VD13
+University students, undergrad and graduate - Table B14001, Items HD01_VD08 + HD01_09
 
 (From Business Patterns 2015)
 Number of Jobs – Table CB1500CZ11, Item ‘EMP’

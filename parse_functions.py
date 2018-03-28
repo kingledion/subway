@@ -178,6 +178,30 @@ def read_housing():
                             #'hunits_mortgage': int(line[22])} Thats dumb
 
     return data
+
+def read_foreign():
+    data = {}
+    with open('./sourcedata/Foreign_by_zip_15.csv', 'r') as f:
+        rdr = csv.reader(f, delimiter = ',', quotechar = '"')
+        next(rdr) # not using a dictreader, skip the column headers
+        
+        for line in rdr:
+            zcode = zip_from_geoid(line[0])
+            data[zcode] = {'foreign_born': int(line[1])}
+
+    return data
+
+def read_students():
+    data = {}
+    with open('./sourcedata/Students_by_zip_15.csv', 'r') as f:
+        rdr = csv.reader(f, delimiter = ',', quotechar = '"')
+        next(rdr) # not using a dictreader, skip the column headers
+        
+        for line in rdr:
+            zcode = zip_from_geoid(line[0])
+            data[zcode] = {'students': int(line[1]) + int(line[2])}
+
+    return data
         
 
 
