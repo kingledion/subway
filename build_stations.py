@@ -3,6 +3,7 @@
 import subway_utils as su, csv , numpy as np, networkx as nx
 from rtree import index
 import shapely.geometry as shpgeo, shapely.vectorized as shpvec, shapefile, pandas as pd
+from excl_areas import getPoints
 
 db, cursor = su.opendb()
 
@@ -97,7 +98,7 @@ def random_points_in(poly, excluded, num_points):
         valid = shpvec.contains(poly, lons, lats)
         
         pts.extend([(lon, lat) for lon, lat, v in zip(lons, lats, valid) if v]) # do this part better!!
-          
+        
     return zip(*pts[:num_points])
         
         
@@ -119,7 +120,7 @@ def build_station_index(filename):
                             
     return stations, idx
        
-def calculate_areas(stations, idx, sf):
+def calculate_areas(stations, idx, sf, name):
     
     # Get list of all station lats and lons
     coords = [(s['lon'], s['lat']) for s in stations]
@@ -152,9 +153,9 @@ def calculate_areas(stations, idx, sf):
     
     n = 100 # mutiplier by area (in km^2) for number of points to sample
     
-    
     # Areas where there is no development (water, parks, etc)
-    exclusion  = []
+    ex_points = getPoints(name)   
+    exclusion = [shpgeo.Polygon(ptlist) for ptlist in ex_points]
 
     # list of all feature names
     features = su.get_feature_names()    
@@ -253,12 +254,12 @@ def add_station_network(df, G):
 ################################################          
 # Format of filenames is (name, station geos csv input, station network and ridership csv input, station data output)  
 #                        NOTE: name is only used for printing status updates to screen
-in_city_list = [('Boston', './gendata/boston_subwaygeo.csv', './gendata/boston_network.csv', "./gendata/boston_stations.csv"),
-                ('Chicago', './gendata/chicago_subwaygeo.csv', './gendata/chicago_network.csv', "./gendata/chicago_stations.csv"),
-                ('Atlanta', './gendata/atlanta_subwaygeo.csv', './gendata/atlanta_network.csv', "./gendata/atlanta_stations.csv"),
-                ('Los Angeles', './gendata/la_subwaygeo.csv', './gendata/la_network.csv', "./gendata/la_stations.csv"),
-                ('Dallas', './gendata/dallas_subwaygeo.csv', './gendata/dallas_network.csv', "./gendata/dallas_stations.csv"),
-                ('Denver', './gendata/denver_subwaygeo.csv', './gendata/denver_network.csv', "./gendata/denver_stations.csv")]
+in_city_list = [('Boston', './gendata/boston_subwaygeo.csv', './gendata/boston_network.csv', "./gendata/boston_stations.csv")]#,
+                #('Chicago', './gendata/chicago_subwaygeo.csv', './gendata/chicago_network.csv', "./gendata/chicago_stations.csv")],
+                #('Atlanta', './gendata/atlanta_subwaygeo.csv', './gendata/atlanta_network.csv', "./gendata/atlanta_stations.csv"),
+                #('Los Angeles', './gendata/la_subwaygeo.csv', './gendata/la_network.csv', "./gendata/la_stations.csv"),
+                #('Dallas', './gendata/dallas_subwaygeo.csv', './gendata/dallas_network.csv', "./gendata/dallas_stations.csv"),
+                #('Denver', './gendata/denver_subwaygeo.csv', './gendata/denver_network.csv', "./gendata/denver_stations.csv")]
 
 # load shapefile of all zipcodes in the US
 sf = shapefile.Reader("/opt/ziplfs/tl_2014_us_zcta510.shp")
@@ -274,7 +275,7 @@ for name, geo_in, network_in, stations_out in in_city_list:
     print("{0} network built".format(name))
 
     # Calculate available walking and areas
-    calculate_areas(stations, idx, sf)
+    calculate_areas(stations, idx, sf, name)
     print("{0} station data calculated".format(name))
 
     # Convert to dataframe

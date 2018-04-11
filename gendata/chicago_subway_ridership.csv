@@ -28,7 +28,9 @@
 'Chicago P-B';7151
 'Merchandise Mart';7494
 'Clark-Lake';19335
-'State-Lake-Washington';41122
+'State-Lake';9850
+'Lake'; 20685
+'Washington';11272
 'Randolph-Wabash';7351
 'Adams-Wabash';7113
 'Washington Library-Jackson';23213
@@ -62,7 +64,7 @@
 'Francisco';1549
 'Kedzie Br';2076
 'Kimball';4226
-'O'Hare';10032
+'OHare';10032
 'Rosemont';6562
 'Cumberland';4538
 'Harlem N';3094

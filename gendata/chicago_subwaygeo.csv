@@ -28,7 +28,9 @@
 'Chicago P-B';41.897;-87.636;0
 'Merchandise Mart';41.889;-87.634;0
 'Clark-Lake';41.886;-87.632;0
-'State-Lake-Washington';41.885;-87.628;0
+'State-Lake';41.886;-87.628;0
+'Lake';41.884;-87.628;0
+'Washington';41.883;-87.630;0
 'Randolph-Wabash';41.884;-87.626;0
 'Adams-Wabash';41.880;-87.626;0
 'Washington Library-Jackson';41.878;-87.629;0
@@ -62,7 +64,7 @@
 'Francisco';41.966;-87.702;0
 'Kedzie Br';41.966;-87.709;0
 'Kimball';41.967;-87.713;1
-'O'Hare';41.978;-87.904;0
+'OHare';41.978;-87.904;0
 'Rosemont';41.984;-87.860;1
 'Cumberland';41.984;-87.838;1
 'Harlem N';41.982;-87.807;1

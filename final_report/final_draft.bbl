@@ -73,6 +73,13 @@ Matthew Durning and Craig Townsend.
 \newblock Direct ridership model of rail rapid transit systems in canada.
 \newblock 2537:96--102, 01 2015.
 
+\bibitem{Gutierrez2011}
+Javier Gutiérrez, Osvaldo~Daniel Cardozo, and Juan~Carlos García-Palomares.
+\newblock Transit ridership forecasting at station level: an approach based on
+  distance-decay weighted regression.
+\newblock {\em Journal of Transport Geography}, 19(6):1081 -- 1092, 2011.
+\newblock Special section on Alternative Travel futures.
+
 \bibitem{Guerra2012}
 Erick Guerra, Robert Cervero, and Daniel Tischler.
 \newblock Half-mile circle.
@@ -86,11 +93,22 @@ Ahmed El-Geneidy, Michael Grimsrud, Wasfi Rania, Paul Tétreault, and Julien
   redundancies and gaps using variable service areas.
 \newblock 41, 01 2014.
 
-\bibitem{Gutierrez2011}
-Javier Gutiérrez, Osvaldo~Daniel Cardozo, and Juan~Carlos García-Palomares.
-\newblock Transit ridership forecasting at station level: an approach based on
-  distance-decay weighted regression.
-\newblock {\em Journal of Transport Geography}, 19(6):1081 -- 1092, 2011.
-\newblock Special section on Alternative Travel futures.
+\bibitem{Pickrell1989}
+Don Pickrell.
+\newblock Urban rail transit projects: Forecast versus actual ridership and
+  costs. final report.
+\newblock 10 1989.
+
+\bibitem{Flyvbjerg2006}
+Bent Flyvbjerg, Mette Skamris, and Søren L.~Buhl.
+\newblock Inaccuracy in traffic forecasts.
+\newblock 26:1--24, 01 2006.
+
+\bibitem{Hardy2010}
+Matthew~H. Hardy, Soongwan Doh, Junyang Yuan, Xin Zhou, and Kenneth~J. Button.
+\newblock The accuracy of transit system ridership forecasts and capital cost
+  estimates.
+\newblock {\em International Journal of Transport Economics / Rivista
+  internazionale di economia dei trasporti}, 37(2):155--168, 2010.
 
 \end{thebibliography}

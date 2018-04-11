@@ -17,8 +17,8 @@
 'Purple';'Sedgwick';;'Chicago P-B';4
 'Purple';'Chicago P-B';;'Merchandise Mart';2
 'Purple';'Merchandise Mart';;'Clark-Lake';2
-'Purple';'Clark-Lake';;'State-Lake-Washington';1
-'Purple';'State-Lake-Washington';;'Randolph-Wabash';2
+'Purple';'Clark-Lake';;'State-Lake';1
+'Purple';'State-Lake';;'Randolph-Wabash';2
 'Purple';'Randolph-Wabash';;'Adams-Wabash';2
 'Purple';'Adams-Wabash';;'Wahington Library-Jackson';2
 'Purple';'Washington Library-Jackson';;'LaSalle-Van Buren';1
@@ -34,12 +34,12 @@
 'Purple';'Clark-Lake';'Green';'Clark-Lake';4
 'Purple';'Clark-Lake';'Pink';'Clark-Lake';6
 'Purple';'Clark-Lake';'Blue';'Clark-Lake';4
-'Purple';'State-Lake-Washington';'Brown';'State-Lake-Washington';3
-'Purple';'State-Lake-Washington';'Red';'State-Lake-Washington';3
-'Purple';'State-Lake-Washington';'Orange';'State-Lake-Washington';6
-'Purple';'State-Lake-Washington';'Green';'State-Lake-Washington';4
-'Purple';'State-Lake-Washington';'Pink';'State-Lake-Washington';6
-'Purple';'State-Lake-Washington';'Blue';'State-Lake-Washington';4
+'Purple';'State-Lake';'Brown';'State-Lake';3
+'Purple';'State-Lake';'Red';'Lake';4
+'Purple';'State-Lake';'Orange';'State-Lake';6
+'Purple';'State-Lake';'Green';'State-Lake';4
+'Purple';'State-Lake';'Pink';'State-Lake';6
+'Purple';'State-Lake';'Blue';'Washington';9
 'Purple';'Adams-Wabash';'Brown';'Adams-Wabash';3
 'Purple';'Adams-Wabash';'Orange';'Adams-Wabash';6
 'Purple';'Adams-Wabash';'Green';'Adams-Wabash';4
@@ -67,8 +67,8 @@
 'Red';'North-Clybourn';;'Clark-Division';3
 'Red';'Clark-Division';;'Chicago R';3
 'Red';'Chicago R';;'Grand R';1
-'Red';'Grand R';;'State-Lake-Washington';1
-'Red';'State-Lake-Washington';;'Monroe';2
+'Red';'Grand R';;'Lake';1
+'Red';'Lake';;'Monroe';2
 'Red';'Monroe';;'Washington Library-Jackson';1
 'Red';'Washington Library-Jackson';;'Harrison';1
 'Red';'Harrison';;'Roosevelt';1
@@ -86,12 +86,12 @@
 'Red';'Belmont B-P-R';'Brown';'Belmont B-P-R';3
 'Red';'Fullerton';'Purple';'Fullerton';6
 'Red';'Fullerton';'Brown';'Fullerton';3
-'Red';'State-Lake-Washington';'Purple';'State-Lake-Washington';6
-'Red';'State-Lake-Washington';'Brown';'State-Lake-Washington';3
-'Red';'State-Lake-Washington';'Orange';'State-Lake-Washington';6
-'Red';'State-Lake-Washington';'Pink';'State-Lake-Washington';6
-'Red';'State-Lake-Washington';'Green';'State-Lake-Washington';4
-'Red';'State-Lake-Washington';'Blue';'State-Lake-Washington';4
+'Red';'Lake';'Purple';'State-Lake';7
+'Red';'Lake';'Brown';'State-Lake';4
+'Red';'Lake';'Orange';'State-Lake';7
+'Red';'Lake';'Pink';'State-Lake';7
+'Red';'Lake';'Green';'State-Lake';5
+'Red';'Lake';'Blue';'Washington';8
 'Red';'Monroe';'Blue';'Monroe';4
 'Red';'Washington Library-Jackson';'Purple';'Washington Library-Jackson';6
 'Red';'Washington Library-Jackson';'Brown';'Washington Library-Jackson';3
@@ -124,8 +124,8 @@
 'Brown';'LaSalle-Van Buren';;'Washington Library-Jackson';1
 'Brown';'Washington Library-Jackson';;'Adams-Wabash';2
 'Brown';'Adams-Wabash';;'Randolph-Wabash';2
-'Brown';'Randolph-Wabash';;'State-Lake-Washington';1
-'Brown';'State-Lake-Washington';;'Clark-Lake';1
+'Brown';'Randolph-Wabash';;'State-Lake';1
+'Brown';'State-Lake';;'Clark-Lake';1
 'Brown';'Belmont B-P-R';'Red';'Belmont B-P-R';3
 'Brown';'Belmont B-P-R';'Purple';'Belmont B-P-R';6
 'Brown';'Fullerton';'Red';'Fullerton';3
@@ -142,18 +142,18 @@
 'Brown';'Adams-Wabash';'Orange';'Adams-Wabash';6
 'Brown';'Adams-Wabash';'Pink';'Adams-Wabash';6
 'Brown';'Adams-Wabash';'Green';'Adams-Wabash';4
-'Brown';'State-Lake-Washington';'Purple';'State-Lake-Washington';6
-'Brown';'State-Lake-Washington';'Orange';'State-Lake-Washington';6
-'Brown';'State-Lake-Washington';'Pink';'State-Lake-Washington';6
-'Brown';'State-Lake-Washington';'Red';'State-Lake-Washington';3
-'Brown';'State-Lake-Washington';'Green';'State-Lake-Washington';4
-'Brown';'State-Lake-Washington';'Blue';'State-Lake-Washington';4
+'Brown';'State-Lake';'Purple';'State-Lake';6
+'Brown';'State-Lake';'Orange';'State-Lake';6
+'Brown';'State-Lake';'Pink';'State-Lake';6
+'Brown';'State-Lake';'Red';'Lake';4
+'Brown';'State-Lake';'Green';'State-Lake';4
+'Brown';'State-Lake';'Blue';'Washington';9
 'Brown';'Clark-Lake';'Purple';'Clark-Lake';6
 'Brown';'Clark-Lake';'Orange';'Clark-Lake';6
 'Brown';'Clark-Lake';'Pink';'Clark-Lake';6
 'Brown';'Clark-Lake';'Green';'Clark-Lake';4
 'Brown';'Clark-Lake';'Blue';'Clark-Lake';4
-'Blue';'O'Hare';;'Rosemont';5
+'Blue';'OHare';;'Rosemont';5
 'Blue';'Rosemont';;'Cumberland';2
 'Blue';'Cumberland';;'Harlem N';4
 'Blue';'Harlem N';;'Jefferson Park';4
@@ -169,8 +169,8 @@
 'Blue';'Division';;'Chicago B';2
 'Blue';'Chicago B';;'Grand B';2
 'Blue';'Grand B';;'Clark-Lake';3
-'Blue';'Clark-Lake';;'State-Lake-Washington';1
-'Blue';'State-Lake-Washington';;'Monroe';1
+'Blue';'Clark-Lake';;'Washington';1
+'Blue';'Washington';;'Monroe';1
 'Blue';'Monroe';;'Washington Library-Jackson';1
 'Blue';'Washington Library-Jackson';;'LaSalle';2
 'Blue';'LaSalle';;'Clinton B';1
@@ -190,12 +190,12 @@
 'Blue';'Clark-Lake';'Pink';'Clark-Lake';6
 'Blue';'Clark-Lake';'Orange';'Clark-Lake';6
 'Blue';'Clark-Lake';'Green';'Clark-Lake';4
-'Blue';'State-Lake-Washington';'Purple';'State-Lake-Washington';6
-'Blue';'State-Lake-Washington';'Brown';'State-Lake-Washington';3
-'Blue';'State-Lake-Washington';'Pink';'State-Lake-Washington';6
-'Blue';'State-Lake-Washington';'Orange';'State-Lake-Washington';6
-'Blue';'State-Lake-Washington';'Green';'State-Lake-Washington';4
-'Blue';'State-Lake-Washington';'Red';'State-Lake-Washington';3
+'Blue';'Washington';'Purple';'State-Lake';11
+'Blue';'Washington';'Brown';'State-Lake';8
+'Blue';'Washington';'Pink';'State-Lake';11
+'Blue';'Washington';'Orange';'State-Lake';11
+'Blue';'Washington';'Green';'State-Lake';9
+'Blue';'Washington';'Red';'Lake';7
 'Blue';'Monroe';'Red';'Monroe';3
 'Blue';'Washington Library-Jackson';'Purple';'Washington Library-Jackson';6
 'Blue';'Washington Library-Jackson';'Brown';'Washington Library-Jackson';3
@@ -216,8 +216,8 @@
 'Green';'Ashland P-G';;'Morgan';2
 'Green';'Morgan';;'Clinton P-G';2
 'Green';'Clinton P-G';;'Clark-Lake';3
-'Green';'Clark-Lake';;'State-Lake-Washington';1
-'Green';'State-Lake-Washington';;'Randolph-Wabash';1
+'Green';'Clark-Lake';;'State-Lake';1
+'Green';'State-Lake';;'Randolph-Wabash';1
 'Green';'Randolph-Wabash';;'Adams-Wabash';2
 'Green';'Adams-Wabash';;'Roosevelt';3
 'Green';'Roosevelt';;'Cermak McCormick';3
@@ -238,12 +238,12 @@
 'Green';'Clark-Lake';'Orange';'Clark-Lake';6
 'Green';'Clark-Lake';'Blue';'Clark-Lake';4
 'Green';'Clark-Lake';'Pink';'Clark-Lake';6
-'Green';'State-Lake-Washington';'Brown';'State-Lake-Washington';3
-'Green';'State-Lake-Washington';'Purple';'State-Lake-Washington';6
-'Green';'State-Lake-Washington';'Orange';'State-Lake-Washington';6
-'Green';'State-Lake-Washington';'Pink';'State-Lake-Washington';6
-'Green';'State-Lake-Washington';'Blue';'State-Lake-Washington';4
-'Green';'State-Lake-Washington';'Red';'State-Lake-Washington';3
+'Green';'State-Lake';'Brown';'State-Lake';3
+'Green';'State-Lake';'Purple';'State-Lake';6
+'Green';'State-Lake';'Orange';'State-Lake';6
+'Green';'State-Lake';'Pink';'State-Lake';6
+'Green';'State-Lake';'Blue';'Washington';9
+'Green';'State-Lake';'Red';'Lake';4
 'Green';'Adams-Wabash';'Purple';'Adams-Wabash';6
 'Green';'Adams-Wabash';'Pink';'Adams-Wabash';6
 'Green';'Adams-Wabash';'Orange';'Adams-Wabash';6
@@ -264,8 +264,8 @@
 'Pink';'Ashland P-G';;'Morgan';3
 'Pink';'Morgan';;'Clinton P-G';1
 'Pink';'Clinton P-G';;'Clark-Lake';3
-'Pink';'Clark-Lake';;'State-Lake-Washington';2
-'Pink';'State-Lake-Washington';;'Randolph-Wabash';1
+'Pink';'Clark-Lake';;'State-Lake';2
+'Pink';'State-Lake';;'Randolph-Wabash';1
 'Pink';'Randolph-Wabash';;'Adams-Wabash';2
 'Pink';'Adams-Wabash';;'Washington Library-Jackson';1
 'Pink';'Washington Library-Jackson';;'LaSalle-Van Buren';1
@@ -278,12 +278,12 @@
 'Pink';'Clark-Lake';'Green';'Clark-Lake';4
 'Pink';'Clark-Lake';'Brown';'Clark-Lake';3
 'Pink';'Clark-Lake';'Blue';'Clark-Lake';4
-'Pink';'State-Lake-Washington';'Purple';'State-Lake-Washington';6
-'Pink';'State-Lake-Washington';'Red';'State-Lake-Washington';3
-'Pink';'State-Lake-Washington';'Orange';'State-Lake-Washington';6
-'Pink';'State-Lake-Washington';'Green';'State-Lake-Washington';4
-'Pink';'State-Lake-Washington';'Brown';'State-Lake-Washington';3
-'Pink';'State-Lake-Washington';'Blue';'State-Lake-Washington';4
+'Pink';'State-Lake';'Purple';'State-Lake';6
+'Pink';'State-Lake';'Red';'Lake';4
+'Pink';'State-Lake';'Orange';'State-Lake';6
+'Pink';'State-Lake';'Green';'State-Lake';4
+'Pink';'State-Lake';'Brown';'State-Lake';3
+'Pink';'State-Lake';'Blue';'Washington';9
 'Pink';'Adams-Wabash';'Purple';'Adams-Wabash';6
 'Pink';'Adams-Wabash';'Orange';'Adams-Wabash';6
 'Pink';'Adams-Wabash';'Green';'Adams-Wabash';4
@@ -305,8 +305,8 @@
 'Orange';'LaSalle-Van Buren';;'Quincy-Wells';1
 'Orange';'Quincy-Wells';;'Washington-Wells';2
 'Orange';'Washington-Wells';;'Clark-Lake';3
-'Orange';'Clark-Lake';;'State-Lake-Washington';1
-'Orange';'State-Lake-Washington';;'Randolph-Wabash';1
+'Orange';'Clark-Lake';;'State-Lake';1
+'Orange';'State-Lake';;'Randolph-Wabash';1
 'Orange';'Randolph-Wabash';;'Adams-Wabash';2
 'Orange';'Roosevelt';'Red';'Roosevelt';3
 'Orange';'Roosevelt';'Green';'Roosevelt';4
@@ -315,12 +315,12 @@
 'Orange';'Clark-Lake';'Green';'Clark-Lake';4
 'Orange';'Clark-Lake';'Brown';'Clark-Lake';3
 'Orange';'Clark-Lake';'Blue';'Clark-Lake';4
-'Orange';'State-Lake-Washington';'Purple';'State-Lake-Washington';6
-'Orange';'State-Lake-Washington';'Red';'State-Lake-Washington';3
-'Orange';'State-Lake-Washington';'Pink';'State-Lake-Washington';6
-'Orange';'State-Lake-Washington';'Green';'State-Lake-Washington';4
-'Orange';'State-Lake-Washington';'Brown';'State-Lake-Washington';3
-'Orange';'State-Lake-Washington';'Blue';'State-Lake-Washington';4
+'Orange';'State-Lake';'Purple';'State-Lake';6
+'Orange';'State-Lake';'Red';'State-Lake';3
+'Orange';'State-Lake';'Pink';'State-Lake';6
+'Orange';'State-Lake';'Green';'State-Lake';4
+'Orange';'State-Lake';'Brown';'State-Lake';3
+'Orange';'State-Lake';'Blue';'State-Lake';4
 'Orange';'Adams-Wabash';'Purple';'Adams-Wabash';6
 'Orange';'Adams-Wabash';'Pink';'Adams-Wabash';6
 'Orange';'Adams-Wabash';'Green';'Adams-Wabash';4
