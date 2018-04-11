@@ -44,7 +44,7 @@ if __name__ == "__main__":
     
     
     # plot pop regressions
-    plt.plot(pops, riders, 'gx', xpop, xpoplin, 'k-', xpop, xpoppow, 'b-', xpop, xpoplog, 'r-')
+    plt.plot(pops, riders, 'k.', xpop, xpoplin, 'r-', xpop, xpoplog, 'b-')
     plt.show()
     
     
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     print()
     
     
-    plt.plot(pops, linresid, 'kx', pops, powresid, 'bx', pops, logresid, 'rx')
+    plt.plot(pops, linresid, 'r.', pops, logresid, 'b.', alpha = 0.25)
     plt.show()
     
     
@@ -81,7 +81,7 @@ if __name__ == "__main__":
     xemplog = emplog.predict(lnxemp)
     
         # plot pop regressions
-    plt.plot(emp, riders, 'gx', xemp, xemplin, 'k-', xemp, xemppow, 'b-', xemp, xemplog, 'r-')
+    plt.plot(emp, riders, 'k.', xemp, xemplin, 'r-', xemp, xemplog, 'b-')
     plt.show()
     
     
@@ -96,7 +96,7 @@ if __name__ == "__main__":
     print()
     
     
-    plt.plot(emp, linresid, 'kx', emp, powresid, 'bx', emp, logresid, 'rx')
+    plt.plot(emp, linresid, 'r.', emp, logresid, 'b.', alpha = 0.25)
     plt.show()
     
     
