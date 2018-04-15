@@ -1,0 +1,42 @@
+Variable,Description,LASSO,Brute Force,LASSO,Brute Force,LASSO,Brute Force,
+30net_medical,Medical jobs within 30 min,1,1,1,1,1,,5
+near_hospitality,Hospitality jobs within walking,1,,1,1,1,1,5
+near_university,University jobs within walking,1,1,1,1,,1,5
+parking,Flag for available parking,1,,1,1,1,1,5
+15net_medical,Medical jobs within 15 min,,1,,1,1,1,4
+near_business,Business jobs within walking,,1,,1,1,1,4
+near_entertainment,Entertainment jobs within walking,,1,1,1,1,,4
+15net_hunits_attached,2-4 unit housing within 15 min,1,,1,,1,,3
+15net_hunits_medium,5-19 unit housing within 15 min,1,,1,,1,,3
+15net_hunits_old,Housing build before 1940 within 15 min,,1,,1,1,,3
+30net_entertainment,Entertainment jobs within 30 min,,1,,1,,1,3
+30net_hunits_large,20+ unit housing within 30 min,,1,,1,1,,3
+near_employment,Total employment within walking,,1,1,,1,,3
+near_medical,Medical jobs within walking,,1,,1,,1,3
+near_pop_old,Population over 65 within walking,1,,1,1,,,3
+15net_employed,Employed population within 15 min,,,,,1,1,2
+15net_hospitality,Hospitality jobs within 15 min,1,,,,1,,2
+15net_household,Housholds within 15 mins,,,,,1,1,2
+15net_university,University jobs within 15 minutes,,1,,1,,,2
+near_emp_pay,Total employee pay within walking,,1,,,1,,2
+near_finance,Finance jobs within walking,,1,,,,1,2
+near_house_w_child,Households with children within walking,,1,,1,,,2
+near_hunits_detached,Single unit housing within walking,,,,1,1,,2
+near_hunits_owner,Owner occupied houses within walking,,,,,1,1,2
+near_hunits_renter,Renter occupied houses within walking,,1,,1,,,2
+15net_bachelors,Population with degree within 15 min,,,,,1,,1
+15net_emp_pay,Total employee pay within 15 minutes,,,,,1,,1
+15net_entertainment,Entertainment jobs within 15 minutes,,,,,,1,1
+15net_hunits_renter,Renter occupied houses within 15 min,,,1,,,,1
+15net_pop_old,Population over 65 within 15 minutes,1,,,,,,1
+30net_hospitality,Hospitality jobs within 30 min,,,1,,,,1
+30net_hunits_medium,5-19 unit housing within 30 min,,,,,1,,1
+30net_hunits_vacant,Vacant housing units within 30 min,,,,,1,,1
+30net_population,Total population within 30 min,,,,,,1,1
+near_emp_full_time,Population employed full time within walking,,,,,,1,1
+near_hunits_attached,2-4 unit housing within walking,,,,,,1,1
+near_hunits_large,20+ unit housing within walking,,1,,,,,1
+near_hunits_new,Housing built after 2000 within walking,,,,,,1,1
+near_labor_force,Population in labor force within walkin,,,,,1,,1
+near_pop_rich,Population over 500\% of pov. level within walking,,,,,1,,1
+near_population,Total population within walking,,1,,,,,1

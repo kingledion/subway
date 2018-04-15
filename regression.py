@@ -11,7 +11,6 @@ from statsmodels.regression.quantile_regression import QuantReg
 import warnings
 
 
-
 def loadData(citylist, droptransfer = False):
     
     all_dfs = []
@@ -32,7 +31,9 @@ citylist = ['boston', 'chicago', 'atlanta', 'dallas', 'denver', 'la']
 
 transferstations = set(['Five Points', 'Willowbrook-Rosa Parks', '7th Street-Metro Center', 'Union Station'])
 
-def scoreCV(plotfunc, pairs, cols):  
+def scoreCV(plotfunc, pairs, cols, c):
+    
+    #print(c)
     scores = []  
     
     #print(cols)
@@ -47,29 +48,34 @@ def scoreCV(plotfunc, pairs, cols):
         
         
         #print(cols)
-        y_pred = plotfunc(Xtrain, ytrain, Xtest, ytest) 
+        ypred = plotfunc(Xtrain, ytrain, Xtest) 
                
-        err = 1 - np.sum(np.abs(np.subtract(y_pred, ytest)))/np.sum(ytest)
-        relerr = 1 - np.sum(np.divide(np.abs(np.subtract(y_pred, ytest)), ytest))/len(ytest)
-        syserr = 1 - np.abs(np.sum(y_pred)-np.sum(ytest))/np.sum(ytest)
-        scores.append((err, relerr, syserr))
+        #relerr = 1 - np.sum(np.divide(np.abs(np.subtract(y_pred, ytest)), ytest))/len(ytest)
+        stat_err = np.sum(np.abs(ypred - ytest))/np.sum(ytest)
+        sys_err = np.abs(np.sum(ypred)-np.sum(ytest))/np.sum(ytest)
+        scores.append((sys_err, stat_err))
 
     return scores
 
         
-def poissonF(Xtrain, ytrain, Xtest, ytest):
+def poissonF(Xtrain, ytrain, Xtest):
     
     Xtrain = sm.add_constant(Xtrain)
     Xtest = sm.add_constant(Xtest, has_constant='add')
         # For the case of atlanta, the network is small enough that the 60net feature are equal for all stations
         # this will cause a second constant to be added, and a garbage result, unfortunately.
    
-    model = sm.GLM(ytrain, Xtrain, family=sm.families.Poisson(), link =sm.families.links.identity())
+    model = sm.GLM(ytrain, Xtrain, family=sm.families.Poisson())#, link =sm.families.links.identity())
     results = model.fit()
+    
+    maxs = pd.Series(np.amax(Xtrain, axis=0))
+    Xtest = Xtest.clip(upper=maxs, axis=1)
     
     return results.predict(Xtest)
 
-def lstSqF(Xtrain, ytrain, Xtest, ytest):
+
+
+def lstSqF(Xtrain, ytrain, Xtest):
     
     Xtrain = sm.add_constant(Xtrain)
     Xtest = sm.add_constant(Xtest, has_constant='add')
@@ -79,10 +85,14 @@ def lstSqF(Xtrain, ytrain, Xtest, ytest):
        
     return results.predict(Xtest)
 
-def LADF(Xtrain, ytrain, Xtest, ytest):
+def LADF(Xtrain, ytrain, Xtest):
     
     Xtrain = sm.add_constant(Xtrain)
     Xtest = sm.add_constant(Xtest, has_constant='add')
+    
+    #print(Xtrain.shape)
+    #print(ytrain.shape)
+    #print(Xtest.shape)
     
     model = QuantReg(ytrain, Xtrain)
     
@@ -91,13 +101,12 @@ def LADF(Xtrain, ytrain, Xtest, ytest):
         results = model.fit(q=0.5)
     
     return results.predict(Xtest)
-    
 
     
 if __name__ == "__main__":
     # get all features
     df = loadData(citylist, droptransfer=True)    
-    cols = list(df.columns.difference(['lat', 'lon', 'name', 'riders'])) 
+    cols = list(df.columns.difference(['lat', 'lon', 'name', 'riders', '30net_students', '15net_students', 'near_students', 'near_hunits_renter'])) 
     
     # generate dataframes for all cross validation combinations
     pairs = []
@@ -107,16 +116,26 @@ if __name__ == "__main__":
         df2 = loadData(l2, droptransfer=True)
         pairs.append((df1, df2))
         
-    # greedily find the best set of n    
+    # greedily find the best set of n 
     used = []
+    #used = ['15net_employed', 'near_hospitality', 'near_hunits_owner', '30net_population', 'near_university', 'parking',
+     #       '30net_entertainment', '15net_household', 'near_medical', '15net_entertainment', 'near_finance', 'near_business', '15net_medical', 
+      #      'near_hunits_attached', 'near_hunits_new', 'near_emp_full_time', '15net_hunits_large', 'near_household']
     for i in range(25):
-        scoremap = [(c, scoreCV(lstSqF, pairs, list(used) + [c])) for c in set(cols) - set(used)]
-        name, scores = sorted(scoremap, key=lambda x: np.mean(x[1]))[-1]
-        print("&{4}&{0}&{1:.4f}&{2:.4f}&{3:.4f}\\\\".format(name, np.mean([x[0] for x in scores]), np.mean([x[1] for x in scores]), np.mean([x[2] for x in scores]), i+1))
+        #print(used)
+        touse = set(cols) - set(used)
+        #print(touse)
+        #print(list(used) + [list(touse)[0]])
+        scoremap = [(c, scoreCV(lstSqF, pairs, list(used) + [c], c)) for c in set(cols) - set(used)]
+        #for name, scores in sorted(scoremap, key=lambda x: np.mean(x[1]), reverse=True):
+        #    print(name, np.mean([i[0] for i in scores]), np.mean([i[1] for i in scores]))
+        name, scores = sorted(scoremap, key=lambda x: np.mean(x[1]))[0]
+        print("{3},{0},{1:.4f},{2:.4f}".format(name, np.mean([x[0] for x in scores]), np.mean([x[1] for x in scores]), i+1))
         #print("Selected variable:", name)
-        #print("Summed station error: {0:.4f}  ".format(np.mean([x[0] for x in scores])), end='')
-        #print("MAPE error: {0:.4f}  ".format(np.mean([x[1] for x in scores])), end='')
-        #print("System error: {0:.4f}  ".format(np.mean([x[2] for x in scores])))
+        #print("station error: {0:.4f}  ".format(np.mean([x[1] for x in scores])), end='')
+        #print("System error: {0:.4f}  ".format(np.mean([x[0] for x in scores])))
         used.append(name)
+        #print(used)
+        #input()
     
     

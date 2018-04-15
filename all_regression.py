@@ -44,7 +44,10 @@ if __name__ == "__main__":
     
     
     # plot pop regressions
-    plt.plot(pops, riders, 'k.', xpop, xpoplin, 'r-', xpop, xpoplog, 'b-')
+    plt.plot(pops, riders, 'k.', alpha = 0.25)
+    plt.plot(xpop, xpoplin, 'r-', xpop, xpoplog, 'b-')
+    plt.xlabel("Nearby Population")
+    plt.ylabel("Average Weekday Ridership")
     plt.show()
     
     
@@ -59,7 +62,21 @@ if __name__ == "__main__":
     print()
     
     
-    plt.plot(pops, linresid, 'r.', pops, logresid, 'b.', alpha = 0.25)
+    plt.plot(pops, linresid, 'r.', alpha = 0.25)
+    plt.plot(xpop, np.zeros(len(xpop)), 'k-', alpha = 0.5)
+    plt.xlabel("Nearby Population")
+    plt.ylabel("Residual from Linear Regression")
+    plt.show()
+    
+    plt.plot(pops, logresid, 'b.',  alpha = 0.25)
+    plt.plot(xpop, np.zeros(len(xpop)), 'k-', alpha = 0.5)
+    plt.xlabel("Nearby Population")
+    plt.ylabel("Residual from Log Regression")
+    plt.show()
+    
+    #vals, base = np.histogram(linresid, bins=100)
+    plt.hist(linresid, bins='auto')
+    plt.xlabel("Distribution of Residuals from Population Linear Regression")
     plt.show()
     
     
@@ -81,7 +98,10 @@ if __name__ == "__main__":
     xemplog = emplog.predict(lnxemp)
     
         # plot pop regressions
-    plt.plot(emp, riders, 'k.', xemp, xemplin, 'r-', xemp, xemplog, 'b-')
+    plt.plot(emp, riders, 'k.', alpha = 0.25)
+    plt.plot(xemp, xemplin, 'r-', xemp, xemplog, 'b-')
+    plt.xlabel("Nearby Employment")
+    plt.ylabel("Average Weekday Ridership")
     plt.show()
     
     
@@ -96,7 +116,20 @@ if __name__ == "__main__":
     print()
     
     
-    plt.plot(emp, linresid, 'r.', emp, logresid, 'b.', alpha = 0.25)
+    plt.plot(emp, linresid, 'r.', xemp, np.zeros(len(xemp)), 'k-', alpha = 0.25)
+    plt.plot( xemp, np.zeros(len(xemp)), 'k-', alpha = 0.5)
+    plt.xlabel("Nearby Employment")
+    plt.ylabel("Residual from Linear Regression ")
+    plt.show()
+    
+    plt.plot(emp, logresid, 'b.', xemp, np.zeros(len(xemp)), 'k-', alpha = 0.25)
+    plt.plot(xemp, np.zeros(len(xemp)), 'k-', alpha = 0.5)
+    plt.xlabel("Nearby Employment")
+    plt.ylabel("Residual from Log Regression")
+    plt.show()
+    
+    plt.hist(linresid, bins='auto')
+    plt.xlabel("Distribution of Residuals from Employment Linear Regression")
     plt.show()
     
     

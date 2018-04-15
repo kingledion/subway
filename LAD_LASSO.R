@@ -1,4 +1,4 @@
-library(glmnet)
+library(flare)
 
 
 bosdata <- read.csv("/opt/school/subway/gendata/boston_stations.csv", header= TRUE, sep  = ",", quote = '"', stringsAsFactors=FALSE)
@@ -43,110 +43,80 @@ dendata <- dendata[!(dendata$name=='Union Station'),]
 
 xalldata = rbind(bosdata, chidata, ladata, atldata, daldata, dendata)
 yalldata = xalldata[, "ridership"]
-xalldata = xalldata[, !(names(xalldata) %in% c("name", "ridership", "lat", "lon"))]
+xalldata = xalldata[, !(names(xalldata) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
 cvvector = rbind(matrix(1,113,1), matrix(2,138,1), matrix(3, 78, 1), matrix(4, 38, 1), matrix(5, 61, 1), matrix(6, 44, 1))
 
 
 xnotbos = rbind(chidata, ladata, atldata, daldata, dendata)
 ynotbos = xnotbos[, "ridership"]
-xnotbos = xnotbos[, !(names(xnotbos) %in% c("name", "ridership", "lat", "lon"))]
+xnotbos = xnotbos[, !(names(xnotbos) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
 xnotchi = rbind(bosdata,ladata, atldata, daldata, dendata)
 ynotchi = xnotchi[, "ridership"]
-xnotchi = xnotchi[, !(names(xnotchi) %in% c("name", "ridership", "lat", "lon"))]
+xnotchi = xnotchi[, !(names(xnotchi) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
 xnotla = rbind(bosdata, chidata, atldata, daldata, dendata)
 ynotla = xnotla[, "ridership"]
-xnotla = xnotla[, !(names(xnotla) %in% c("name", "ridership", "lat", "lon"))]
+xnotla = xnotla[, !(names(xnotla) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
 xnotatl = rbind(bosdata, chidata, ladata, daldata, dendata)
 ynotatl = xnotatl[, "ridership"]
-xnotatl = xnotatl[, !(names(xnotatl) %in% c("name", "ridership", "lat", "lon"))]
+xnotatl = xnotatl[, !(names(xnotatl) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
 xnotdal = rbind(bosdata, chidata, ladata, atldata, dendata)
 ynotdal = xnotdal[, "ridership"]
-xnotdal = xnotdal[, !(names(xnotdal) %in% c("name", "ridership", "lat", "lon"))]
+xnotdal = xnotdal[, !(names(xnotdal) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
 xnotden = rbind(bosdata, chidata, ladata, atldata, daldata)
 ynotden = xnotden[, "ridership"]
-xnotden = xnotden[, !(names(xnotden) %in% c("name", "ridership", "lat", "lon"))]
+xnotden = xnotden[, !(names(xnotden) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
 
 
-xbos = bosdata[, !(names(bosdata) %in% c("name", "ridership", "lat", "lon"))]
+xbos = bosdata[, !(names(bosdata) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
 ybos = bosdata[, "ridership"]
-xchi = chidata[, !(names(chidata) %in% c("name", "ridership", "lat", "lon"))]
+xchi = chidata[, !(names(chidata) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
 ychi = chidata[, "ridership"]
-xla = ladata[, !(names(ladata) %in% c("name", "ridership", "lat", "lon"))]
+xla = ladata[, !(names(ladata) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
 yla = ladata[, "ridership"]
-xatl = atldata[, !(names(chidata) %in% c("name", "ridership", "lat", "lon"))]
+xatl = atldata[, !(names(chidata) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
 yatl = atldata[, "ridership"]
-xdal = daldata[, !(names(daldata) %in% c("name", "ridership", "lat", "lon"))]
+xdal = daldata[, !(names(daldata) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
 ydal = daldata[, "ridership"]
-xden = dendata[, !(names(dendata) %in% c("name", "ridership", "lat", "lon"))]
+xden = dendata[, !(names(dendata) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
 yden = dendata[, "ridership"]
 
 
 getErrs <- function(predicted, actual) {
-  MAPE = (abs(sum(predicted) - sum(actual)))/sum(actual)
-  SSE = sum(abs(predicted - actual))/sum(actual)
-  print(MAPE)
-  print(SSE) 
+  SysErr = (abs(sum(predicted) - sum(actual)))/sum(actual)
+  StaErr = sum(abs(predicted - actual))/sum(actual)
+  print(Sta)
+  print(SysErr) 
 }
 
-print("Boston")
-fit = cv.glmnet(data.matrix(xnotbos), data.matrix(ynotbos), alpha=1)
-coef(fit, s="lambda.1se")
-
-print(fit$lambda.1se)
-pred = predict(fit, data.matrix(xbos), s= "lambda.1se")
-getErrs(pred, ybos)
+lvec = seq(5, -6, -1)
 
 
-
-print("Chicago")
-fit = cv.glmnet(data.matrix(xnotchi), data.matrix(ynotchi), alpha=1)
-coef(fit, s="lambda.1se")
-
-print(fit$lambda.1se)
-pred = predict(fit, data.matrix(xchi), s= "lambda.1se")
-getErrs(pred, ychi)
+#print(lvec)
 
 
+fit = slim(data.matrix(xnotdal), data.matrix(ynotdal), lambda = lvec, q=1)   #Two here
+results = data.matrix(xnotdal) %*% fit$beta                    # One here
+errs = sweep(results, 1, data.matrix(ynotdal))                # One here
+print(colSums(errs))
+idx  = which.min(abs(colSums(errs)))
+print(idx)
 
-print("Los Angeles")
-fit = cv.glmnet(data.matrix(xnotla), data.matrix(ynotla), alpha=1)
-coef(fit, s="lambda.1se")
+#idx = 4
 
-print(fit$lambda.1se)
-pred = predict(fit, data.matrix(xla), s= "lambda.1se")
-getErrs(pred, yla)
+lvec = seq(idx-2, idx, 0.25)
+lvec = exp(-lvec)
 
+fit = slim(data.matrix(xnotdal), data.matrix(ynotdal), lambda = lvec, q=1)    # Two here
+results = data.matrix(xnotdal) %*% fit$beta          # One here
+errs = sweep(results, 1, data.matrix(ynotdal))      # One here
+print(colSums(errs))
+idx  = which.min(abs(colSums(errs)))
+print(idx)
 
+print(data.matrix(fit$beta[, idx]))
 
-print("Atlanta")
-fit = cv.glmnet(data.matrix(xnotatl), data.matrix(ynotatl), alpha=1)
-coef(fit, s="lambda.1se")
-
-print(fit$lambda.1se)
-pred = predict(fit, data.matrix(xatl), s= "lambda.1se")
-getErrs(pred, yatl)
-
-
-
-
-print("Dallas")
-fit = cv.glmnet(data.matrix(xnotdal), data.matrix(ynotdal), alpha=1)
-coef(fit, s="lambda.1se")
-
-print(fit$lambda.1se)
-pred = predict(fit, data.matrix(xdal), s= "lambda.1se")
-getErrs(pred, ydal)
-
-
-
-
-print("Denver")
-fit = cv.glmnet(data.matrix(xnotden), data.matrix(ynotden), alpha=1)
-coef(fit, s="lambda.1se")
-
-print(fit$lambda.1se)
-pred = predict(fit, data.matrix(xden), s= "lambda.1se")
-getErrs(pred, yden)
+results = data.matrix(xdal) %*% fit$beta       # One here
+getErrs(results[, idx], ydal)                  # One here
 
 
 

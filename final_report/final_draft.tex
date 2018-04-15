@@ -5,7 +5,12 @@
 \usepackage[margin=0.5in]{geometry}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{booktabs}
+\usepackage[caption=false]{subfig}
 \graphicspath{ {images/} }
+\usepackage{appendix}
+\usepackage{url}
+
 
 
 \setlength{\parskip}{\baselineskip}%
@@ -40,9 +45,9 @@ The Mannheim-Florian four step model fundamentally depends on already existing t
 
 The zip code level data for feature generation comes from the US Census Bureau and is available at \texttt{factfinder.census.gov}. There are thousands of potential data sets available. Selection of features is guided by Kuby \cite{Kuby2004}, Taylor \cite{Taylor2008}, and Currie \cite{Currie2011}, which demonstrate the significance of factors such as employment, population, universities, poverty, airports, park and ride stations, and rental units. In Yao \cite{Yao2007}, a distinction is made between `Need Index,' a series of features that depend on the characteristics around the station and are independent of the transit network, and transit network characteristics, which do depend on the transit network. To model network characteristics for each station, the sum of each characteristic for every other station within 15 and 30 minutes transit time is included as a feature of the original station. This also provides us quantitative way to express the 'centrality' dummy variable that is provided as a flag in many models \cite{Kuby2004, Durning2015}; centrality could be proportional to the count of population or jobs within 30 minutes of a station, for example.
 
-This model emphasizes using only feature that have 'real' units. Only a single feature (presence of a park and ride garage) is a flag. Instead of using measures of land use mix as proposed in other models \cite{Durning2015, Gutierrez2011}, or dummy variables for universities and central business districts, the equivalent information is provided naturally as counting data in the feature set. Housing types (such as large apartment buildings versus single family homes) can stand in for land use mix, number of jobs at universities or in financial jobs can file in for the equivalent dummy variable. A summary of the selected characteristics is provided in (REFERENCE TO APPENDIX).
+This model emphasizes using only feature that have 'real' units. Only a single feature (presence of a park and ride garage) is a flag. Instead of using measures of land use mix as proposed in other models \cite{Durning2015, Gutierrez2011}, or dummy variables for universities and central business districts, the equivalent information is provided naturally as counting data in the feature set. Housing types (such as large apartment buildings versus single family homes) can stand in for land use mix, number of jobs at universities or in financial jobs can file in for the equivalent dummy variable. A summary of the selected characteristics is provided in Appendix \ref{app:features}.
 
-Ridership data for agencies that publish annual ridership reports is used to validate the model. Six cities were selected for this study: Boston, Chicago, Los Angeles, Atlanta, Dallas, and Denver. Several cities were eliminated from the sample set for various reasons. The Census Bureau data set does not include government employment. While state level employment is significant in all potential cities, state employment levels are relatively constant from city to city. Federal employment varies greatly, however. Washington DC was eliminated due to the large impact of un-recorded federal employment. San Francisco and Philadelphia were eliminated because they have multiple rail systems without integrated fares. New York City was eliminated because it's subway has higher ridership than all other rail systems in the country combined. 
+Ridership data for agencies that publish annual ridership reports is used to validate the model (see Appendix \ref{app:ridership}). Six cities were selected for this study: Boston, Chicago, Los Angeles, Atlanta, Dallas, and Denver. Several cities were eliminated from the sample set for various reasons. The Census Bureau data set does not include government employment. While state level employment is significant in all potential cities, state employment levels are relatively constant from city to city. Federal employment varies greatly, however. Washington DC was eliminated due to the large impact of un-recorded federal employment. San Francisco and Philadelphia were eliminated because they have multiple rail systems without integrated fares. New York City was eliminated because it's subway has higher ridership than all other rail systems in the country combined. 
 
 The data closest to 2015 is used when possible to get an accurate relation between ridership and census data. The census data as well as Chicago, Dallas, Denver's ridership statistics are from 2015. Boston's ridership is from 2014, Los Angeles' is from 2013-2014, and Atlanta's is from 2010-2013. 
 
@@ -74,21 +79,175 @@ For each `Need Index' type feature generated by rejection sampling, a set of cor
 An illustration of the calculation of travel time between Sullivan Square and South Station in Boston is provided in Figure \ref{fig:f2}. Starting at Sullivan Square on the Orange Line southbound, there are four edge traversals totaling seven minutes to get to Downtown Crossing. From there, there is a 2.5 minute wait until a Red Line (also Southbound) train arrives, and 2.5 more minutes of travel to South Station. The total travel time is thus twelve minutes. 
 
 \begin{figure}[H]
-\begin{center}\includegraphics[scale=0.8]{transfer_demonstration}\end{center}\caption{Illustration of travel time calculation for Sullivan Square to South Station, in Boston.}\label{fig:f2}
+\begin{center}\includegraphics[scale=0.75]{transfer_demonstration}\end{center}\caption{Illustration of travel time calculation for Sullivan Square to South Station, in Boston.}\label{fig:f2}
 \end{figure}
 
 \subsection{Metrics for projection accuracy assessment}
 
 In general, the projected ridership forecasts of new transit infrastructure investments significantly overestimates transit ridership. The pioneering study in this field by Pickrell in 1989 \cite{Pickrell1989} found that for ten rail projects completed between 1977 and 1985, and assessed between 1986 and 1989, the actual ridership was between 28\% and 85\% lower than projected. A 2006 study \cite{Flyvbjerg2006} of 25 major passenger rail projects in  in 14 nations found that 21 of the projects had actual ridership below projections, with the average system ridership 48\% below the projection. Accurate assessment of projection accuracy is imperative for creating ridership estimates that serve the public interest.
 
-To assess the results of regression analysis, there should be two metrics used: one for the total system level ridership, and another for station level ridership. Following Pickrell, a metric for system-wide projection accuracy is mean absolute percentage error (MAPE) in total system ridership. Hardy \cite{Hardy2010} extends Pickrell's analysis by including absolute station error for stations on newly added sections of an existing transit network. Following Hardy, a measure of station level error on a network is summed absolute error of all station projections. The rail networks in this study vary widely in total ridership, therefore to allow network to network comparison, this summed absolute station error can divided by total system ridership. The resulting metric for summed station error (SSE) given a projected ($y_{proj}$) and actual ridership ($y_{true}$) is 
+To assess the results of regression analysis, there should be two metrics used: one for the total system level ridership, and another for station level ridership. Following Pickrell, the metric for system-wide projection accuracy is standard percentage error in total system ridership, which we will refer to as system error. Hardy \cite{Hardy2010} extends Pickrell's analysis by including absolute station error for stations on newly added sections of an existing transit network. Following Hardy, a measure of station level error on a network is summed absolute error of all station projections. The rail networks in this study vary widely in total ridership; therefore, to allow network to network comparison, this summed absolute station error can divided by total system ridership. The resulting metric for station error given a projected ($y_{proj}$) and actual ridership ($y_{true}$) is 
 $$SSE = \dfrac{\sum\limits_{i\,\in\,\text{all station}}\left|y_{proj, i} - y_{true, i}\right|}{\sum\limits_{i\,\in\,\text{all station}} y_{true, i}}$$
 
 
 
+
+
+
+\begin{figure}
+\centering
+\begin{minipage}{0.5\textwidth}
+\centering
+\subfloat[Ridership against population. Linear regression in red, log regression in blue.]{\includegraphics[clip,width=\columnwidth]{popvrider}}
+
+\subfloat[Residual from linear regression against population]{\includegraphics[clip,width=\columnwidth]{poplinresid}}
+
+\subfloat[Residual from log regression against population]{\includegraphics[clip,width=\columnwidth]{poplogresid}}
+\caption{Analysis of population regression}\label{fig:popresid}
+\end{minipage}\hfill
+\begin{minipage}{0.5\textwidth}
+\centering
+\subfloat[Ridership against employment. Linear regression in red, log regression in blue.]{\includegraphics[clip,width=\columnwidth]{empvrider}}
+
+\subfloat[Residual from linear regression against employment]{\includegraphics[clip,width=\columnwidth]{emplinresid}}
+
+\subfloat[Residual from log regression against employment]{\includegraphics[clip,width=\columnwidth]{emplogresid}}
+\caption{Analysis of employment regression}\label{fig:empresid}
+\end{minipage}\hfill
+\end{figure}
+
 \subsection{Regression Analysis}
 
-Regression models for station level ridership have used ordinary least squares regression \cite{Kuby2004, Taylor2008, Currie2011, Durning2015, Gutierrez2011} to generate predictions. We will investigate the applicability of more complex regression models 
+Regression models for station level ridership have used ordinary least squares regression \cite{Kuby2004, Taylor2008, Currie2011, Durning2015, Gutierrez2011} to generate predictions. We will investigate the applicability of more complex regression models.
+
+\subsubsection{Data distribution and regression selection}
+There are generally two types of feature included in this survey, those that are related to population and those that are related to employment. Features such as the population with college degrees and number of housing units will be related to population. Features such as the number of jobs in finance or hospitality will be related to the total number of jobs. A plot of all stations' population versus ridership appears in Figure \ref{fig:popresid} with linear and logarithmic regression lines and residuals. A similar treatment for employment versus ridership appears in Figure \ref{fig:empresid}. The coefficient of determination for the two regression types for both population and employment are shown in Table \ref{tab:regr2}.
+
+\begin{table}[H]\label{tab:regr2}
+\centering
+\begin{tabular}{lcc}
+\toprule Variable&Linear R$^2$&Log R$^2$ \\ 
+\midrule Population&0.0267&0.0034 \\
+Employment&0.1948&0.1878 \\
+\bottomrule
+\end{tabular}
+\caption{Regression of Population and Employment against ridership}
+\end{table}
+
+The metrics for projection accuracy depend on the absolute difference between actual and predicted ridership. This suggest that Least Absolute Deviations (LAD) regression is appropriate for this problem. 
+
+Since the response variable (ridership) is counts, and the variance of ridership increases with increasing employment, we will also use Poisson regression. As demonstrated in Table \ref{tab:regr2}, there does not appear to be any modeling advantage of using a logarithmic form of the feature variables. The log link also causes problem with outliers when the regression model is cross validated, so we use the identity link with Poisson regression instead of the canonical log link. 
+
+Finally, we will use ordinary least squares (OLS) regression as a comparison, to see if the other methods have any performance advantage. 
+
+\subsubsection{Feature selection by LASSO regularization}
+
+Upon performing regression analysis, it became immediately apparent that one set of features was different from the others. The number of students within a 15 or 30 minute transit trip proved to be a very accurate measurement of system level ridership. These variable are represented in the model as \texttt{15net\_students} and \texttt{30net\_students}, respectively. We show the results of a single variable OLS regression of the one variable against ridership. The scores are the average of the six way cross-validation across the six transit networks in the study. The `best' scoring other feature (\texttt{15net\_hunits\_old}; the number of housing units built before 1940 within a 15 minute transit ride) is shown for comparison.
+
+\begin{table}[H]\label{tab:students}
+\centering
+\begin{tabular}{lcc}
+\toprule Variable&System Error&Station Error\\
+\midrule 30net\_students&0.1016&0.5961\\
+15net\_students&0.0946&0.6197\\
+15net\_hunits\_old&0.2854&0.6700\\ 
+\bottomrule
+\end{tabular}
+\end{table}
+
+The system error scores for \texttt{30net\_students} and \texttt{15net\_students} are much lower than for any other variable, while the station error for these features are also lower than any other features. As we will see, the single-feature OLS of either of these features produces a model that is approximately as good as any other model we will develop. This raises questions about the relationship between the feature and the response variable. It is possible that the population of students within walking distance of a transit station is driven by the availability of local transit. In that case, number of students is not a valid explanatory variable. Since the relationship is unclear, but the features are outliers, we will remove all features derived from number of students from the model.
+
+
+
+ 
+
+The following chart (Table \ref{tab:lasso}) shows the results for the three regression types. 
+
+
+
+
+
+\subsubsection{Feature selection by brute force}
+
+The brute force method is a greedy search of all possible features to find the best 'path' to a regression solution. First, all features are checked by regression against ridership. Since we have two 'score' metrics, we use the average of system and station error to determine the best feature in each step. Each feature is checked in six-way cross validation. Each of the six cities is used as the test set while the other five are used for the training set. The average over all six cross-validation runs for each metric is what is reported in the charts below. 
+
+After choosing the one feature that yields the highest score, we then select a second feature to add to the regression in in the same way, and iteratively add more features. The subsequent steps are multiple regressions using all of the already chosen features. 
+
+We select the fist 25 features with this method and graph the resulting system and station error scores in Figure \ref{fig:bfscores}. 
+
+\section{Conclusion and further work}
+
+
+\pagebreak
+\begin{appendices}
+
+\section{Data sources}
+
+\subsection{Ridership data}\label{app:ridership}
+\begin{tabular}{ll}
+Los Angeles: & \url{http://libraryarchives.metro.net/DPGTL/Ridership/RailActivityByStationFY2014.xls} \\
+Chicago:& \url{http://www.transitchicago.com/assets/1/ridership_reports/2015_Annual.pdf} \\
+Atlanta:& \url{http://documents.atlantaregional.com/transportation/TFB_2014_v17.pdf}\\
+Boston:& \url{http://archives.lib.state.ma.us/bitstream/handle/2452/266319/ocm18709282-2014.pdf} \\
+Denver:& \url{http://www.rtd-denver.com/documents/serviced/lrt-activity-08-2015.pdf} and \\
+& \url{http://www.rtd-denver.com/documents/serviced/lrt-activity-Jan-April-2016.pdf}\\
+Dallas:& \url{https://www.dart.org/about/dartreferencebookmar16.pdf}\\
+\end{tabular}
+
+\subsection{US Census feature data sources}\label{app:features}
+
+All feature data is accessed through the American Factfinder website at \url{factfinder.census.gov}.
+
+\begin{tabular}{ll}
+Population&Table DP05, Item HC01\_VC03\\
+Population, 18 and under&Table DP05, Item HC01\_VC03 - Item HC01\_VC32\\
+Population, 65 and over&Table DP05, Item HC01\_VC37\\
+Housholds&Table S1101, Item HC01\_EST\_VC02\\
+Households with Children&Table S1101, Item HC01\_EST\_VC06\\
+Families&Table S1101, Item HC01\_EST\_VC010\\
+Population with at least Bachelors degree&Table S1701, Item HC01\_EST\_VC34\\
+Population in labor force&Table S1701, Item HC01\_EST\_VC37\\
+Employed population&Table S1701, Item HC01\_EST\_VC38\\
+Full-time employed population&Table S1701, Item HC01\_EST\_VC47\\
+Population living at greater than 500\% of poverty level&Table S1701, Item HC01\_EST\_VC56\\
+Population living at less than 200\% of poverty level&Table S1701, Item HC01\_EST\_VC01 -  HC01\_EST\_VC59\\
+Housing units&Table DP04, Item HC01\_VC03\\
+Single-family detached housing units&Table DP04, Item HC01\_VC14\\
+Housing units in duplexes or townhouses&Table DP04, Items HC01\_VC15 + HC01\_VC16\\
+Housing units in structures of 3-9&Table DP04, Item HC01\_VC17 + HC01\_VC18\\
+Housing units in structures of 10+&Table DP04, Item HC01\_VC19 + HC01\_VC20\\
+Housing units built before 1940&Table DP04, Item HC01\_VC36\\
+Housing units built after 2000&Table DP04, Item HC01\_VC27 + HC01\_VC28 + HC01\_VC29\\
+Housing units occupied by owner&Table DP04, Item HC01\_VC65\\
+Housing units occupied by renter&Table DP66\\
+Number of Jobs&Table CB1500CZ11, Item ‘EMP’\\
+Total pay of all jobs&Table CB1500CZ11, Item ‘PAYANN’\\
+Number of jobs at hospitals&Table CB1500CZ21, NAICS code 622, Estimated\\
+Number of jobs at universities&Table CB1500CZ21, NAICS code 6113, Estimated\\
+Number of jobs in hospitalitiy field&Table CB1500CZ21, NAICS code 72, Estimated\\
+Number of jobs in finance field&Table CB1500CZ21, NAICS code 52, Estimated\\
+Number of jobs in professional fields&Table CB1500CZ21, NAICS code 54, Estimated\\
+Number of jobs in entertainment fields&Table CB1500CZ21, NAICS code 71, Estimated\\
+\end{tabular}
+
+
+
+
+\section{Summary of selected features}
+
+For the brute force results, the best one feature is selected by six way cross validation for each step, from one to twenty five. For the LASSO feature selection, each of the six cross-validated models produces a unique set of features. Therefore, each feature is selected up to six times. Those features selected by at least four of six crass validated runs are marked on the table below. For the LAD LASSO, the number of features selected by LASSO is unusually high, so those features selected by at least five of size cross validated runs are selected, to avoid saturated models. 
+
+\begin{tabular}{lcccccc}
+
+
+
+
+
+\end{appendices}
+
+
+
+
 
 
 
