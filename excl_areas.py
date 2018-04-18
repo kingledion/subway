@@ -6,12 +6,16 @@ Created on Tue Apr 10 18:42:56 2018
 @author: dhartig
 """
 
+# Accidentally typed the points in backwards! This is how we reverse them
+def rev_points(lst):   
+    return [(lon, lat) for lat, lon in lst]
+
 def getPoints(name):
     if name == 'Boston':
-        return bos_points
+        return [rev_points(l) for l in bos_points]
     if name == 'Chicago':
-        return chi_points
-    return None
+        return [rev_points(l) for l in chi_points]
+    return []
 
 # Areas where there is no development (water, parks, etc)
 chi_points  = [ # 60611, water and purification plant above navy pier
@@ -27,6 +31,7 @@ chi_points  = [ # 60611, water and purification plant above navy pier
 bos_points = [
             # Boston Harbor by aquarium
                 [(42.3544, -71.0493), (42.3549, -71.0504), (42.3561, -71.0499), (42.3577, -71.0495),
-                 (42.3589, -71.0494), (42.3640, -71.0494), (42.3678, -71.0500), (42.3688, -71.0517), 
-                 (42.3694, -71.0441), (42.3552, -71.0453)]     
+                 (42.3589, -71.0502), (42.3630, -71.0508), (42.3640, -71.0494), (42.3672, -71.0509), 
+                 (42.3678, -71.0541), (42.3683, -71.0576), (42.3715, -71.0529), (42.3694, -71.0441), 
+                 (42.3552, -71.0453)]     
             ]

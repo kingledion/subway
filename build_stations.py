@@ -90,14 +90,21 @@ def random_points_in(poly, excluded, num_points):
     while len(pts) < num_points:
         
         success = len(pts)/tries if tries else 0
-        n = max(1000, int((num_points - len(pts)) / (1 - success) * 1.5)) # always try at least 100; cost is small
+        n = max(1000, int((num_points - len(pts)) / (1 - success) * 1.5)) # always try at least 1000; cost is small
         tries += n
     
         lons = np.random.uniform(min_x, max_x, n)
         lats = np.random.uniform(min_y, max_y, n)
         valid = shpvec.contains(poly, lons, lats)
+        #print(valid)
+        excl = np.zeros(len(valid))
+        for ply in excluded:
+            ex = shpvec.contains(ply, lons, lats)
+            excl = np.logical_or(excl, ex)
         
-        pts.extend([(lon, lat) for lon, lat, v in zip(lons, lats, valid) if v]) # do this part better!!
+        newvalid = np.logical_and(valid, np.logical_not(excl))
+               
+        pts.extend([(lon, lat) for lon, lat, v in zip(lons, lats, newvalid) if v]) # do this part better!!
         
     return zip(*pts[:num_points])
         
@@ -152,6 +159,7 @@ def calculate_areas(stations, idx, sf, name):
 
     
     n = 100 # mutiplier by area (in km^2) for number of points to sample
+            # 100 means one point per hectare
     
     # Areas where there is no development (water, parks, etc)
     ex_points = getPoints(name)   
@@ -163,22 +171,31 @@ def calculate_areas(stations, idx, sf, name):
     zipdata, zipareas = su.get_zip_counts([z for z, s in shps])
     
     for zcode, poly in shps:
-               
-        num_points = int(zipareas[zcode] * n)
         
-        print('Processing zipcode', zcode, ' ... ', num_points, 'hectares')
+        num_points = max(1000,int(zipareas[zcode] * n)) # always a minimum of 1000 points, cost is small
+        
+        print('Processing zipcode', zcode, ' ... ', num_points, 'points')
         
         lons, lats = random_points_in(poly, exclusion, num_points)
-       
+                   
         near_stat_dict = {}
         nears = near_stations(idx, lons, lats)
         for nlist in nears:
-            for nhash in nlist:
-                near_stat_dict[nhash] = near_stat_dict.get(nhash, 0) + 1 / len(nlist)
+            for shash in nlist:
+                near_stat_dict[shash] = near_stat_dict.get(shash, 0) + 1 / len(nlist)
                 
-        stassigns = [(stadict[shash]['name'], shash, count) for shash, count in near_stat_dict.items()]
+        stassigns = [(shash, count) for shash, count in near_stat_dict.items()]
+        
+        # Printed summary for testing exclusion points! Keep in code!
+        #for nlist, lon, lat in zip(nears, lons, lats):
+        #    nlistnames = [stadict[shash]['name'] for shash in nlist]
+        #    print(lon, lat, nlistnames)
+        #    
+        #for shash, cnt in sorted(stassigns, key=lambda x: x[1], reverse=True):
+        #    print(stadict[shash]['name'], cnt)
+            
                
-        for name, shash, cnt in stassigns:
+        for shash, cnt in stassigns:
             prop = cnt/num_points
             s = stadict[shash]
             zd = zipdata[zcode]
@@ -251,43 +268,45 @@ def add_station_network(df, G):
             
 
 
-################################################          
-# Format of filenames is (name, station geos csv input, station network and ridership csv input, station data output)  
-#                        NOTE: name is only used for printing status updates to screen
-in_city_list = [('Boston', './gendata/boston_subwaygeo.csv', './gendata/boston_network.csv', "./gendata/boston_stations.csv")]#,
-                #('Chicago', './gendata/chicago_subwaygeo.csv', './gendata/chicago_network.csv', "./gendata/chicago_stations.csv")],
-                #('Atlanta', './gendata/atlanta_subwaygeo.csv', './gendata/atlanta_network.csv', "./gendata/atlanta_stations.csv"),
-                #('Los Angeles', './gendata/la_subwaygeo.csv', './gendata/la_network.csv', "./gendata/la_stations.csv"),
-                #('Dallas', './gendata/dallas_subwaygeo.csv', './gendata/dallas_network.csv', "./gendata/dallas_stations.csv"),
-                #('Denver', './gendata/denver_subwaygeo.csv', './gendata/denver_network.csv', "./gendata/denver_stations.csv")]
-
-# load shapefile of all zipcodes in the US
-sf = shapefile.Reader("/opt/ziplfs/tl_2014_us_zcta510.shp")
-
-for name, geo_in, network_in, stations_out in in_city_list:
+################################################       
+            
+if __name__ == "__main__":
+    # Format of filenames is (name, station geos csv input, station network and ridership csv input, station data output)  
+    #                        NOTE: name is only used for printing status updates to screen
+    in_city_list = [('Boston', './gendata/boston_subwaygeo.csv', './gendata/boston_network.csv', "./gendata/boston_stations.csv")]#,
+                    #('Chicago', './gendata/chicago_subwaygeo.csv', './gendata/chicago_network.csv', "./gendata/chicago_stations.csv")],
+                    #('Atlanta', './gendata/atlanta_subwaygeo.csv', './gendata/atlanta_network.csv', "./gendata/atlanta_stations.csv"),
+                    #('Los Angeles', './gendata/la_subwaygeo.csv', './gendata/la_network.csv', "./gendata/la_stations.csv"),
+                    #('Dallas', './gendata/dallas_subwaygeo.csv', './gendata/dallas_network.csv', "./gendata/dallas_stations.csv"),
+                    #('Denver', './gendata/denver_subwaygeo.csv', './gendata/denver_network.csv', "./gendata/denver_stations.csv")]
     
-    # Load station geo data; build station lists; build station geoindices
-    stations, idx = build_station_index(geo_in)
-    print("{0} density estimate and index built".format(name))
-
-    # load station network maps
-    network = loadnetwork(network_in)
-    print("{0} network built".format(name))
-
-    # Calculate available walking and areas
-    calculate_areas(stations, idx, sf, name)
-    print("{0} station data calculated".format(name))
-
-    # Convert to dataframe
-    dframe = to_dataframe(stations)
-    print("{0} converted to dataframe".format(name))
-
-    # Add nearby stations on the network to station data
-    add_station_network(dframe, network)
-    print("Station network data added")
-     
-    # Write staions data to csv file      
-    dframe.to_csv(stations_out, index=False) 
-    print("Station data written; done with {0}".format(name))
+    # load shapefile of all zipcodes in the US
+    sf = shapefile.Reader("/opt/ziplfs/tl_2014_us_zcta510.shp")
+    
+    for name, geo_in, network_in, stations_out in in_city_list:
+        
+        # Load station geo data; build station lists; build station geoindices
+        stations, idx = build_station_index(geo_in)
+        print("{0} station index built".format(name))
+    
+        # load station network maps
+        network = loadnetwork(network_in)
+        print("{0} network built".format(name))
+    
+        # Calculate available walking and areas
+        calculate_areas(stations, idx, sf, name)
+        print("{0} station data calculated".format(name))
+    
+        # Convert to dataframe
+        dframe = to_dataframe(stations)
+        print("{0} converted to dataframe".format(name))
+    
+        # Add nearby stations on the network to station data
+        add_station_network(dframe, network)
+        print("Station network data added")
+         
+        # Write staions data to csv file      
+        dframe.to_csv(stations_out, index=False) 
+        print("Station data written; done with {0}".format(name))
   
            
