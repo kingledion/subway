@@ -24,9 +24,13 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Illustration of nearest zip code estimation for zip code 02127.}}{4}}
 \newlabel{fig:f1}{{1}{4}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Variance of Monte Carlo estimates}{5}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Generation of network-dependent features}{5}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Illustration of travel time calculation for Sullivan Square to South Station, in Boston.}}{6}}
-\newlabel{fig:f2}{{2}{6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Indications of variance for Monte Carlo estimates of the population feature}}{6}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Standard deviation versus mean by zip code}}}{6}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Coefficient of variation versus mean by zip code}}}{6}}
+\newlabel{fig:mcvar}{{2}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Generation of network-dependent features}{6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Illustration of travel time calculation for Sullivan Square to South Station, in Boston.}}{7}}
+\newlabel{fig:f2}{{3}{7}}
 \citation{Pickrell1989}
 \citation{Flyvbjerg2006}
 \citation{Hardy2010}
@@ -35,41 +39,46 @@
 \citation{Currie2011}
 \citation{Durning2015}
 \citation{Gutierrez2011}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Model generation and Error Metrics}{7}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Metrics for assessing accuracy of predictions}{7}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Data distribution and regression selection}{7}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Analysis of population regression}}{8}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Ridership against population. Linear regression in red, log regression in blue.}}}{8}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Residual from linear regression against population}}}{8}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Residual from log regression against population}}}{8}}
-\newlabel{fig:popresid}{{3}{8}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Analysis of employment regression}}{8}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Ridership against employment. Linear regression in red, log regression in blue.}}}{8}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Residual from linear regression against employment}}}{8}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Residual from log regression against employment}}}{8}}
-\newlabel{fig:empresid}{{4}{8}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Regression of Population and Employment against ridership}}{9}}
-\newlabel{tab:regr2}{{1}{9}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Feature selection by LASSO regularization}{9}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Error for single variable OLS for selected features}}{10}}
-\newlabel{tab:students}{{2}{10}}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces OLS, Poisson, and LAD LASSO regression results}}{10}}
-\newlabel{tab:lasso}{{3}{10}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Feature selection by brute force}{11}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Graph of System (solid line) and Station (dotted line) score against number of features for OLS (black), Poisson (blue), and LAD (red) regression}}{11}}
-\newlabel{fig:bfscores}{{5}{11}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Model generation and Error Metrics}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Metrics for assessing accuracy of predictions}{8}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Analysis of population regression}}{9}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Ridership against population. Linear regression in red, log regression in blue.}}}{9}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Residual from linear regression against population}}}{9}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Residual from log regression against population}}}{9}}
+\newlabel{fig:popresid}{{4}{9}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Analysis of employment regression}}{9}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Ridership against employment. Linear regression in red, log regression in blue.}}}{9}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Residual from linear regression against employment}}}{9}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Residual from log regression against employment}}}{9}}
+\newlabel{fig:empresid}{{5}{9}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Regression of Population and Employment against ridership}}{10}}
+\newlabel{tab:regr2}{{1}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Data distribution and regression selection}{10}}
+\citation{Tibshirani1996}
+\citation{Boyd2004}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Regression types and packages used in analysis}}{11}}
+\newlabel{tab:regtype}{{2}{11}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Poisson regression with Identity link}{11}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Feature selection by LASSO regularization}{12}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Error for single variable OLS for selected features}}{13}}
+\newlabel{tab:students}{{3}{13}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces OLS, Poisson, and LAD LASSO regression results}}{13}}
+\newlabel{tab:lasso}{{4}{13}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Graph of System (solid line) and Station (dotted line) score against number of features for OLS (black), Poisson (blue), and LAD (red) regression}}{14}}
+\newlabel{fig:bfscores}{{6}{14}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Feature selection by brute force}{14}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Results of brute force regression analysis, with comparison to LASSO results}}{15}}
+\newlabel{tab:bfresults}{{5}{15}}
 \citation{Flyvbjerg2006}
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Results of brute force regression analysis, with comparison to LASSO results}}{12}}
-\newlabel{tab:bfresults}{{4}{12}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Conclusion and Future Work}{12}}
-\@writefile{toc}{\contentsline {section}{\numberline {A}Data sources}{14}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.1}Ridership data}{14}}
-\newlabel{app:ridership}{{A.1}{14}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2}US Census feature data sources}{14}}
-\newlabel{app:features}{{A.2}{14}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Conclusion and Future Work}{16}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Data sources}{17}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.1}Ridership data}{17}}
+\newlabel{app:ridership}{{A.1}{17}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2}US Census feature data sources}{17}}
+\newlabel{app:features}{{A.2}{17}}
 \bibstyle{unsrt}
-\@writefile{toc}{\contentsline {section}{\numberline {B}Summary of selected features}{15}}
-\newlabel{app:featuresum}{{B}{15}}
+\@writefile{toc}{\contentsline {section}{\numberline {B}Summary of selected features}{18}}
+\newlabel{app:featuresum}{{B}{18}}
 \bibdata{bibrefs}
 \bibcite{Boyle2006}{1}
 \bibcite{tcrp95}{2}
@@ -89,3 +98,5 @@
 \bibcite{Pickrell1989}{16}
 \bibcite{Flyvbjerg2006}{17}
 \bibcite{Hardy2010}{18}
+\bibcite{Tibshirani1996}{19}
+\bibcite{Boyd2004}{20}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.9.26)  17 APR 2018 16:04
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.9.26)  30 APR 2018 14:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -493,69 +493,81 @@ File: images/geo_point_demonstration.png Graphic file (type png)
 Package pdftex.def Info: images/geo_point_demonstration.png used on input line 
 65.
 (pdftex.def)             Requested size: 438.06296pt x 246.35864pt.
- [4 <./images/geo_point_demonstration.png>]
+ [4 <./images/geo_point_demonstration.png>] <images/estvarstdev.png, id=22, 462
+.528pt x 346.896pt>
+File: images/estvarstdev.png Graphic file (type png)
 
-LaTeX Warning: Reference `fig:mcvar' on page 5 undefined on input line 75.
+<use images/estvarstdev.png>
+Package pdftex.def Info: images/estvarstdev.png used on input line 79.
+(pdftex.def)             Requested size: 234.8775pt x 176.15768pt.
 
-<images/transfer_demonstration.png, id=22, 655.69969pt x 513.41812pt>
+<images/estvarcov.png, id=24, 462.528pt x 346.896pt>
+File: images/estvarcov.png Graphic file (type png)
+
+<use images/estvarcov.png>
+Package pdftex.def Info: images/estvarcov.png used on input line 80.
+(pdftex.def)             Requested size: 234.8775pt x 176.15768pt.
+ [5]
+<images/transfer_demonstration.png, id=30, 655.69969pt x 513.41812pt>
 File: images/transfer_demonstration.png Graphic file (type png)
 
 <use images/transfer_demonstration.png>
-Package pdftex.def Info: images/transfer_demonstration.png used on input line 8
-4.
+Package pdftex.def Info: images/transfer_demonstration.png used on input line 9
+1.
 (pdftex.def)             Requested size: 458.98665pt x 359.39023pt.
- [5] [6 <./images/transfer_demonstration.png>] <images/popvrider.png, id=31, 46
-2.528pt x 346.896pt>
+ [6 <./images/estvarstdev.png> <./images/estvarcov.png>] [7 <./images/transfer_
+demonstration.png>]
+<images/popvrider.png, id=43, 462.528pt x 346.896pt>
 File: images/popvrider.png Graphic file (type png)
 
 <use images/popvrider.png>
-Package pdftex.def Info: images/popvrider.png used on input line 109.
+Package pdftex.def Info: images/popvrider.png used on input line 120.
 (pdftex.def)             Requested size: 234.8775pt x 176.15768pt.
 
-<images/poplinresid.png, id=33, 462.528pt x 346.896pt>
+<images/poplinresid.png, id=45, 462.528pt x 346.896pt>
 File: images/poplinresid.png Graphic file (type png)
 
 <use images/poplinresid.png>
-Package pdftex.def Info: images/poplinresid.png used on input line 111.
+Package pdftex.def Info: images/poplinresid.png used on input line 122.
 (pdftex.def)             Requested size: 234.8775pt x 176.15768pt.
 
-<images/poplogresid.png, id=35, 462.528pt x 346.896pt>
+<images/poplogresid.png, id=47, 462.528pt x 346.896pt>
 File: images/poplogresid.png Graphic file (type png)
 
 <use images/poplogresid.png>
-Package pdftex.def Info: images/poplogresid.png used on input line 113.
+Package pdftex.def Info: images/poplogresid.png used on input line 124.
 (pdftex.def)             Requested size: 234.8775pt x 176.15768pt.
 
-<images/empvrider.png, id=37, 462.528pt x 346.896pt>
+<images/empvrider.png, id=49, 462.528pt x 346.896pt>
 File: images/empvrider.png Graphic file (type png)
 
 <use images/empvrider.png>
-Package pdftex.def Info: images/empvrider.png used on input line 118.
+Package pdftex.def Info: images/empvrider.png used on input line 129.
 (pdftex.def)             Requested size: 234.8775pt x 176.15768pt.
 
-<images/emplinresid.png, id=39, 462.528pt x 346.896pt>
+<images/emplinresid.png, id=51, 462.528pt x 346.896pt>
 File: images/emplinresid.png Graphic file (type png)
 
 <use images/emplinresid.png>
-Package pdftex.def Info: images/emplinresid.png used on input line 120.
+Package pdftex.def Info: images/emplinresid.png used on input line 131.
 (pdftex.def)             Requested size: 234.8775pt x 176.15768pt.
 
-<images/emplogresid.png, id=41, 462.528pt x 346.896pt>
+<images/emplogresid.png, id=53, 462.528pt x 346.896pt>
 File: images/emplogresid.png Graphic file (type png)
 
 <use images/emplogresid.png>
-Package pdftex.def Info: images/emplogresid.png used on input line 122.
+Package pdftex.def Info: images/emplogresid.png used on input line 133.
 (pdftex.def)             Requested size: 234.8775pt x 176.15768pt.
- [7] [8 <./images/popvrider.png> <./images/poplinresid.png> <./images/poplogres
+ [8] [9 <./images/popvrider.png> <./images/poplinresid.png> <./images/poplogres
 id.png> <./images/empvrider.png> <./images/emplinresid.png> <./images/emplogres
-id.png>] [9] [10]
-<images/bfregress.png, id=71, 462.528pt x 346.896pt>
+id.png>] [10] [11] [12] [13]
+<images/bfregress.png, id=91, 462.528pt x 346.896pt>
 File: images/bfregress.png Graphic file (type png)
 
 <use images/bfregress.png>
-Package pdftex.def Info: images/bfregress.png used on input line 208.
-(pdftex.def)             Requested size: 234.8775pt x 176.15768pt.
- [11 <./images/bfregress.png>] [12] [13]
+Package pdftex.def Info: images/bfregress.png used on input line 276.
+(pdftex.def)             Requested size: 375.80544pt x 281.86818pt.
+ [14 <./images/bfregress.png>] [15] [16]
 Missing character: There is no â in font txr!
 Missing character: There is no € in font txr!
 Missing character: There is no ˜ in font txr!
@@ -568,43 +580,41 @@ Missing character: There is no ˜ in font txr!
 Missing character: There is no â in font txr!
 Missing character: There is no € in font txr!
 Missing character: There is no ™ in font txr!
- [14]
-[15] (./final_draft.bbl
+ [17]
+[18] (./final_draft.bbl
 Missing character: There is no Ã in font txr!
 Missing character: There is no © in font txr!
 Missing character: There is no Ã in font txr!
 Missing character: There is no ­ in font txr!
- [16]
+ [19]
 Missing character: There is no Ã in font txr!
 Missing character: There is no © in font txr!
 Missing character: There is no Ã in font txr!
 Missing character: There is no ¸ in font txr!
-) [17] (./final_draft.aux)
-
-LaTeX Warning: There were undefined references.
-
- ) 
+) [20] (./final_draft.aux) ) 
 Here is how much of TeX's memory you used:
- 5081 strings out of 494910
- 73670 string characters out of 6179836
- 145625 words of memory out of 5000000
- 8248 multiletter control sequences out of 15000+600000
- 48823 words of font info for 125 fonts, out of 8000000 for 9000
+ 5143 strings out of 494910
+ 74560 string characters out of 6179836
+ 145651 words of memory out of 5000000
+ 8293 multiletter control sequences out of 15000+600000
+ 64669 words of font info for 164 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 38i,11n,49p,1262b,409s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
-e/texmf-dist/fonts/type1/public/txfonts/rtxi.pfb></usr/share/texlive/texmf-dist
-/fonts/type1/public/txfonts/rtxmi.pfb></usr/share/texlive/texmf-dist/fonts/type
-1/public/txfonts/rtxr.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txf
-onts/txex.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/txsy.pf
-b></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/txtt.pfb></usr/shar
-e/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf
--dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/typ
-e1/urw/times/utmri8a.pfb>
-Output written on final_draft.pdf (17 pages, 856714 bytes).
+ 38i,15n,49p,1262b,406s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base
+/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/rtxbmi.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/rtxi.pfb></usr/share/te
+xlive/texmf-dist/fonts/type1/public/txfonts/rtxmi.pfb></usr/share/texlive/texmf
+-dist/fonts/type1/public/txfonts/rtxr.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/public/txfonts/txex.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
+/txfonts/txsy.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/txs
+yb.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/txfonts/txtt.pfb></usr
+/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/
+texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/font
+s/type1/urw/times/utmri8a.pfb>
+Output written on final_draft.pdf (20 pages, 932604 bytes).
 PDF statistics:
- 127 PDF objects out of 1000 (max. 8388607)
- 74 compressed objects within 1 object stream
+ 153 PDF objects out of 1000 (max. 8388607)
+ 89 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 82 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 104 words of extra memory for PDF output out of 10000 (max. 10000000)
 

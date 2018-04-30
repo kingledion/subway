@@ -26,6 +26,8 @@ def linearNet(Xtrain, ytrain, Xtest):
     
     return coef, pred
 
+def logNet(Xtrain, ytrain, Xtest):
+
 
 def poissonNet(Xtrain, ytrain, Xtest):
     
@@ -46,6 +48,9 @@ def poissonNet(Xtrain, ytrain, Xtest):
     
     
     return coef, pred
+
+
+def poissIdenNet(Xtrain, ytrain, Xtest):
 
 
 if __name__ == "__main__":

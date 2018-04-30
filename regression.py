@@ -74,8 +74,24 @@ def poissonF(Xtrain, ytrain, Xtest):
     return results.predict(Xtest)
 
 
+def poissIdentF(Xtrain, ytrain, Xtest):
+    
+    Xtrain = sm.add_constant(Xtrain)
+    Xtest = sm.add_constant(Xtest, has_constant='add')
+        # For the case of atlanta, the network is small enough that the 60net feature are equal for all stations
+        # this will cause a second constant to be added, and a garbage result, unfortunately.
+   
+    model = sm.GLM(ytrain, Xtrain, family=sm.families.Poisson(), link =sm.families.links.identity())
+    results = model.fit()
+    
+    maxs = pd.Series(np.amax(Xtrain, axis=0))
+    Xtest = Xtest.clip(upper=maxs, axis=1)
+    
+    return results.predict(Xtest)
 
-def lstSqF(Xtrain, ytrain, Xtest):
+
+
+def linearF(Xtrain, ytrain, Xtest):
     
     Xtrain = sm.add_constant(Xtrain)
     Xtest = sm.add_constant(Xtest, has_constant='add')
@@ -84,6 +100,18 @@ def lstSqF(Xtrain, ytrain, Xtest):
     results = model.fit()
        
     return results.predict(Xtest)
+
+
+def logF(Xtrain, ytrain, Xtest):
+    
+    Xtrain = sm.add_constant(Xtrain)
+    Xtest = sm.add_constant(Xtest, has_constant='add')
+        
+    model = sm.GLM(ytrain, Xtrain, family=sm.families.Gaussian())
+    results = model.fit()
+       
+    return results.predict(Xtest)
+    
 
 def LADF(Xtrain, ytrain, Xtest):
     

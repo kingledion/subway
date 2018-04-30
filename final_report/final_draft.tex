@@ -72,7 +72,14 @@ An example using zip code 02127, the South Boston neighborhood of Boston, illust
 
 With any Monte Carlo method, there is variance in the feature data generated. To keep variance to an acceptably low level, we must generate enough sample points in the Monte Carlo method.  The land area of the zip codes near the studied transit networks vary in size from as small as 30 hectare in downtown Chicago to as much as 18100 hectares at the suburban end of transit line in Dallas. We to provide a balance between accuracy and processing speed, we use one point per hectare, but with a minimum limit of 1000 points per zip code. This effectively provides over 10 points per hectare in for the zip codes in the densest parts of the studied networks: the downtown areas of Chicago and Boston. 
 
-We generate 100 sets of projections for the a single feature (total population) for all stations in the six transit networks. Figure \ref{fig:mcvar} is a graph of means against standard deviation.
+We generate 100 sets of projections for the a single feature (total population) for all stations in the six transit networks. Figure \ref{fig:mcvar}(a) is a graph of means against standard deviation, while Figure \ref{fig:mcvar}(b) is means against coefficient of variation. The standard deviation shows an expected  linearly increasing relationship with the population mean.  The coefficient of variation is never greater than 10.4\% and generally decreases with increasing estimated mean population. The mean coefficient of variance over all studied stations is 5.3\%
+
+\begin{figure}[H]
+\centering
+\subfloat[Standard deviation versus mean by zip code]{\includegraphics[clip,width=0.5\columnwidth]{estvarstdev}}
+\subfloat[Coefficient of variation versus mean by zip code]{\includegraphics[clip,width=0.5\columnwidth]{estvarcov}}
+\caption{Indications of variance for Monte Carlo estimates of the population feature}\label{fig:mcvar}
+\end{figure}
 
   
 
@@ -94,8 +101,12 @@ For each station and each `Need Index' type feature, the total sum of all statio
 
 In general, the projected ridership forecasts of new transit infrastructure investments significantly overestimates transit ridership. The pioneering study in this field by Pickrell in 1989 \cite{Pickrell1989} found that for ten rail projects completed between 1977 and 1985, and assessed between 1986 and 1989, the actual ridership was between 28\% and 85\% lower than projected. A 2006 study \cite{Flyvbjerg2006} of 25 major passenger rail projects in  in 14 nations found that 21 of the projects had actual ridership below projections, with the average system ridership 48\% below the projection. Accurate assessment of projection accuracy is imperative for creating ridership estimates that serve the public interest.
 
-To assess the results of regression analysis, there should be two metrics used: one for the total system level ridership, and another for station level ridership. Following Pickrell, the metric for system-wide projection accuracy is standard percentage error in total system ridership, which we will refer to as system error. Hardy \cite{Hardy2010} extends Pickrell's analysis by including absolute station error for stations on newly added sections of an existing transit network. Following Hardy, a measure of station level error on a network is summed absolute error of all station projections. The rail networks in this study vary widely in total ridership; therefore, to allow network to network comparison, this summed absolute station error can divided by total system ridership. The resulting metric for station error given a projected ($y_{proj}$) and actual ridership ($y_{true}$) is 
-$$SSE = \dfrac{\sum\limits_{i\,\in\,\text{all station}}\left|y_{proj, i} - y_{true, i}\right|}{\sum\limits_{i\,\in\,\text{all station}} y_{true, i}}$$
+To assess the results of regression analysis, there should be two metrics used: one for the total system level ridership, and another for station level ridership. Following Pickrell, the metric for system-wide projection accuracy is standard percentage error in total system ridership, which we will refer to as system error. 
+$$E_{system} = \dfrac{\left|\,\sum\limits_{i\,\in\,\text{stations}} y_{i, proj} - \sum\limits_{i\,\in\,\text{stations}} y_{i, true}\,\right|}{\sum\limits_{i\,\in\,\text{stations}} y_{i, true}}$$
+where $y_{proj}$ is the projected ridership and $y_{true}$ the true ridership for each station, and are summed over all stations.
+
+Hardy \cite{Hardy2010} extends Pickrell's analysis by including absolute station error for stations on newly added sections of an existing transit network. Following Hardy, a measure of station level error on a network is summed absolute error of all station projections. The rail networks in this study vary widely in total ridership; therefore, to allow network to network comparison, this summed absolute station error can divided by total system ridership. The resulting metric for station error given a projected ($y_{proj}$) and actual ridership ($y_{true}$) is 
+$$E_{station} = \dfrac{\sum\limits_{i\,\in\,\text{stations}}\left|\,y_{i, proj} - y_{i, true}\,\right|}{\sum\limits_{i\,\in\,\text{stations}} y_{i, true}}.$$
 
 
 
@@ -129,6 +140,8 @@ $$SSE = \dfrac{\sum\limits_{i\,\in\,\text{all station}}\left|y_{proj, i} - y_{tr
 
 Regression models for station level ridership have used ordinary least squares regression \cite{Kuby2004, Taylor2008, Currie2011, Durning2015, Gutierrez2011} to generate predictions. We investigate the applicability of more complex regression models.
 
+The metrics for projection accuracy depend on the absolute difference between actual and predicted ridership. This suggests that Least Absolute Deviations (LAD) regression is appropriate for this problem. Since the response variable (ridership) is counts, and the variance of ridership increases with increasing employment, we will also use Poisson regression. Finally, we will use ordinary least squares (OLS) regression as a baseline comparison, to see if the other methods have any performance advantage.
+
 
 There are generally two types of feature included in this survey: those that are related to population and those that are related to employment. Features such as the population with college degrees and number of housing units will be related to total population. Features such as the number of jobs in finance or hospitality will be related to the total number of jobs. A plot of all stations' population versus ridership appears in Figure \ref{fig:popresid} with linear and logarithmic regression lines and residuals. A similar treatment for employment versus ridership appears in Figure \ref{fig:empresid}. The coefficient of determination for the two regression types for both population and employment are shown in Table \ref{tab:regr2}.
 
@@ -143,13 +156,68 @@ Employment&0.1948&0.1878 \\
 \caption{Regression of Population and Employment against ridership}\label{tab:regr2}
 \end{table}
 
-The metrics for projection accuracy depend on the absolute difference between actual and predicted ridership. This suggest that Least Absolute Deviations (LAD) regression is appropriate for this problem. Since the response variable (ridership) is counts, and the variance of ridership increases with increasing employment, we will also use Poisson regression. Finally, we will use ordinary least squares (OLS) regression as a baseline comparison, to see if the other methods have any performance advantage.
 
-As demonstrated in Table \ref{tab:regr2}, there does not appear to be any modeling advantage from using either a linear or logarithmic link function. We are testing both version by using LAD and OLS with identity link, and Poisson with a log link.
+The domain of the dependent variable, ridership, is $[0, \infty)$, so a log link function is a reasonable assumption for this model. As demonstrated in Table \ref{tab:regr2}, there does not appear to be any modeling advantage from using either an identity or logarithmic link function. We test both link functions by testing OLS and LAD with identity link, and both the identity and log link functions for Poisson regression.
+
+
+There are 94 possible features, while some transit networks have as few as 38 stations. Feature selection is necessary to prevent the model from being overspecified. We use two methods of feature selection for each of the five regression types: LASSO regression and a `brute force' method. A chart of packages used for implementation follows.
+
+\begin{table} 
+\centering
+\begin{tabular}{lll}
+\toprule Regression&Link&package\\
+\midrule Least Sqaures&Identity&LASSO: \texttt{glmnet} for Python\\
+&&Brute force: \texttt{statsmodels} for Python\\
+LAD&Identity&LASSO:\texttt{flare} for R\\
+&&Brute force: \texttt{statsmodels} for Python\\
+Poisson&Log&LASSO:\texttt{glmnet} for Python\\
+&&Brute force: \texttt{statsmodels} for Python\\
+&Identity&LASSO: Author-created\\
+&&Brute force: \texttt{statsmodels} for Python\\
+\bottomrule
+\end{tabular}
+\caption{Regression types and packages used in analysis}
+\label{tab:regtype}
+\end{table}
+
+\subsection{Poisson regression with Identity link}
+
+With no suitable package to perform LASSO regression using Poisson regression and the identity link, we implement this method.
+
+For the identity link, the mean of the predicted Poisson distribution is given by $$E(Y\,|\,x) = \boldsymbol{\theta}'\mathbf{x}.$$ This mean is entered in the Poisson probability mass distribution to get 
+$$p(y_1,...,y_m|x_1,...,x_m;\boldsymbol{\theta}) = \prod_{i=1}^m \frac{\left(\boldsymbol{\theta}'x_i\right)^{y_i}e^{-\boldsymbol{\theta}'x_i}}{y_i!} $$
+The negative log likelihood of this distribution is the objective function
+$$-\mathcal{L}\left(\boldsymbol{\theta}\,|\,X, Y\right) = \sum_{i=1}^m y_i-\log{\left(\boldsymbol{\theta}'x_i\right)} +\boldsymbol{\theta}'x_i. $$ This function is convex and so the minimum can be obtained using convex optimization methods. 
+
+To implement LASSO \cite{Tibshirani1996}, we use the primal-dual interior point method from Boyd and Vandenberghe \cite{Boyd2004}. There are no equality constraints for this problem, and only one inequality constraint so we have
+
+\begin{center}\begin{tabular}{ll}
+minimize &$f_0(x)$\\
+subject to &$f_1(x) \leq 0, \quad i = 1, ..., m$.
+\end{tabular}\end{center}
+
+Both $f_0$ and $f_1$ must be convex and twice continuously differentiable. 
+\begin{align*}
+f_0 =& \sum_{i=1}^m y_i-\log{\left(\boldsymbol{\theta}'x_i\right)} +\boldsymbol{\theta}'x_i \\
+\nabla f_0 =& \sum_{i=1}^m \dfrac{x_i\left(y_i-\boldsymbol{\theta}'x_i\right)}{\boldsymbol{\theta}'x_i}\\
+\nabla^2 f_0 =& \sum_{i=1}^m\dfrac{y_i x_i^2}{\left(\boldsymbol{\theta}'x_i\right)^2}\\[0.2in]
+f_1 =& \sum_{i=1}^m |\,\theta_i\,| - t \\
+\nabla f_1 =& 
+\end{align*}
+We establish Karush-Kuhn-Tucker (KKT) conditions for optimizing the objective function subject to constraints.
+The primal optimization is of $\boldsymbol{\theta}^* \in \mathbb{R}^m$
+ so the conditions are met by 
+\begin{align*}
+f_1 \leq& \,0\\
+\lambda \geq& \,0\\
+\nabla f_0 + \nabla f_1 =& \,0
+\end{align*}
+
+
 
 \subsection{Feature selection by LASSO regularization}
 
-Upon performing regression analysis, it became immediately apparent that one set of features was different from the others. The number of students within a 15 or 30 minute transit trip proved to be a very accurate measurement of system level ridership. These variable are represented in the model as \texttt{15net\_students} and \texttt{30net\_students}, respectively. We show the results of a single variable OLS regression of the one variable against ridership. The scores are the average of the six way cross-validation across the six transit networks in the study. The `best' scoring other feature (\texttt{15net\_hunits\_old}; the number of housing units built before 1940 within a 15 minute transit ride) is shown for comparison.
+Upon performing regression analysis, it becomes immediately apparent that one set of features is was different from the others. The number of students within a 15 or 30 minute transit trip is a very accurate measurement of system level ridership. These variable are represented in the model as \texttt{15net\_students} and \texttt{30net\_students}, respectively. We show the results of a single variable OLS regression of the one variable against ridership. The scores are the average of the six way cross-validation across the six transit networks in the study. The `best' scoring other feature (\texttt{15net\_hunits\_old}; the number of housing units built before 1940 within a 15 minute transit ride) is shown for comparison.
 
 \begin{table}
 \centering
@@ -163,7 +231,7 @@ Upon performing regression analysis, it became immediately apparent that one set
 \caption{Error for single variable OLS for selected features}\label{tab:students}
 \end{table}
 
-The system error scores for \texttt{30net\_students} and \texttt{15net\_students} are much lower than for any other variable, while the station error for these features are also lower than any other features. As we will see, the single-feature OLS of either of these features produces a model that is approximately as good as any other model we will develop. This raises questions about the relationship between the feature and the response variable. It is possible that the population of students within walking distance of a transit station is driven by the availability of local transit. In that case, number of students is not a valid explanatory variable. Since the relationship is unclear, but the features are outliers, we will remove all features derived from number of students from the model.
+The system error scores for \texttt{30net\_students} and \texttt{15net\_students} are much lower than for any other variable, while the station error for these features are also lower than any other features. As we will see, the single-feature OLS of either of these features produces a model that is approximately as good as any other model we will develop. This raises questions about the relationship between the feature and the response variable. It is possible that the population of students within walking distance of a transit station is driven by the availability of local transit, and not the other way around. In that case, number of students is not a valid explanatory variable. Since the relationship is unclear, but the features are outliers, we will remove all features derived from number of students from the model.
 
 OLS and Poisson LASSO regression are performed using the \texttt{glmnet} package in R. LAD LASSO is performed using the \texttt{flare} package. The \texttt{glmnet} does automatic $\lambda$ selection; for \texttt{flare} the author created a comparable $\lambda$ search algorithm. Table \ref{tab:lasso} shows the results for the three regression types. 
 
@@ -203,13 +271,12 @@ There is a large variance in number of features chosen, even within a single reg
 Since the data set for this problem is small--with only 466 total stations--we can validate the LASSO results using a `brute force' approach. The brute force method is a greedy search of all possible features to find the best `path' to a regression solution. First, all features are checked by regression against ridership. Since we have two 'score' metrics, we use the average of system and station error to determine the best feature in each step. Each feature is checked in six-way cross validation. Each of the six cities is used as the test set while the other five are used for the training set. The average over all six cross-validation runs for each metric is what is reported in the charts below. 
 
 
-\begin{wrapfigure}{r}{0.5\textwidth}
+\begin{figure}
 \centering
-\includegraphics[width=\linewidth]{bfregress}
+\includegraphics[width=0.8\linewidth]{bfregress}
 \vspace{-10pt}
 \caption{Graph of System (solid line) and Station (dotted line) score against number of features for OLS (black), Poisson (blue), and LAD (red) regression}\label{fig:bfscores}
-\end{wrapfigure}
-
+\end{figure}
 
 
 After choosing the one feature that yields the highest score, we then select a second feature to add to the regression in in the same way, and iteratively add more features. The subsequent steps are multiple regressions using all of the already chosen features. We select the fist 25 features with this method and graph the resulting system and station error scores in Figure \ref{fig:bfscores}. 
@@ -251,7 +318,7 @@ All three regression types are able to give systemwide ridership estimates with 
 
 Future work in on this model could proceed in two directions. The first direction is to continue improvement of the source data. This project used only zip code shapes to estimate counting features, since job and housing data was available only for the zip code, but the population features exist in more granular detail at the Census Tract level. The author generated exclusion zones which were designed to prevent job and people from being located in parks and water could be improved by incorporating detailed city land use maps. Finally, there is a major deficiency in source data is that government workers are not included in the data sources used by the model. Of particular concern are university employment; university jobs within walking distance was a selected feature in five of the six models. Several large universities are located on the transit networks of this study and were not accounted for, such as Illinois-Chicago, Colorado-Denver, and UMass-Boston. For other cities that have very large public universities, like Minneapolis or Columbus, this would significantly affect the validity of any estimates.
 
-The second direction is improvements of the model itself. The feature summary for this paper only analyzed selection of a feature by either the LASSO or brute force method. There remains to be done an analysis of the magnitude and direction of each feature's coefficient, to ensure that frequently selected features are significant. The R package \texttt{glmnet} is capable of performing ElasticNet regression, but for this work only $\mathcal{l}_1$, LASSO regularization was used. For OLS and Poisson, a mixed regularization may be able to improve the performance of the feature selection. 
+The second direction is improvements of the model itself. The feature summary for this paper only analyzed selection of a feature by either the LASSO or brute force method. There remains to be done an analysis of the magnitude and direction of each feature's coefficient, to ensure that frequently selected features are significant. The R package \texttt{glmnet} is capable of performing ElasticNet regression, but for this work only $\ell_1$, LASSO regularization was used. For OLS and Poisson, a mixed regularization may be able to improve the performance of the feature selection. 
 
 
 \pagebreak
