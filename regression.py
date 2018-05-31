@@ -62,8 +62,6 @@ def poissonF(Xtrain, ytrain, Xtest):
     
     Xtrain = sm.add_constant(Xtrain)
     Xtest = sm.add_constant(Xtest, has_constant='add')
-        # For the case of atlanta, the network is small enough that the 60net feature are equal for all stations
-        # this will cause a second constant to be added, and a garbage result, unfortunately.
    
     model = sm.GLM(ytrain, Xtrain, family=sm.families.Poisson())#, link =sm.families.links.identity())
     results = model.fit()
@@ -78,18 +76,11 @@ def poissIdentF(Xtrain, ytrain, Xtest):
     
     Xtrain = sm.add_constant(Xtrain)
     Xtest = sm.add_constant(Xtest, has_constant='add')
-        # For the case of atlanta, the network is small enough that the 60net feature are equal for all stations
-        # this will cause a second constant to be added, and a garbage result, unfortunately.
    
     model = sm.GLM(ytrain, Xtrain, family=sm.families.Poisson(), link =sm.families.links.identity())
     results = model.fit()
     
-    maxs = pd.Series(np.amax(Xtrain, axis=0))
-    Xtest = Xtest.clip(upper=maxs, axis=1)
-    
     return results.predict(Xtest)
-
-
 
 def linearF(Xtrain, ytrain, Xtest):
     
@@ -104,13 +95,21 @@ def linearF(Xtrain, ytrain, Xtest):
 
 def logF(Xtrain, ytrain, Xtest):
     
+    ytrain = np.log(ytrain)
+    
     Xtrain = sm.add_constant(Xtrain)
     Xtest = sm.add_constant(Xtest, has_constant='add')
+    
         
+    #model = sm.GLM(ytrain, Xtrain, family=sm.families.Gaussian(), link = sm.families.links.Log())
     model = sm.GLM(ytrain, Xtrain, family=sm.families.Gaussian())
     results = model.fit()
-       
-    return results.predict(Xtest)
+    
+    maxs = pd.Series(np.amax(Xtrain, axis=0))
+    Xtest = Xtest.clip(upper=maxs, axis=1)
+     
+    res = results.predict(Xtest)
+    return np.exp(res)
     
 
 def LADF(Xtrain, ytrain, Xtest):
@@ -154,7 +153,7 @@ if __name__ == "__main__":
         touse = set(cols) - set(used)
         #print(touse)
         #print(list(used) + [list(touse)[0]])
-        scoremap = [(c, scoreCV(lstSqF, pairs, list(used) + [c], c)) for c in set(cols) - set(used)]
+        scoremap = [(c, scoreCV(LADF, pairs, list(used) + [c], c)) for c in set(cols) - set(used)]
         #for name, scores in sorted(scoremap, key=lambda x: np.mean(x[1]), reverse=True):
         #    print(name, np.mean([i[0] for i in scores]), np.mean([i[1] for i in scores]))
         name, scores = sorted(scoremap, key=lambda x: np.mean(x[1]))[0]

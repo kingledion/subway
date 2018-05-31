@@ -12,6 +12,8 @@ from glmnet import glmnet; from glmnetPredict import glmnetPredict; from glmnetC
 from cvglmnet import cvglmnet; from cvglmnetPredict import cvglmnetPredict; from cvglmnetCoef import cvglmnetCoef
 from regression import loadData, citylist
 
+from nppli import ipsolver
+
 
 def linearNet(Xtrain, ytrain, Xtest):
     
@@ -19,14 +21,38 @@ def linearNet(Xtrain, ytrain, Xtest):
     ytrain = np.array(ytrain, dtype='float64')
     Xtest = np.array(Xtest, dtype='float64')
     
+    Xtrain, Xtest = normalize(Xtrain, Xtest)
+    
     fit = cvglmnet(x=Xtrain, y=ytrain, alpha=1)
     coef = cvglmnetCoef(fit, s = "lambda_1se")
     
     pred = cvglmnetPredict(fit, Xtest, s="lambda_1se")
     
+    print(coef.shape, pred.shape)
+    
     return coef, pred
 
 def logNet(Xtrain, ytrain, Xtest):
+    
+    Xtrain = np.array(Xtrain, dtype='float64')
+    ytrain = np.array(ytrain, dtype='float64')
+    ytrain = np.log(ytrain)
+    Xtest = np.array(Xtest, dtype='float64')
+    
+    Xtrain, Xtest = normalize(Xtrain, Xtest)
+    
+    fit = cvglmnet(x=Xtrain, y=ytrain, alpha=1)
+    coef = cvglmnetCoef(fit, s = "lambda_1se")
+    
+    maxs = np.amax(Xtrain, axis=0)
+    Xtest = np.clip(Xtest, 0, maxs)
+    
+    pred = cvglmnetPredict(fit, Xtest, s="lambda_1se")
+    pred = np.exp(pred)
+    
+    print(coef.shape, pred.shape)
+    
+    return coef, pred
 
 
 def poissonNet(Xtrain, ytrain, Xtest):
@@ -34,6 +60,8 @@ def poissonNet(Xtrain, ytrain, Xtest):
     Xtrain = np.array(Xtrain, dtype='float64')
     ytrain = np.array(ytrain, dtype='float64')
     Xtest = np.array(Xtest, dtype='float64')
+    
+    Xtrain, Xtest = poissonize(Xtrain, Xtest)
     
     fit = cvglmnet(x=Xtrain.copy(), y=ytrain.copy(), alpha=1, family = 'Poisson')
     coef = cvglmnetCoef(fit, s = "lambda_1se")
@@ -46,12 +74,40 @@ def poissonNet(Xtrain, ytrain, Xtest):
     #print(coef)
     #print(pred)
     
+    print(coef.shape, pred.shape)
+    
     
     return coef, pred
 
 
-def poissIdenNet(Xtrain, ytrain, Xtest):
+def poissIdentNet(Xtrain, ytrain, Xtest):
+    
+    Xtrain = np.array(Xtrain, dtype='float64')
+    ytrain = np.array(ytrain, dtype='float64')
+    Xtest = np.array(Xtest, dtype='float64')
+    
+    Xtrain, Xtest = poissonize(Xtrain, Xtest)
+    
+    coef = ipsolver(Xtrain, ytrain)
+    
+    pred = Xtest @ coef
+    
+    print(coef.shape, pred.shape)
+    
+    return np.insert(coef, 0, 1), pred
 
+def normalize(Xtrain, Xtest): 
+    
+    rowmean = np.mean(Xtrain, axis=0)
+    rowstd = np.std(Xtrain, axis=0)
+    
+    return (Xtrain - rowmean)/rowstd, (Xtest - rowmean)/rowstd
+    
+def poissonize(Xtrain, Xtest):
+    
+    rowmean = np.mean(Xtrain, axis=0)
+    
+    return Xtrain/rowmean, Xtest/rowmean
 
 if __name__ == "__main__":
     # get all features
@@ -73,7 +129,7 @@ if __name__ == "__main__":
         ytest = df2['riders']
         
         print(list(l2)[0])
-        coef, ypred = poissonNet(Xtrain, ytrain, Xtest) 
+        coef, ypred = logNet(Xtrain, ytrain, Xtest) 
         
         all_coefs[list(l2)[0]] =  [1 if i else 0 for i in coef[1:]]
                        

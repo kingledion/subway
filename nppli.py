@@ -8,7 +8,21 @@ Created on Wed Apr 18 17:53:02 2018
 
 import numpy as np
 
-def ipsolver(X, y, objective, gradient, hessian, eps = 1e-6):
+def ipsolver(X, y, eps = 1e-10):
+    
+    
+    def objective(X, y, beta):
+        return np.sum(X @ beta) - np.sum(y @ np.log(X @ beta))
+
+    def gradient(X, y, beta):
+        #print("Grad in:", X.shape, y.shape, beta.shape)
+        dinv = np.diag(1/(X @ beta))
+        #print("dinv:", dinv.shape)
+        return -1*np.sum(X.T @ (dinv * (y - X @ beta)), axis=1)
+    
+    def hessian(X, y, beta):
+        dinv = np.diag(1/(X @ beta))
+        return X.T @ (y * dinv**2 ) @ X
     
     # no error checking!
     X = np.array(X)
@@ -20,26 +34,30 @@ def ipsolver(X, y, objective, gradient, hessian, eps = 1e-6):
         print("X and y do not match in dimensions")
         return False
     
+    #print(X.shape, y.shape)
+    
     beta = np.array([i if i>= 0 else eps for i in X.T @ y])
     lamb = 1 / beta
     mu = 10   # why?
     sigma = 0.95
-    kappa = 0.05
+    kappa = 0.01
     eta = sum(beta * lamb) # = # columns of X = len(beta) = p
     
     CONVERGE = False
     
     while not CONVERGE:
         
-        print('Convergence Loop')
-        print(beta)
-        print(lamb)
+        #print('Convergence Loop')
+        #print("Beta:", beta)
+        #print("Lambda:", lamb)
         
         
         
         gamma = p*mu/eta  # = mu while eta = p
+        #print(X.shape, y.shape, beta.shape)
         rdual = gradient(X, y, beta) - lamb
         rcent = lamb * beta - 1/gamma
+        #print(g.shape, rdual.shape, rcent.shape)
         normold = np.sqrt(np.sum([rdual**2, rcent**2]))
         hess = hessian(X, y, beta)
         hess = hess + np.diag(lamb/beta)
@@ -53,9 +71,10 @@ def ipsolver(X, y, objective, gradient, hessian, eps = 1e-6):
         
         FINISHED = False
         stepsize = -lamb / del_lambda
-        print("delta lambda and stepsize")
-        print(del_lambda)
-        print(stepsize)
+        #print("delta beta, delta lambda and stepsize")
+        #print(del_beta)
+        #print(del_lambda)
+
         if any([i > 0 for i in stepsize]):
             stepsize = 0.99 * min([i for i in stepsize if i > 0])
         else:
@@ -63,6 +82,8 @@ def ipsolver(X, y, objective, gradient, hessian, eps = 1e-6):
         
         while (not all ([i > 0 for i in beta + stepsize * del_beta])):
             stepsize = stepsize * sigma
+            
+        #print(stepsize)
                 
         while (not FINISHED):
             beta = beta + stepsize * del_beta
@@ -75,42 +96,29 @@ def ipsolver(X, y, objective, gradient, hessian, eps = 1e-6):
                 stepsize = stepsize * sigma
             if stepsize < 0.5 * eps:
                 print("Cancelled stepsize selection")
-                exit()
+                FINISHED = True
+                CONVERGE = True
+                #exit()
                 
-            print("Finished loop")
-            print(beta)
-            print(lamb + stepsize * del_lambda)
+            #print("Finished loop")
+            #print(beta)
+            #print(lamb + stepsize * del_lambda)
         
         lamb = lamb + stepsize * del_lambda
         
         eta = sum(beta * lamb)
         if np.sqrt(np.sum(rdual**2)) < eps and eta < eps:
             CONVERGE = True
-            
-        input()
-            
-    print(beta)
-            
-            
-        
-        
     
-    
-       
+    ret = np.array([b if b > eps else 0 for b in beta])
+    #print(ret)
+    return ret
+            
+            
         
         
         
-        
-def objective(X, y, beta):
-    return np.sum(X @ beta) - np.sum(y @ np.log(X @ beta))
 
-def gradient(X, y, beta):
-    dinv = np.diag(1/(X @ beta))
-    return -1*np.sum(X.T @ (dinv * (y - X @ beta)), axis=1)
-
-def hessian(X, y, beta):
-    dinv = np.diag(1/(X @ beta))
-    return X.T @ (y * dinv**2 ) @ X
     
 
 if __name__ == "__main__":
@@ -130,11 +138,12 @@ if __name__ == "__main__":
     
     y = np.array([2, 9, 4, 6, 20, 15, 4, 3, 5, 1])
     
-    print(X)
-    print()
-    print(y)
-    print()
-    print(beta)
+    #print(X)
+    #print()
+    #print(y)
+    #print()
+    #print(beta)
     
     b = ipsolver(X, y, objective, gradient, hessian)
+    print('Output')
     print(b)

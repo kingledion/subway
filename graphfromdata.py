@@ -9,37 +9,41 @@ import csv
 from matplotlib import pyplot as plt
 
 x = [i for i in range(25)]
-ylinsys = []
-ylinsta = []
+all_sys = []
+all_sta = []
 
-with open ('/opt/school/subway/working_reports/lin_reg_dat.csv', 'r') as csvfile:
+with open ('/opt/school/subway/working_reports/all_system_dat.csv', 'r') as csvfile:
     rdr = csv.reader(csvfile)
-    for idx, sys, sta in rdr:
-        ylinsys.append(sys)
-        ylinsta.append(sta)
-        
-ylogsys = []
-ylogsta = []
+    for s in rdr:
+        all_sys.append(s)
+    
 
-with open ('/opt/school/subway/working_reports/pois_reg_dat.csv', 'r') as csvfile:
+with open ('/opt/school/subway/working_reports/all_station_dat.csv', 'r') as csvfile:
     rdr = csv.reader(csvfile)
-    for idx, sys, sta in rdr:
-        ylogsys.append(sys)
-        ylogsta.append(sta)
+    for s in rdr:
+        all_sta.append(s)
 
-yladsys = []
-yladsta = []       
-with open ('/opt/school/subway/working_reports/lad_reg_dat.csv', 'r') as csvfile:
-    rdr = csv.reader(csvfile)
-    for idx, sys, sta in rdr:
-        yladsys.append(sys)
-        yladsta.append(sta)
-        
+linsys, logsys, poisys, pidsys, ladsys = tuple(all_sys[i:i+25] for i in range(0,124, 25))
+linsta, logsta, poista, pidsta, ladsta = tuple(all_sta[i:i+25] for i in range(0,124, 25))
+
+
         
        
-plt.plot(x, ylinsys, 'k-', x, ylinsta, 'k:')
-plt.plot(x, ylogsys, 'b-', x, ylogsta, 'b:')
-plt.plot(x, yladsys, 'r-', x, yladsta, 'r:')
+plt.plot(x, linsys, 'bo-')
+plt.plot(x, logsys, 'go-')
+plt.plot(x, poisys, 'ro-')
+plt.plot(x, pidsys, 'mo-')
+plt.plot(x, ladsys, 'ko-')
 plt.xlabel("Number of features used")
-plt.ylabel("Error score")
-plt.show()      
+plt.ylabel("System Error score")
+plt.show()  
+
+
+plt.plot(x, linsta, 'bo-')
+plt.plot(x, logsta, 'go-')
+plt.plot(x, poista, 'ro-')
+plt.plot(x, pidsta, 'mo-')
+plt.plot(x, ladsta, 'ko-')
+plt.xlabel("Number of features used")
+plt.ylabel("Station Error score")
+plt.show()  
