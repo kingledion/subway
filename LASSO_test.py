@@ -12,7 +12,7 @@ from glmnet import glmnet; from glmnetPredict import glmnetPredict; from glmnetC
 from cvglmnet import cvglmnet; from cvglmnetPredict import cvglmnetPredict; from cvglmnetCoef import cvglmnetCoef
 from regression import loadData, citylist
 
-from nppli import ipsolver
+from nppli import ipsolver, graddesc
 
 
 def linearNet(Xtrain, ytrain, Xtest):
@@ -34,25 +34,45 @@ def linearNet(Xtrain, ytrain, Xtest):
 
 def logNet(Xtrain, ytrain, Xtest):
     
+    
     Xtrain = np.array(Xtrain, dtype='float64')
     ytrain = np.array(ytrain, dtype='float64')
-    ytrain = np.log(ytrain)
     Xtest = np.array(Xtest, dtype='float64')
     
-    Xtrain, Xtest = normalize(Xtrain, Xtest)
+    Xtrain, Xtest = standardize(Xtrain, Xtest)
     
-    fit = cvglmnet(x=Xtrain, y=ytrain, alpha=1)
-    coef = cvglmnetCoef(fit, s = "lambda_1se")
+    #beta = graddesc(Xtrain, ytrain)
+    
+    coef = ipsolver(Xtrain, ytrain, poisson = False)
     
     maxs = np.amax(Xtrain, axis=0)
     Xtest = np.clip(Xtest, 0, maxs)
-    
-    pred = cvglmnetPredict(fit, Xtest, s="lambda_1se")
-    pred = np.exp(pred)
+    pred = Xtest @ coef
     
     print(coef.shape, pred.shape)
     
-    return coef, pred
+    return np.insert(coef, 0, 1), pred
+
+    
+ #   Xtrain = np.array(Xtrain, dtype='float64')
+ #   ytrain = np.array(ytrain, dtype='float64')
+ #   ytrain = np.log(ytrain)
+ #   Xtest = np.array(Xtest, dtype='float64')
+    
+ #   Xtrain, Xtest = normalize(Xtrain, Xtest)
+    
+ #   fit = cvglmnet(x=Xtrain, y=ytrain, alpha=1)
+ #   coef = cvglmnetCoef(fit, s = "lambda_1se")
+    
+ #   maxs = np.amax(Xtrain, axis=0)
+ #   Xtest = np.clip(Xtest, 0, maxs)
+    
+ #   pred = cvglmnetPredict(fit, Xtest, s="lambda_1se")
+ #   pred = np.exp(pred)
+    
+ #   print(coef.shape, pred.shape)
+    
+ #   return coef, pred
 
 
 def poissonNet(Xtrain, ytrain, Xtest):
@@ -86,7 +106,7 @@ def poissIdentNet(Xtrain, ytrain, Xtest):
     ytrain = np.array(ytrain, dtype='float64')
     Xtest = np.array(Xtest, dtype='float64')
     
-    Xtrain, Xtest = poissonize(Xtrain, Xtest)
+    Xtrain, Xtest = standardize(Xtrain, Xtest)
     
     coef = ipsolver(Xtrain, ytrain)
     
@@ -102,6 +122,13 @@ def normalize(Xtrain, Xtest):
     rowstd = np.std(Xtrain, axis=0)
     
     return (Xtrain - rowmean)/rowstd, (Xtest - rowmean)/rowstd
+
+def standardize(Xtrain, Xtest):
+    
+    rowstd = np.std(Xtrain, axis=0)
+    
+    return Xtrain/rowstd, Xtest/rowstd
+    
     
 def poissonize(Xtrain, Xtest):
     

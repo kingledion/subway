@@ -42,17 +42,33 @@ An implementation of the Mannheim-Florian model can be seen in the Seattle's Sou
 
 Only seven of the 35 surveyed agencies used regression models to predict future transit ridership. This thesis proposes a regression-based model using data from the United States Census Bureau at the zip code level. The model will be trained on the zip code characteristics and ridership data from existing light and heavy rail transit systems and used to predict ridership on other rail transit systems.  
 
+\subsection{Original Contributions}
+
+There are two main objectives of this thesis. The first objective is to investigate the utility of various data from the US Census Bureau as predictor variables in a regression model for urban rail ridership. The second objective is to determine what regression methods--loss functions and link functions--are best suited to modeling urban rail ridership given the available data.
+
+This thesis diverges from previous regression modeling by investigating an expanded set of potential features. The US Census Bureau provides extensive data on a per-zip code bases as detailed in Section \ref{sec:data}, there are over a thousand possible data points available. This data is provided as counts per zip code. To translate this zip code data into features for a regression model, this thesis presents a novel geographic sampling method in Section \ref{sec:sampling}. 
+
+With features for regression analysis in hand, this thesis tests several different regression methods against each other. Previous regression based analyses of urban rail ridership have exclusively used ordinary least squares regression. This thesis expands the model base to include other loss functions and link functions and reports accuracy metrics for each model. 
+
 \section{Data Sources and Feature Generation}
 
-\subsection{Data Sources for Predictor Variables}
+\subsection{Selection of Transit Systems}
 
-The zip code level data for feature generation comes from the US Census Bureau and is available at \texttt{factfinder.census.gov}. There are thousands of potential data sets available. We refer to the data points available for each zip code as characteristics of the zip code. Selection of features is guided by Kuby \cite{Kuby2004}, Taylor \cite{Taylor2008}, and Currie \cite{Currie2011}, who demonstrate the significance of characteristics such as employment, population, universities, poverty, airports, park and ride stations, and rental housing units. The characteristics can be divided into two categories: counting characteristics and flags. 
+The response variable for the regression analysis is average weekday ridership over a period of at least one year. Ridership data for agencies that publish annual ridership reports is used to validate the model (for ridership data sources, see Appendix \ref{app:ridership}). Six cities were selected for this study: Boston, Chicago, Los Angeles, Atlanta, Dallas, and Denver. Several cities were eliminated from analysis for various reasons. A limitation of the dataset is that it does not include government employment. While state level employment is significant in all potential cities, state employment levels are relatively constant from city to city. Federal employment varies greatly, however; Washington DC had to be eliminated due to the large impact of un-recorded federal employment. San Francisco and Philadelphia were eliminated because they have multiple rail systems without integrated fares. New York City was eliminated because its subway has higher ridership than all other intra-urban rail systems in the country combined.
 
-This model emphasizes using only features that have `real' units, as oppposed to being binary flags. The only flag feature is for the presence of park-and-ride parking spaces at a transit station. Instead of using measures of land use mix as proposed in other models \cite{Durning2015, Gutierrez2011}, or dummy variables for universities and central business districts, the equivalent information is provided naturally as counting data in the feature set. Housing types (such as large apartment buildings versus single family homes) can stand in for land use mix, number of jobs at universities or in financial jobs can fill in for the equivalent dummy variable. 
+Ridership data is captured by different methods in different cities, but the same underlying data is counted by each case. In Chicago and Boston, station entrances are measured, and Boston additionally reports transfers between lines at each transfer station. Therefore, daily ridership is measured as the total number of entrances per station per day. This results in one count per one trip; and two counts per one daily commute. Dallas, Denver and Los Angeles report boarding and alighting by train car; so daily ridership is measured as the total number of boardings per stations per day. For transfer stations, boarding is `double counted' since a boarding at station A and a transfer at station B would result in two counts per one trip. Therefore, for these three networks, the transfer stations and their unusually high ridership counts are excluded from the analysis. For Atlanta, the ridership reporting definition is unknown, so we eliminate the transfer stations to be safe. For Boston and Chicago, ridership is counted by extracting data from the fare system for paid station entries. In Dallas and Denver, passenger counts are measured at the train car by Automated Personnel Counters. In Los Angeles and Atlanta the counting methodology is unknown. 
+
+The data closest to 2015 is used when possible to get an accurate relation between ridership and census data. The census data as well as Chicago, Dallas, and Denver's ridership statistics are from 2015. Boston's ridership is from 2014, Los Angeles' is from 2013-2014, and Atlanta's is from 2010-2013. 
+
+\subsection{Data Sources for Predictor Variables}\label{sec:data}
+
+The zip code level data for feature generation comes from the US Census Bureau and is available at \texttt{factfinder.census.gov}. There are thousands of potential data sets available. We refer to the data points available for each zip code as characteristics of the zip code. Selection of features is guided by Kuby \cite{Kuby2004}, Taylor \cite{Taylor2008}, and Currie \cite{Currie2011}, who demonstrate the significance of characteristics such as employment, population, universities, poverty, airports, park and ride stations, and rental housing units. The characteristics can be divided into two categories: counting characteristics and dummy variables. 
+
+This model emphasizes using only features that have `real' units, as opposed to binary features. The only binary dummy variable this model uses as a feature is for the presence of park-and-ride parking spaces at a transit station. Instead of using measures of land use mix as proposed in other models \cite{Durning2015, Gutierrez2011}, or binary dummy variables for universities and central business districts, the equivalent information is provided naturally as counting data in the feature set. Counts of housing types (such as large apartment buildings versus single family homes) replace land use mix; the number of jobs at universities or in financial jobs provide more information than dummy variables for presence of universities or central business districts. 
 
 \begin{table}[H]
 \centering\begingroup\fontsize{10}{10}\selectfont
-\begin{tabular}{ccc}
+\begin{tabular}{ll}
 \toprule \textbf{Population related}&\textbf{Employment related} \\ 
 \midrule Total population&Total Employment pay\\
 Population over age 65& Employment in finance industry\\
@@ -64,30 +80,33 @@ Number of housing units built after 2000&\\
 \caption{Examples of characteristics associated with zipcodes}\label{tab:char}
 \end{table}
 
-The selected characteristics are generally related either to the population of the zip code or the number of jobs of the zip code. The captured characteristics of the built enviornment, such as the quantity, age, and building type of the housing stock, are generally related to population. For example, the total number of housing units is expected to be highly correlated with the population of a zip code.  Examples of characteristics are provided in Table \ref{tab:char}. Some characteristics are expected to have a positive relationship with ridership; others are expected to have a negative relationship. Examples of linear relationships between characteristics and ridership are provided in Figure \ref{fig:chartypes}. A summary of all the selected characteristics is provided in Appendix \ref{app:features}.
+The selected characteristics are generally related either to the population of the zip code or the number of jobs of the zip code. The captured characteristics of the built enviornment, such as the quantity, age, and building type of the housing stock, are generally related to population. For example, the total number of housing units is expected to be highly correlated with the population of a zip code.  Examples of characteristics are provided in Table \ref{tab:char}. Some characteristics, such as total population, are expected to have a positive relationship with ridership; others, such as population under the age of 18, are expected to have a negative relationship. Examples of associations between characteristics and ridership are provided in Figure \ref{fig:chartypes}. A summary of all the selected characteristics is provided in Appendix \ref{app:features}.
 
 
 
 \begin{figure}[H]
 \centering
-\subfloat[Example of positive linear relationship]{\includegraphics[clip,width=0.5\columnwidth]{exRegPosSlope}}
-\subfloat[Example of negative linear relationship]{\includegraphics[clip,width=0.5\columnwidth]{exRegNegSlope}}
-\caption{Single covariates against the response variable with OLS line of best fit}\label{fig:chartypes}
+\subfloat[Example of a positive relationship]{\includegraphics[clip,width=0.5\columnwidth]{exRegPosSlope}}
+\subfloat[Example of a negative relationship]{\includegraphics[clip,width=0.5\columnwidth]{exRegNegSlope}}
+\caption{Single covariates against the response variable with ordinary least squares (OLS) line of best fit.}\label{fig:chartypes}
 \end{figure}
 
 
-In Yao \cite{Yao2007}, a distinction is made between `Need Index' features, a series of features that depend on the characteristics around the station and are independent of the transit network, and `Transit Network' features, which do depend on the travel time between stations of the transit network. To model network features for each station, the sum of each characteristic for every other station within 15 and 30 minutes transit time is included as a feature of the original station, as decribed in Section \ref{sec:net}. This provides us quantitative way to express the 'centrality' dummy variable that is provided as a flag in many models \cite{Kuby2004, Durning2015}; centrality could be proportional to the count of population or jobs within 30 minutes of a station, for example. 
+In Yao \cite{Yao2007}, a distinction is made between `Need Index' features, a series of features that depend on the characteristics around the station and are independent of the transit network, and `Transit Network' features, which do depend on the travel time between stations of the transit network. To model network features for each station, the sum of each characteristic for every other station within 15 and 30 minutes transit time is included as a feature of the original station, as described in Section \ref{sec:net}. This provides us a quantitative way to express the 'centrality' dummy variable that is provided as a flag in many models \cite{Kuby2004, Durning2015}; centrality could be proportional to the count of population or jobs within 30 minutes of a station, for example. 
 
+We translate zip code level data into transit station specific data by sampling each zip code's geographic area to determine proximity to a transit station. For each zip code near the transit network, a set of random points within that zip code is generated using rejection sampling. For each of the those points, one or more closest stations are determined. Each point is assigned to one or more station within walking distance, as defined in Section \ref{sec:walk}. Counts for the characteristics of each zip code, such as population or employment, are then assigned to each station proportional to the number of points assigned to each station.
 
-The response variable for the regression analysis is average weekday ridership over a period of at least one year. Ridership data for agencies that publish annual ridership reports is used to validate the model (for ridership data sources, see Appendix \ref{app:ridership}). Six cities were selected for this study: Boston, Chicago, Los Angeles, Atlanta, Dallas, and Denver. Several cities were eliminated from use in the sample set for various reasons. A limitation of the dataset is that it does not include government employment. While state level employment is significant in all potential cities, state employment levels are relatively constant from city to city. Federal employment varies greatly, however; Washington DC had to be eliminated due to the large impact of un-recorded federal employment. San Francisco and Philadelphia were eliminated because they have multiple rail systems without integrated fares. New York City was eliminated because it's subway has higher ridership than all other intra-urban rail systems in the country combined.
+\subsection{Definition of `Walking Distance'}\label{sec:walk}
 
-Ridership data is captured by different methods in different cities, but the same underlying data is counted by each case. In Chicago and Boston, station entrances are measured, and Boston additionally reports transfers between lines at each transfer station. Therefore, daily ridership is measured as the total number of entrances per station per day. This results in one count per one trip; and two counts per one daily commute. Dallas, Denver and Los Angeles report boarding and alighting by train car; so daily ridership is measured as the total number of boardings per stations per day. For transfer stations, boarding is `double counted' since a boarding at station A and a transfer at station B would result in two counts per one trip. Therefore, for these three networks, the transfer stations and their unusually high ridership counts are excluded from the analysis. For Atlanta, the ridership reporting definition is unknown, so we eliminate the transfer stations to be safe. For Boston and Chicago, the counting methodology is by extracting data from the fare system for paid station entries. In Dallas and Denver, passenger counts are measured at the train car by Automated Personnel Counters. In Los Angeles and Atlanta the counting methodology is unknown. 
+The area within walking distance of a station is called its `catchment'. To generate a feature for a transit station, the total count of some characteristic within the catchment of that stations is considered. The standard transit catchment distance in literature for rail stations is one half mile (800 m). Guerra \cite{Guerra2012} suggests that one half mile is more appropriate for population as a feature while one quarter mile (400 m) is better for employment as a feature. A case study \cite{ElGeneidy2014} from a 2003 Montreal transit riders origin-destination survey concluded that approximately 50\% of riders of the city's urban rail transit walk less than 500 meters to their stations, while 90\% walk less than 1000 meters. The maximum walking distance is approximately 1500 meters. In another analysis, \cite{Gutierrez2011} found the optimal distance for  for assigning population and employment to a station was between 600 and 900 meters in straight line distance.
 
-The data closest to 2015 is used when possible to get an accurate relation between ridership and census data. The census data as well as Chicago, Dallas, and Denver's ridership statistics are from 2015. Boston's ridership is from 2014, Los Angeles' is from 2013-2014, and Atlanta's is from 2010-2013. 
+A significant concern when tabulating catchments is that in many of the densest regions of cities, there are many stations within a few hundred meters of each other. For example, from the Massachusetts State House in downtown Boston, there are seven urban rail stations on four different train lines within a 10 minute walk, according to Google Maps. Any of those stations could be the `best' place to board and disembark the train for a commute to work at the State House, depending on the direction and train line by which the commuter was arriving in downtown. It is important that we allow some `overlap' in catchment areas; people at one geographic location could use more than one station for various transit needs. 
 
-We translate zip code level data into transit station specific data by sampling each zip code's geographic area to determine proximity to a transit station. For each zip code near the transit network, a set of random points within that zip code is generated using rejection sampling. For each of the those points, one or more closest stations are determined. Each point is assigned to one or more station within walking distance. Counts for the characteristics of each zip code, such as population or employment, are then assigned to each station proportional to the number of points assigned to each station.
+Given this information, we choose cutoffs of 500 meters and 1000 meters for calculating station distances. For any location that has residents, jobs, or other desired countable characteristics, all stations within 500 meters will be considered equally likely to capture a share of that resident or job's transit demand. If there are no stations within 500 meters; then all stations within 1000 meters will be considered. 
 
-\subsection{Rejection Sampling of Zip Code Shapefiles}
+\subsection{Rejection Sampling of Zip Code Shapefiles}\label{sec:sampling}
+
+INCORPORATE NOTE HERE????
 
 We translate zip code level data into transit station specific data by using a Monte Carlo method to estimate feature counts near transit stations. Sample points are generated within each zip code near the transit network. Those points are assigned to whichever stations are within walking distance of the station. The ratio of points assigned to each station to total points generated for each zip code is used to assign feature counts to each station. An algorithm for rejection sampling a single zipcode is provided in Algorithm \ref{alg:rejsamp}.
 
@@ -95,8 +114,17 @@ We translate zip code level data into transit station specific data by using a M
 \begin{algorithm}\begingroup\fontsize{10}{10}\selectfont
 \begin{algorithmic}
 \State{ Given $zipcode$ is a single zipcode near the transit network }
-\State{$randomPoints \gets$ random latitude and longitude coordinates selected from with the shapefile of $zipcode$}
-\For{ $point \in randomPoints$}
+\State{ Let $zipcode.latrange$ and $zipcode.lonrange$ be maximum and minimum latitude or longitude for $zipcode$ shapefile}
+\State{ $n \gets$ max($zipcode.area$ in hectares, 1000)}
+\State{ $randomPoints \gets \{\}$}
+\While{ len($randompoints$) $< n$}\Comment{Generate $n$ random points within $zipcode$}
+	\State{ $lon \gets $ random number $\in zipcode.lonrage$; $lat \gets $ random number $\in zipcode.latrage$}
+	\State {$point \gets (lat, lon)$}
+	\If { $point$ is inside $zipcode$ shapefile and $point$ is not inside exclusion areas}
+		\State{ $randomPoints \gets point$}
+	\EndIf
+\EndWhile
+\For{ $point \in randomPoints$}\Comment{Assignment of points to stations}
 	\State{ $n_{0.5} \gets$ number of stations within 0.5 km of $point$}
 	\State{ $n_1 \gets$ number of stations within 1 km of $point$}
 	\If{ $n_{0.5} > 0$}
@@ -116,20 +144,24 @@ We translate zip code level data into transit station specific data by using a M
 
 The US Census Bureau provides TIGER/Line shapefiles of each zip code tabulation area (ZCTA) in the United States at \url{https://www.census.gov/geo/maps-data/data/tiger-line.html}. Random points are generated in a rectangular box drawn around the extremities of each zipcode's shape; these random points are accepted if they are within the shapefile or rejected if they are outside it. Those points that are inside the shapefile are tested against author-created exclusion zones. These zones are shapes within the zip code's shapefile area that are known to not have any population, employment, or other countable characteristics. The exclusion zones are mostly drawn over water areas or large parks. Those points that are inside the exclusion zones are also rejected. This creates a set of points randomly drawn from the zip code's land area, not counting unoccupied regions like parks. 
 
-The set of points is tested for their distance to any transit stations. The area within walking distance of a station is its catchment. A standard transit catchment distance for rail is one half mile (800 m), although Guerra \cite{Guerra2012} suggests that one half mile is more appropriate for population as a feature while one quarter mile (400 m) is better for employment. A case study \cite{ElGeneidy2014} from a 2003 Montreal transit riders origin-destination survey concluded that approximately 50\% of riders of the city's urban rail transit walk less than 500 meters to their stations, while 90\% walk less than 1000 meters. The maximum walking distance is approximately 1500 meters. In another analysis, \cite{Gutierrez2011} found the optimal distance for  for assigning population and employment to a station was between 600 and 900 meters in straight line distance.
-
-Given this information, we choose cutoffs of 500 meters and 1000 meters for calculating station distances. Each tested point is divided between all stations within 500 meters. If there are no stations within 500 meters, then the point is divided between all stations within 1000 meters. If no stations are within 1000 meters, that point is not assigned to any station. The total sum of points and fractional points assigned to each station is divided by the total points available to get the fraction of each of the zip code's characteristic data counts is assigned to that transit station. 
+The set of points is tested for their distance to any transit stations to determine which station catchments they fall in, as described in Section \ref{sec:walk}. The characteristic counts associated with each tested point are divided between all stations within 500 meters. If there are no stations within 500 meters, then the point is divided between all stations within 1000 meters. If no stations are within 1000 meters, that point is not assigned to any station. The total sum of points and fractional points assigned to each station is divided by the total points available to get the fraction of each of the zip code's characteristic data counts is assigned to that transit station. 
 
 \begin{figure}
 \begin{center}\includegraphics[scale=0.55]{geo_point_demonstration}\end{center}\caption{Illustration of nearest zip code estimation for zip code 02127.}\label{fig:f1}
 \end{figure}
 
 
-An example using zip code 02127, the South Boston neighborhood of Boston, illustrates the sampling method (Figure \ref{fig:f1}). 100 random points are selected within the area of the shapefile. Of these, 21 points indicated in gray are rejected due to exclusion areas based on water area, parks and abandoned port facilities. Of the remaining 79 points, 8 are within 500 meters of Andrew station, while 6 are within 500 meters of Broadway station. Moving out to the 1000 meter radius, 11 are within 1 km of Andrew station, for a total of 19 closest to Andrew; 7 are within 1 km of Broadway station for a total of 13 closest to Broadway; and 6 are within 1 km of both. The 6 stations within 1 km of both stations are divided between the two. The total population of South Boston is 36494. Therefore, $$\frac{19 + \frac{6}{2}}{79}\cdot{36494} = 10163$$ people are assigned to Andrew station. Similarly, 7391 people are assigned to Broadway station. Summed over all zip codes near Andrew and Broadway stations, this shows how the total population within walking distance of the station is estimated. This calculation is performed for all countable features and all zip codes and summed total counts for each characteristic are used as a feature for each transit station. 
+An example using zip code 02127, the South Boston neighborhood of Boston, illustrates the sampling method (Figure \ref{fig:f1}). 100 random points are selected within the area of the shapefile. Of these, 21 points indicated in gray are rejected due to exclusion areas based on water area, parks and abandoned port facilities. Of the remaining 79 points, 8 are within 500 meters of Andrew station, while 6 are within 500 meters of Broadway station. Moving out to the 1000 meter radius, 11 are within 1 km of Andrew station, for a total of 19 closest to Andrew; 7 are within 1 km of Broadway station for a total of 13 closest to Broadway; and 6 are within 1 km of both. The 6 stations within 1 km of both stations are divided evenly between the two. The total population of South Boston is 36494. Therefore, 
+\begin{align*}
+\text{Counts assigned to station} &= \frac{\text{\# points for one station} \cdot \sum\frac{\text{\# points for multiple stations}}{\text{\# stations for each point}}}{\text{\# points for zipcode}}\cdot\text{characteristic counts}  \\
+&= \frac{19 + \frac{6}{2}}{79}\cdot 36494 \text{ people} \\
+&= 10163 \text{ people}
+\end{align*}
+are assigned to Andrew station. Similarly, 7391 people are assigned to Broadway station. Summed over all zip codes near Andrew and Broadway stations, this shows how the total population within walking distance of the station is estimated. This calculation is performed for all countable features and all zip codes and summed total counts for each characteristic are used as a feature for each transit station. 
 
 \subsection{Variance of Monte Carlo estimates}
 
-With any Monte Carlo method for estimation, there is variance in the estimates generated. In this case, the variance will come primarily from the random locations of the points. It is possible that in different Monte Carlo trials, a station may get significantly more or less points nearby it. This is especially significant in areas of high population density; one extra or missing point could be work hundreds or thousands of jobs in the densest areas of downtown Chicago or Boston. To keep variance to an acceptably low level, we must generate enough sample points that variation between rials is minimal. 
+With any Monte Carlo method for estimation, there is variance in the estimates generated. In this case, the variance will come primarily from the random locations of the points. It is possible that in different Monte Carlo trials, a station may get significantly more or less points nearby it. This is especially significant in areas of high population density; one extra or missing point could be worth hundreds or thousands of jobs in the densest areas of downtown Chicago or Boston. To keep variance to an acceptably low level, we must generate enough sample points that variation between trials is minimal. 
 
 The land area of the zip codes near the studied transit networks vary in size from as small as 30 hectare in downtown Chicago to as much as 18100 hectares at the suburban end of transit lines in Dallas. To provide an appropriate balance between accuracy and processing speed, we use one random point per hectare, but with a minimum limit of 1000 points per zip code. This effectively provides over 10 points per hectare in for the zip codes in the densest parts of the studied networks: the downtown areas of Chicago and Boston. These areas also have the densest network of transit stations, with many stations within a kilometer of each other. In these denser areas, it is important to have enough points that the division of points between stations does not result in too much variance. 
 
@@ -137,12 +169,12 @@ We generate 100 sets of estimates for the a single feature (total population) fo
 
 \begin{figure}[H]
 \centering
-\subfloat[Standard deviation versus mean by zip code]{\includegraphics[clip,width=0.5\columnwidth]{estvarstdev}}
-\subfloat[Coefficient of variation versus mean by zip code]{\includegraphics[clip,width=0.5\columnwidth]{estvarcov}}
+\subfloat[Standard deviation versus mean by transit station]{\includegraphics[clip,width=0.5\columnwidth]{estvarstdev}}
+\subfloat[Coefficient of variation versus mean by transit station]{\includegraphics[clip,width=0.5\columnwidth]{estvarcov}}
 \caption{Indications of variance for Monte Carlo estimates of the population feature}\label{fig:mcvar}
 \end{figure}
 
-  
+IN CONCLUSION A RELATIVE ACCURACY OF +- 10%
 
 \subsection{Generation of network-dependent features}\label{sec:net}
 
@@ -175,7 +207,7 @@ An illustration of the calculation of travel time between Sullivan Square and So
 
 For each station A and for the set of all stations (S) within 15 minutes of A; the counts of each `Need Index' type feature is summed over all stations of S. This is the count used for the corresponding network type feature of A. The same procedure is repeated for all stations within 30 minutes of A. Thus, for each `Need Index' type feature associated with a station in the feature set, there are two additional features: one summing the counts of that feature within 15 minutes and one within 30 minutes. 
 
-These features are important for providing a measure of centrality to the network. Stations near the center of the network and at transfer points between lines will have higher counts of network features than than peripheral stations. The other important function of the network features is to provide estimates of the total scale of system ridership. The more people, jobs, and other characteristics near transit stations, the higher the overall system ridership is expected to be. This is a key component of the model's portability between different city's transit networks. 
+These features are important for providing a measure of centrality to the network. Stations near the center of the network and at transfer points between lines will have higher counts of network features than peripheral stations. The other important function of the network features is to provide estimates of the total scale of system ridership. The more people, jobs, and other characteristics near transit stations, the higher the overall system ridership is expected to be. This is a key component of the model's portability between different city's transit networks. 
 
 
 
@@ -196,7 +228,7 @@ Area of marker represents ridership of the station}\label{fig:localvars}
 
 The purpose of including multiple transit networks with varying levels of ridership is to ensure that the model captures a broad range of relationships between employment, population and other zip code characteristics on the one hand, and transit ridership on the other. Figure \ref{fig:localvars} shows the employment and ridership counts within walking distance assigned to each station on the transit networks. The ridership of each stations is proportional to the area of the marker for each station. We can see that there is a wide range of population and employment figures near transit stations. In our selection of six transit networks, some networks have much higher peaks of certain zip code characteristics than others, so the graphic is divided into two subfigures, one for the higher ridership networks and one for the lower. 
 
-Station remoteness has a significant impact on the characteristics of stations. For example, the five highest population transit stations are all in Los Angeles. This is not necessarily because the densest areas of Los Angeles have a higher population density than Boston or Chicago; that is not true. Rather, the Los Angeles transit network has lower station density than Boston or Chicago do in the areas of highest population density. Therefore, some stations in high population density areas of Los Angeles will have a transit catchment of over 1 square kilometer where there are no other transit stations in range. For Boston or Chicago, with closer station spacing and multiple lines, any point in the areas of highest density will have four or more stations within walking distance.  
+Station remoteness has a significant impact on the characteristics of stations. For example, the five highest population transit stations are all in Los Angeles. It is not true that the densest areas of Los Angeles have a higher population density than Boston or Chicago. Rather, the Los Angeles transit network has lower station density than Boston or Chicago in the areas of highest population density. Therefore, some stations in high population density areas of Los Angeles will have a transit catchment of up to two square kilometers. For Boston or Chicago, with closer station spacing and multiple lines, any point in the areas of highest population density will have four or more stations within walking distance.  
 
 \begin{table}
 \centering\begingroup\fontsize{10}{10}\selectfont
@@ -210,12 +242,12 @@ Dallas&255092&261813&150&96069\\
 Denver&161542&170631&149&75128\\
 \bottomrule
 \end{tabular}\endgroup
-\caption{Network wide characteristics for six transit networks}\label{tab:netsize}
+\caption{Network wide characteristics for the six transit networks considered in this thesis}\label{tab:netsize}
 \end{table}
 
 The overall characteristics of each transit network are found in Table \ref{tab:netsize}. There is a positive linear relationship between both population and employment and ridership at the network-wide level. However, the effect of network length is also significant. For example, Atlanta's population and employment near its transit stations are both lower than that of Dallas, but Atlanta's ridership is fifty percent larger. Atlanta's network length is about half that of Dallas, suggesting that Atlanta's transit accessible population and employment are compressed into a much smaller area. This density appears to be a significant factor in Atlanta's higher ridership. However, looking at Figure \ref{fig:localvars}(b), where Atlanta's stations are in the blue and Dallas' in red, it is not clear that Atlanta's stations have any individual advantage in population and employment. 
 
-This shows the necessity of the network depended features. In Figure \ref{fig:networkvars}, we see the sum of population and employment within a 15 minute transit rider of each station, in stead of within walking distance of each station. In Figure \ref{fig:networkvars}(b) we see that Atlanta's smaller network and more tightly spaced stations means that stations generally have more other stations within a given travel distance. Therefore, many of Atlanta's stations have higher network population and employment counts than their corresponding stations in Dallas. The inclusion of the network features will allow the regression model to more accurately predict the higher ridership for stations in Atlanta. 
+This shows the necessity of the network-dependent features. In Figure \ref{fig:networkvars}, we see the sum of population and employment within a 15 minute transit rider of each station, instead of within walking distance of each station. In Figure \ref{fig:networkvars}(b) we see that Atlanta's smaller network and more tightly spaced stations means that stations generally have more other stations within a given travel distance. Therefore, many of Atlanta's stations have higher network population and employment counts than their corresponding stations in Dallas. The inclusion of the network features will allow the regression model to more accurately predict the higher ridership for stations in Atlanta. 
 
 
 \begin{figure}
@@ -226,8 +258,8 @@ This shows the necessity of the network depended features. In Figure \ref{fig:ne
 \vspace{-15pt}
 \subfloat[Atlanta - Blue; Dallas - Red; Denver - Green]{\includegraphics[clip,width=0.8\columnwidth]{networkvars_small}}
 \captionsetup{singlelinecheck=off, justification=centering}
-\caption[]{Employment against population with a 15 minute transit ride for sets of three transit networks.\linebreak
-Area of marker represents ridership of the station}\label{fig:networkvars}
+\caption[]{Employment against population with walking distance for sets of three transit networks.\linebreak
+Area of marker represents ridership of the station.}\label{fig:networkvars}
 \end{figure}
 
 
@@ -240,16 +272,18 @@ Area of marker represents ridership of the station}\label{fig:networkvars}
 In general, the projected ridership forecasts of new transit infrastructure investments significantly overestimates transit ridership. The pioneering study in this field by Pickrell in 1989 \cite{Pickrell1989} found that for ten rail projects completed between 1977 and 1985, and assessed between 1986 and 1989, the actual ridership was between 28\% and 85\% lower than projected. A 2006 study \cite{Flyvbjerg2006} of 25 major passenger rail projects in 14 nations found that 21 of the projects had actual ridership below projections, with the average true system ridership 48\% below the projection. Accurate assessment of projection accuracy is imperative for creating ridership estimates that serve the public interest.
 
 To assess the predictions from regression analysis, there should be two metrics used: one for the total system ridership, and another for station level ridership. Following Pickrell, the metric for system-wide projection accuracy is standard percentage error in total system ridership, which we will refer to as system error. This error is
-$$E_{system} = \dfrac{\left|\,\sum\limits_{i\,\in\,\text{stations}} y_{i, proj} - \sum\limits_{i\,\in\,\text{stations}} y_{i, true}\,\right|}{\sum\limits_{i\,\in\,\text{stations}} y_{i, true}}$$
+$$E_{system} = \dfrac{\left|\,\sum\limits_{i\,\in\,\text{stations}} y_{i, proj} - \sum\limits_{i\,\in\,\text{stations}} y_{i, true}\,\right|}{\sum\limits_{i\,\in\,\text{stations}} y_{i, true}},$$
 where $y_{proj}$ is the projected ridership and $y_{true}$ the true ridership for each station, and each is summed over all stations.
 
-Hardy \cite{Hardy2010} extends Pickrell's analysis by including absolute station error for stations on newly added sections of an existing transit network. Following Hardy, a measure of station level error on a network is summed absolute error of all station projections. The rail networks in this study vary widely in total ridership; therefore, to allow network to network comparison, this summed absolute station error can divided by total system ridership. The resulting metric for station error given a projected ($y_{proj}$) and actual ridership ($y_{true}$) is 
+Hardy \cite{Hardy2010} extends Pickrell's analysis by including absolute station error for stations on newly added sections of an existing transit network. Following Hardy, a measure of station level error on a network is the summed absolute error of all station projections. The rail networks in this study vary widely in total ridership; therefore, to allow network-to-network comparison, this summed absolute station error can divided by total system ridership. The resulting metric for station error given a projected ($y_{proj}$) and actual ridership ($y_{true}$) is 
 $$E_{station} = \dfrac{\sum\limits_{i\,\in\,\text{stations}}\left|\,y_{i, proj} - y_{i, true}\,\right|}{\sum\limits_{i\,\in\,\text{stations}} y_{i, true}}.$$
 
 
+INSERT DIVIDING LINE BETWEEN THE TWO FIGURES!!!
+
 \begin{figure}
 \centering
-\begin{minipage}{0.5\textwidth}
+\begin{minipage}{0.45\textwidth}
 \centering
 \subfloat[Ridership against population. Linear regression in red, log regression in blue.]{\includegraphics[clip,width=\columnwidth]{popvrider}}
 
@@ -258,7 +292,10 @@ $$E_{station} = \dfrac{\sum\limits_{i\,\in\,\text{stations}}\left|\,y_{i, proj} 
 \subfloat[Residual from log regression against population]{\includegraphics[clip,width=\columnwidth]{poplogresid}}
 \caption{Analysis of population regression}\label{fig:popresid}
 \end{minipage}\hfill
-\begin{minipage}{0.5\textwidth}
+\hspace{5pt}
+\unskip\vrule
+\hspace{10pt}
+\begin{minipage}{0.45\textwidth}
 \centering
 \subfloat[Ridership against employment. Linear regression in red, log regression in blue.]{\includegraphics[clip,width=\columnwidth]{empvrider}}
 
@@ -274,7 +311,7 @@ $$E_{station} = \dfrac{\sum\limits_{i\,\in\,\text{stations}}\left|\,y_{i, proj} 
 
 Regression models for station level ridership have used ordinary least squares regression \cite{Kuby2004, Taylor2008, Currie2011, Durning2015, Gutierrez2011} to generate predictions. We investigate the applicability of more complex regression models, and whether or not these other regression types can provide better modeling accuracy.
 
-The range of the dependent variable, average weekday ridership at a station, has range $[0, \infty)$. The log link function has this range and so it is reasonable to assume that there may be a logarithmic relationship between characteristics and ridership. To test the viability of the log link, we can compare a linear least squares line of best fit with a line of best fit using the logarithm of the ridership as the response variable.
+The range of the dependent variable, average weekday ridership at a station, has range $[0, \infty)$. The log link function has this range and so it is reasonable to assume that there may be a logarithmic relationship between characteristics and ridership. To test the viability of the log link, we can compare a linear least squares line of best fit with a line of best fit using the logarithm of the ridership as the response variable. CHANGE THESE MODELS TO USE GLM WITH LOG LINK
 
 There are generally two types of feature included in this survey: those that are related to population and those that are related to employment. A plot of all stations' population versus ridership appears in Figure \ref{fig:popresid} with linear and logarithmic regression lines and residuals. A similar treatment for employment versus ridership appears in Figure \ref{fig:empresid}. In Figures  \ref{fig:popresid}(a) and \ref{fig:empresid}(a), a linear and logarithmic best fit line, derived as shown in Section \ref{sec:ols} below, are fitted to the data. The residuals from the linear regression line are plotted in (b) and from the logarithmic regression in (c) of each figure. 
 
@@ -292,7 +329,7 @@ Employment&0.1948&0.1878 \\
 \end{table}
 
 
-The metrics for projection accuracy introduced in Section \ref{sec:metric} depend on the absolute difference between actual and predicted ridership. This suggests that regression using the Least Absolute Deviation (LAD) loss function is appropriate for this problem. Since the response variable (ridership) has a value of integer counts, and the variance of ridership increases with increasing employment, we will also investigate the use of a Poisson loss function. Finally, we will use ordinary least squares (OLS) regression as a baseline comparison, to see if the other methods have any performance advantage compared to the currently used regression type. Since we are not certain whether a log or linear link function is most appropriate, we will test the Poisson and least squares regression with both log and linear link functions.
+The metrics for projection accuracy introduced in Section \ref{sec:metric} depend on the absolute difference between actual and predicted ridership. This suggests that regression using the Least Absolute Deviation (LAD) (ADD SECTION DEFINING LAD!!!!) loss function is appropriate for this problem. Since the response variable (ridership) has a value of integer counts, and the variance of ridership increases with increasing employment, we will also investigate the use of a Poisson model. Finally, we will use ordinary least squares (OLS) regression as a baseline comparison, to see if the other methods have any performance advantage compared to the currently used regression type. Since we are not certain whether a log or linear link function is most appropriate, we will test the Poisson and least squares regression with both log and linear link functions.
 
 There are 94 possible features, while some transit networks have as few as 38 stations. Feature selection is necessary to prevent the model from being overspecified. We use two methods of feature selection for each of the five regression types: LASSO regression described in Section \ref{sec:lasso} and a stepwise forward selection method described in Section \ref{sec:fs}. 
 
@@ -320,19 +357,19 @@ For the five regression types described, the methodolody and packages used are d
 \centering
 \begin{tabular}{lll}
 \toprule Regression&Link&package\\
-\midrule Least Sqaures&Identity&LASSO: \texttt{glmnet} for Python\\
+\midrule Least Squares&Identity&LASSO: \texttt{glmnet} for Python\\
 &&Forward Selection: \texttt{statsmodels} for Python\\
-&Log&LASSO: \texttt{glmnet} for Python\\
+&Log&LASSO: Author-created\\
 &&Forward Selection: \texttt{statsmodels} for Python\\
 LAD&Identity&LASSO: \texttt{flare} for R\\
 &&Forward Selection: \texttt{statsmodels} for Python\\
-Poisson&Log&LASSO:\texttt{glmnet} for Python\\
+Poisson&Log&LASSO: \texttt{glmnet} for Python\\
 &&Forward Selection: \texttt{statsmodels} for Python\\
 &Identity&LASSO: Author-created\\
 &&Forward Selection: \texttt{statsmodels} for Python\\
 \bottomrule
 \end{tabular}
-\caption{Regression types and packages used in analysis}
+\caption{Regression types and packages used in analysis.}
 \label{tab:regtype}
 \end{table}
 
@@ -340,8 +377,8 @@ Poisson&Log&LASSO:\texttt{glmnet} for Python\\
 
 \subsubsection{Least squares regression}\label{sec:ols}
 
-Ordinary Least Squares (OLS) regression is the solution of 
-\[Y = \theta X + \epsilon\] for $\theta$ where $\epsilon$ is assumed to be normally distributed such that the expected value of any element of $Y$ is the corresponding element of $\theta X$:
+Ordinary Least Squares (OLS) regression is a model,
+\[Y = \theta X + \epsilon\] where $\theta$ is a parameterization and $\epsilon$ is assumed to be normally distributed. The expected value of any element of $Y$ is the corresponding element of $\theta X$:
 \[E(Y\,|\,X; \theta) = \theta X\]
 Here, $Y$ is length $m$ a vector of response variables; $\theta$ is a length $p$ vector of parameters and $X$ is an $m\times p$ matrix of covariates. The sum of squared residual measure of model fit gives us an objective function to minimize for a solution
 \[\hat{\theta} = \argmin_{\theta\in\mathbb{R}^p}\sum_{i=1}^m \left(y_i - \theta x_i\right)^2.\]
@@ -353,7 +390,7 @@ The tuning parameter $\lambda$ is proportional to the strength of the regulariza
 
 For least squares regression with a log link, or loglinear regression, we transform all entries in the $y$ vector of response variables by the natural logarithm so that 
 $$\log{y} = \theta X + \epsilon.$$
-With this transformation of the response variable, we perform a regular or LASSO regression as above. We then use the exponential function of predicted station level ridership so that the response variable is consistent across regression types.
+With this transformation of the response variable, we perform a regular or LASSO regression as above. We then use the exponential function of predicted station level ridership so that the range of the predictions is in the same units across all regression types.
 
 \subsubsection{Poisson regression with Log link}
 
@@ -488,14 +525,18 @@ LAD&LASSO&0.0235&0.5867&23&0.6263&0.8629\\
 
 \subsection{Feature selection by LASSO regularization}\label{sec:lasso}
 
-Least Absolute Shrinkage and Selection Operator (LASSO) regression can be used to perform feature selection for regression analysis. The LASSO method adds a regularization factor to an objective function penalize regression coefficients. By forcing the sum of the absolute values of all regression coefficients to be less than a fixed value, some regression coefficients are set to zero, thereby eliminating them from the model. 
+Least Absolute Shrinkage and Selection Operator (LASSO) regression can be used to perform feature selection for regression analysis. The LASSO method adds a regularization term to an objective function to penalize regression coefficients. By forcing the sum of the absolute values of all regression coefficients to be less than a fixed value, some regression coefficients are set to zero, thereby eliminating them from the model. 
+
+TALK ABOUT SCALING????
+
+PERHAPS ALL THIS TO THE INTRO ???
 
 
-An important part of the LASSO solution is selection of $\lambdaup$, the penalty coefficient. OLS and Poisson LASSO regression are performed using the \texttt{glmnet} package in Pytho, which does automatic $\lambdaup$ selection through a grid search. LAD LASSO is performed using the \texttt{flare} package in R.  For \texttt{flare} the author created a $\lambdaup$ grid search algorithm comparable to that performed by \texttt{glmnet}. The Poisson LASSO with identity link is performed by author supplied code, where $\lambdaup$ is solved concurrently with the regression parameters ($\theta$) by an interior point solver, as detailed in section \ref{sec:poisI}.  
+An important part of the LASSO solution is selection of $\lambdaup$, the penalty coefficient. OLS and Poisson LASSO regression are performed using the \texttt{glmnet} package in Python, which does automatic $\lambdaup$ selection through a grid search (MORE DETAILS HERE!!!!!!). LAD LASSO is performed using the \texttt{flare} package in R.  For \texttt{flare} the author created a $\lambdaup$ grid search algorithm comparable to that performed by \texttt{glmnet}. The Poisson LASSO with identity link is performed by author supplied code, where $\lambdaup$ is solved concurrently with the regression parameters ($\theta$) by an interior point solver, as detailed in section \ref{sec:poisI}.  
 
 The various LASSO regression types have a large variance in number of features chosen, both between transit networks and between regression types, shown in Table \ref{tab:lassoFeatNum}. Since the six way cross validation produces a different set of selected features for each transit network, we must develop a means for determining a `best' feature set for a common comparison. To represent the results of the LASSO regression, all features that are selected by four or more of the six cross-validation trials are used. 
 
-The LAD LASSO regression chooses an average of 48 features across the six-way cross validation. This is far too high: the transit networks have between 37 and 138 stations. In order to use a more reasonable feature set; only those features selected by five or more of the six cross-validation trials are used. The large number of features selected by LAD LASSO regression may result from any differences in the $\lambda$ selection method used by the computing packages. 
+The LAD LASSO regression chooses an average of 48 features across the six-way cross validation. This is far too high: the transit networks have between 37 and 138 stations. In order to use a more reasonable feature set; we increase the selection requirement for LAD LASSO to only those features selected by five or more of the six cross-validation trials are used. The large number of features selected by LAD LASSO regression may result from any differences in the $\lambda$ selection method used by the computing packages. 
 
 \begin{table}[H]
 \begingroup\fontsize{10}{15}\selectfont
@@ -522,6 +563,9 @@ The features selected by four of the six cross-validation trials (or five trials
 
 
 Since the data set for this problem is small--with only 466 total stations--we can validate the LASSO results using a stepwise forward selection approach. This method is a greedy search of all possible features to find the best combination of features that minimizes our error metrics. Each regression method and link function are tested in this way. First, for all features, we perform a single covariate regression against the response variable, ridership. Each feature is evaluated in six-way cross validation, where each of the six transit networks is used as the test set once, while the other five are used for the training set during each cross validation trial.
+
+
+MORE DETAILS ABOUT CRITERION FOR SELECTING A NEW FEATURES
 
 From the results of the single covariate regression, we choose the feature that gives us the lowest error score. Since LASSO selected features based on optimization of station-type error, we select the one feature that predicts ridership with the lowest station error. System error is ignored in order to ensure that our selection metrics are as similar as possible to LASSO's selection metrics. After choosing a feature in the first step; in the second step we perform a two covariate regression against ridership. The feature selected in the first round is used, and we test all other features as the second covariate. The second feature that yields the lowest station error is then selected. The subsequent steps continue with multiple regression using all of the already chosen features. We select the fist 25 features with this method and graph the resulting system and station error scores in Figure \ref{fig:bfscores}. 
 
@@ -554,7 +598,7 @@ The minimum scores from each regression type are recorded in Table \ref{tab:rres
 
 A summary of selected features is given in Table \ref{tab:featuresum}. There are ten total regression methods used for feature selection; five LASSO methods and five forward selection methods. The count column in Table \ref{tab:featuresum} shows the number of times out of ten that each feature was selected. For example, the \texttt{near\_hospitality} feature was selected by all ten methods.
 
-As seen in Table \ref{tab:rresults}, some of the regression types are better than others. Therefore, instead of simply counting whether or not a feature is selected by a regression type, we can weight its selection by the effectiveness of the each regression type. For the two error metrics, system and station error, the each regression method's score from Table \ref{tab:rresults} is transformed to the range $[0, 1]$, so the best performing regression type in each metric is weighted as 1, while the worst is rated at 0. For each feature, selection is weighted according to the regression type that selected it. These weighted selection counts are then rescaled to the range $[0, 10]$ and displayed in Table \ref{tab:featuresum} as the System Weighted and Station Weighted columns.
+As seen in Table \ref{tab:rresults}, some of the regression types are better than others. Therefore, instead of simply counting whether or not a feature is selected by a regression type, we can weight its selection by the effectiveness of the each regression type. For the two error metrics, system and station error, the each regression method's score from Table \ref{tab:rresults} is transformed to the range $[0, 1]$, so the best performing regression type in each metric is weighted as 1, while the worst is rated at 0. (EXPLAIN THE WEIGHTING!!!!) For each feature, selection is weighted according to the regression type that selected it. These weighted selection counts are then rescaled to the range $[0, 10]$ and displayed in Table \ref{tab:featuresum} as the System Weighted and Station Weighted columns.
 
 The weighted columns give insight into which features were selected by the best methods. Features with weighted scores greater than their count were only selected by the most accurate regression types; for example \texttt{near\_medical}, the number of medical jobs within walking distance, or \texttt{near\_hunits\_large}, the number of housing units in apartment buildings of 20 or more units. Other features with weighted scores less than their count were selected by the least accurate regression types. Examples here are \texttt{15net\_hunits\_attached}, the number of townhomes and 2-4 unit apartments within a 15 minute transit ride, and \texttt{15net\_hospitality}, the number of restaurant and hotel jobs within a 15 minute transit ride. 
 
@@ -599,7 +643,7 @@ near\_hunits\_attached&3&1.4&1.8\\
 
 The Mannheim-Florian four step model fundamentally depends on existing transit ridership information. For example, the starting point of a four step analysis for a new light rail line would be an existing bus line that runs a similar, hopefully identical, path. The advantage of this regression model is that it creates a new estimate from different sources, independent of any knowledge of the current system.
 
-All five regression types are able to give systemwide ridership estimates within 20\% of the true value for identified sets of features. This does not require any prior knowledge of ridership characteristics of any other local transit system and it compares favorably with the 48\% average ridership prediction  error reported for 25 transportation networks in Flyvbjerg \cite{Flyvbjerg2006}. It is justifiable to use this regression based ridership model to produce and validate system-level estimates for new construction intra-urban rail transit in the United States. 
+All five regression types are able to give system-wide ridership estimates within 20\% of the true value for identified sets of features. This does not require any prior knowledge of ridership characteristics of any other local transit system and it compares favorably with the 48\% average ridership prediction  error reported for 25 transportation networks in Flyvbjerg \cite{Flyvbjerg2006}. It is justifiable to use this regression based ridership model to produce and validate new construction, system-wide cost estimates for urban rail transit in the United States. 
 
 Future work in on this model could proceed in two directions. The first direction is to continue improvement of the source data. This project used only zip code shapes to estimate counting features, since job and housing data was available only for the zip code, but the population features exist in more granular detail at the Census Tract level. The author generated exclusion zones which were designed to prevent job and people from being located in parks and water could be improved by incorporating detailed city land use maps. Finally, there is a major deficiency in source data because neither federal, state nor local government workers are included in the employment data sources used by the model. Of particular concern are university employment; university jobs within walking distance was a selected feature in five of the six models. Several large universities are located on the transit networks of this study and were not accounted for, such as University of Illinois at Chicago, University of Colorado  Denver, and University of Massachusetts Boston. For other cities that have very large public universities, like Minneapolis, Austin, or Columbus, this would significantly affect the validity of any estimates, especially given the importance of university related features in Table \ref{tab:featuresum}.
 

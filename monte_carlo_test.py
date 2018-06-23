@@ -359,12 +359,12 @@ if __name__ == "__main__":
     print(np.mean(ratio))
     
     plt.plot(allmeans, allstdevs, 'bx')
-    plt.xlabel("Mean estimated population of zip code")
+    plt.xlabel("Mean estimated population of station")
     plt.ylabel("SStandard deviation of population estimates")
     plt.show()
     
     plt.plot(allmeans, ratio, 'rx')
-    plt.xlabel("Mean estimated population of zip code")
+    plt.xlabel("Mean estimated population of station")
     plt.ylabel("Coefficient of variation of population estimtes")
     plt.show()
     
