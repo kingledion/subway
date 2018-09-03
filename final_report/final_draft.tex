@@ -106,9 +106,9 @@ Given this information, we choose cutoffs of 500 meters and 1000 meters for calc
 
 \subsection{Rejection Sampling of Zip Code Shapefiles}\label{sec:sampling}
 
-INCORPORATE NOTE HERE????
-
-We translate zip code level data into transit station specific data by using a Monte Carlo method to estimate feature counts near transit stations. Sample points are generated within each zip code near the transit network. Those points are assigned to whichever stations are within walking distance of the station. The ratio of points assigned to each station to total points generated for each zip code is used to assign feature counts to each station. An algorithm for rejection sampling a single zipcode is provided in Algorithm \ref{alg:rejsamp}.
+We translate zip code level data into transit station specific data by using a Monte Carlo method to estimate feature counts near transit stations. Sample points are generated within each zip code near the transit network. Those points are assigned to whichever stations are within walking distance of the station. The ratio of points assigned to each station to total points generated for each zip code is used to assign feature counts to each station, such that
+\[\text{count}(station_i) = \sum_j w_{ij} \cdot \text{count}(zipcode_j)\]
+where $w_{ij}$ is the proportion of the land area of zipcode $j$ that is within walking distance of station $i$. An algorithm for rejection sampling a single zipcode is provided in Algorithm \ref{alg:rejsamp}.
 
 
 \begin{algorithm}\begingroup\fontsize{10}{10}\selectfont
@@ -118,7 +118,7 @@ We translate zip code level data into transit station specific data by using a M
 \State{ $n \gets$ max($zipcode.area$ in hectares, 1000)}
 \State{ $randomPoints \gets \{\}$}
 \While{ len($randompoints$) $< n$}\Comment{Generate $n$ random points within $zipcode$}
-	\State{ $lon \gets $ random number $\in zipcode.lonrage$; $lat \gets $ random number $\in zipcode.latrage$}
+	\State{ $lon \gets $ random number $\in zipcode.lonrange$; $lat \gets $ random number $\in zipcode.latrange$}
 	\State {$point \gets (lat, lon)$}
 	\If { $point$ is inside $zipcode$ shapefile and $point$ is not inside exclusion areas}
 		\State{ $randomPoints \gets point$}
@@ -165,16 +165,14 @@ With any Monte Carlo method for estimation, there is variance in the estimates g
 
 The land area of the zip codes near the studied transit networks vary in size from as small as 30 hectare in downtown Chicago to as much as 18100 hectares at the suburban end of transit lines in Dallas. To provide an appropriate balance between accuracy and processing speed, we use one random point per hectare, but with a minimum limit of 1000 points per zip code. This effectively provides over 10 points per hectare in for the zip codes in the densest parts of the studied networks: the downtown areas of Chicago and Boston. These areas also have the densest network of transit stations, with many stations within a kilometer of each other. In these denser areas, it is important to have enough points that the division of points between stations does not result in too much variance. 
 
-We generate 100 sets of estimates for the a single feature (total population) for all stations in the six transit networks. Figure \ref{fig:mcvar}(a) shows a graph of means of total population estimates against standard deviation of the population estimates, while Figure \ref{fig:mcvar}(b) is means against coefficient of variation. The standard deviation shows an increasing linear relationship with the population mean. The coefficient of variation is never greater than 10.4\% and generally decreases with increasing estimated mean population. The mean coefficient of variance over all studied stations is 5.3\%. 
+We generate 100 sets of estimates for the a single feature (total population) for all stations in the six transit networks. Figure \ref{fig:mcvar}(a) shows a graph of means of total population estimates against standard deviation of the population estimates, while Figure \ref{fig:mcvar}(b) is means against coefficient of variation. The standard deviation shows an increasing linear relationship with the population mean. The coefficient of variation is never greater than 10.4\% and generally decreases with increasing estimated mean population. The mean coefficient of variance over all studied stations is 5.3\%. By this method, the relative accuracy of any single station estimate of population or employment relative to the mean of 100 estimates of the same feature $\pm$10\% .
 
 \begin{figure}[H]
 \centering
-\subfloat[Standard deviation versus mean by transit station]{\includegraphics[clip,width=0.5\columnwidth]{estvarstdev}}
-\subfloat[Coefficient of variation versus mean by transit station]{\includegraphics[clip,width=0.5\columnwidth]{estvarcov}}
-\caption{Indications of variance for Monte Carlo estimates of the population feature}\label{fig:mcvar}
+\subfloat[Standard deviation versus mean by transit station.]{\includegraphics[clip,width=0.5\columnwidth]{estvarstdev}}
+\subfloat[Coefficient of variation versus mean by transit station.]{\includegraphics[clip,width=0.5\columnwidth]{estvarcov}}
+\caption{Indications of variance for Monte Carlo estimates of the population feature.}\label{fig:mcvar}
 \end{figure}
-
-IN CONCLUSION A RELATIVE ACCURACY OF +- 10%
 
 \subsection{Generation of network-dependent features}\label{sec:net}
 
@@ -205,15 +203,12 @@ The transit network is laid out as a directed graph, where nodes represent the t
 
 An illustration of the calculation of travel time between Sullivan Square and South Station in Boston is provided in Figure \ref{fig:f2}. Starting at Sullivan Square on the Orange Line southbound, there are four edge traversals totaling seven minutes to get to Downtown Crossing. From there, there is a 2.5 minute wait until a Red Line (also Southbound) train arrives, and 2.5 more minutes of travel to South Station. The total travel time is thus twelve minutes. 
 
-For each station A and for the set of all stations (S) within 15 minutes of A; the counts of each `Need Index' type feature is summed over all stations of S. This is the count used for the corresponding network type feature of A. The same procedure is repeated for all stations within 30 minutes of A. Thus, for each `Need Index' type feature associated with a station in the feature set, there are two additional features: one summing the counts of that feature within 15 minutes and one within 30 minutes. 
+For each station $A$ and for the set of all stations ($S$) within 15 minutes of $A$; the counts of each `Need Index' type feature is summed over all stations of $S$. This is the count used for the corresponding network type feature of $A$. The same procedure is repeated for all stations within 30 minutes of $A$. Thus, for each `Need Index' type feature associated with a station in the feature set, there are two additional features: one summing the counts of that feature within 15 minutes and one within 30 minutes. 
 
 These features are important for providing a measure of centrality to the network. Stations near the center of the network and at transfer points between lines will have higher counts of network features than peripheral stations. The other important function of the network features is to provide estimates of the total scale of system ridership. The more people, jobs, and other characteristics near transit stations, the higher the overall system ridership is expected to be. This is a key component of the model's portability between different city's transit networks. 
 
-
-
-
 \subsection{Analysis of zip code characteristics by city}
-\vspace{-15pt}
+%\vspace{-15pt}
 \begin{figure}
 \centering
 \subfloat[Boston - Blue; Chicago - Red; Los Angeles - Green]
@@ -263,23 +258,20 @@ Area of marker represents ridership of the station.}\label{fig:networkvars}
 \end{figure}
 
 
-
-
 \section{Model generation and Error Metrics}
 
 \subsection{Metrics for assessing accuracy of predictions}\label{sec:metric}
 
 In general, the projected ridership forecasts of new transit infrastructure investments significantly overestimates transit ridership. The pioneering study in this field by Pickrell in 1989 \cite{Pickrell1989} found that for ten rail projects completed between 1977 and 1985, and assessed between 1986 and 1989, the actual ridership was between 28\% and 85\% lower than projected. A 2006 study \cite{Flyvbjerg2006} of 25 major passenger rail projects in 14 nations found that 21 of the projects had actual ridership below projections, with the average true system ridership 48\% below the projection. Accurate assessment of projection accuracy is imperative for creating ridership estimates that serve the public interest.
 
-To assess the predictions from regression analysis, there should be two metrics used: one for the total system ridership, and another for station level ridership. Following Pickrell, the metric for system-wide projection accuracy is standard percentage error in total system ridership, which we will refer to as system error. This error is
+To assess the predictions from regression analysis, there should be two metrics used: one for the total system ridership, and another for station level ridership. The economic justification for new construction of a transit system is based on projections of total system ridership. The projected cost of operating the system must be proportional to the projected revenue from ridership. The placement of stations should be guided by an evaluation of station level ridership. Decisions on whether to fund infill stations along existing transit lines, or line extensions to previously unserved areas depend on analysis of ridership at the station level. Therefore, it is important to create a ridership model that optimizes both system and station level ridership. 
+
+Following Pickrell, the metric for system-wide projection accuracy is standard percentage error in total system ridership, which we will refer to as system error. This error is
 $$E_{system} = \dfrac{\left|\,\sum\limits_{i\,\in\,\text{stations}} y_{i, proj} - \sum\limits_{i\,\in\,\text{stations}} y_{i, true}\,\right|}{\sum\limits_{i\,\in\,\text{stations}} y_{i, true}},$$
-where $y_{proj}$ is the projected ridership and $y_{true}$ the true ridership for each station, and each is summed over all stations.
+where $y_{proj}$ is the projected ridership and $y_{true}$ the true ridership for each station, and each is summed over all stations in a transit network.
 
 Hardy \cite{Hardy2010} extends Pickrell's analysis by including absolute station error for stations on newly added sections of an existing transit network. Following Hardy, a measure of station level error on a network is the summed absolute error of all station projections. The rail networks in this study vary widely in total ridership; therefore, to allow network-to-network comparison, this summed absolute station error can divided by total system ridership. The resulting metric for station error given a projected ($y_{proj}$) and actual ridership ($y_{true}$) is 
 $$E_{station} = \dfrac{\sum\limits_{i\,\in\,\text{stations}}\left|\,y_{i, proj} - y_{i, true}\,\right|}{\sum\limits_{i\,\in\,\text{stations}} y_{i, true}}.$$
-
-
-INSERT DIVIDING LINE BETWEEN THE TWO FIGURES!!!
 
 \begin{figure}
 \centering
@@ -294,7 +286,7 @@ INSERT DIVIDING LINE BETWEEN THE TWO FIGURES!!!
 \end{minipage}\hfill
 \hspace{5pt}
 \unskip\vrule
-\hspace{10pt}
+\hspace{5pt}
 \begin{minipage}{0.45\textwidth}
 \centering
 \subfloat[Ridership against employment. Linear regression in red, log regression in blue.]{\includegraphics[clip,width=\columnwidth]{empvrider}}
@@ -311,11 +303,11 @@ INSERT DIVIDING LINE BETWEEN THE TWO FIGURES!!!
 
 Regression models for station level ridership have used ordinary least squares regression \cite{Kuby2004, Taylor2008, Currie2011, Durning2015, Gutierrez2011} to generate predictions. We investigate the applicability of more complex regression models, and whether or not these other regression types can provide better modeling accuracy.
 
-The range of the dependent variable, average weekday ridership at a station, has range $[0, \infty)$. The log link function has this range and so it is reasonable to assume that there may be a logarithmic relationship between characteristics and ridership. To test the viability of the log link, we can compare a linear least squares line of best fit with a line of best fit using the logarithm of the ridership as the response variable. CHANGE THESE MODELS TO USE GLM WITH LOG LINK
+The dependent variable, average weekday ridership at a station, has range $[0, \infty)$. The exponential function has this range and so it is reasonable to assume that there may be a logarithmic relationship between characteristics and ridership. We can compare a linear least squares line of best fit with a line of best fit using the logarithm of the ridership as the response variable. 
 
-There are generally two types of feature included in this survey: those that are related to population and those that are related to employment. A plot of all stations' population versus ridership appears in Figure \ref{fig:popresid} with linear and logarithmic regression lines and residuals. A similar treatment for employment versus ridership appears in Figure \ref{fig:empresid}. In Figures  \ref{fig:popresid}(a) and \ref{fig:empresid}(a), a linear and logarithmic best fit line, derived as shown in Section \ref{sec:ols} below, are fitted to the data. The residuals from the linear regression line are plotted in (b) and from the logarithmic regression in (c) of each figure. 
+There are generally two types of feature included in this survey: those that are related to population and those that are related to employment. A plot of all stations' population versus ridership appears in Figure \ref{fig:popresid} with linear and logarithmic regression lines and residuals. A similar treatment for employment versus ridership appears in Figure \ref{fig:empresid}. In Figures  \ref{fig:popresid}(a) and \ref{fig:empresid}(a), a linear and logarithmic best fit line are fitted to the data. The residuals from the linear regression line are plotted in (b) and from the logarithmic regression in (c) of each figure. 
 
-The coefficient of determination for the two regression types for both population and employment are shown in Table \ref{tab:regr2}. Judging from the coefficients of determinations and the distributions of the residuals, there does not appear to be any clear modeling advantage from using either an identity or logarithmic link function. 
+The coefficient of determination for the two regression types for both population and employment are shown in Table \ref{tab:regr2}. Judging from the coefficients of determinations and the distributions of the residuals, there does not appear to be any clear modeling advantage from using either a linear or log transformed response variable.
 
 \begin{table}[H]
 \centering
@@ -329,9 +321,7 @@ Employment&0.1948&0.1878 \\
 \end{table}
 
 
-The metrics for projection accuracy introduced in Section \ref{sec:metric} depend on the absolute difference between actual and predicted ridership. This suggests that regression using the Least Absolute Deviation (LAD) (ADD SECTION DEFINING LAD!!!!) loss function is appropriate for this problem. Since the response variable (ridership) has a value of integer counts, and the variance of ridership increases with increasing employment, we will also investigate the use of a Poisson model. Finally, we will use ordinary least squares (OLS) regression as a baseline comparison, to see if the other methods have any performance advantage compared to the currently used regression type. Since we are not certain whether a log or linear link function is most appropriate, we will test the Poisson and least squares regression with both log and linear link functions.
-
-There are 94 possible features, while some transit networks have as few as 38 stations. Feature selection is necessary to prevent the model from being overspecified. We use two methods of feature selection for each of the five regression types: LASSO regression described in Section \ref{sec:lasso} and a stepwise forward selection method described in Section \ref{sec:fs}. 
+The metrics for projection accuracy introduced in Section \ref{sec:metric} depend on the absolute difference between actual and predicted ridership. This suggests that regression using the Least Absolute Deviation (LAD) (\ref{sec:lad}) loss function is appropriate for this problem. Since the response variable (ridership) has a value of integer counts, and the variance of ridership increases with increasing employment, we will also investigate the use of a Poisson model. Finally, we will use ordinary least squares (OLS) regression as a baseline comparison, to see if the other methods have any performance advantage compared to the currently used regression type. To test a variety of transformed relationships between the features and response variable, we will test the Poisson regression with both the log and identity link functions, and least squares regression with both a linear response variable and a log-transformed response variable.
 
 Upon performing any regression analysis, it becomes immediately apparent that one set of features is different from the others. Estimating station ridership using only the number of students within a 15 or 30 minute transit trip of each station provides a very accurate measurement of system level ridership. These variables are represented in the model as \texttt{15net\_students} and \texttt{30net\_students}, respectively. We show the results of a single variable OLS regression of the one variable against ridership. The scores are the average of the six way cross-validation across the six transit networks in the study; each of the six networks is used as the test set in one case, while the other five transit networks are used as the training set. The `best' scoring other feature (\texttt{15net\_hunits\_old}; the number of housing units built before 1940 within a 15 minute transit ride) is shown for comparison.
 
@@ -346,26 +336,59 @@ Upon performing any regression analysis, it becomes immediately apparent that on
 \caption{Error for single variable OLS for selected features}\label{tab:students}
 \end{table}
 
-The system error scores for \texttt{30net\_students} and \texttt{15net\_students} are much lower than for any other variable, while the station error for these features are also lower than any other features. As we will see, the single-feature OLS of either of these features produces a model that is approximately as good as any other model we will develop. This raises questions about the relationship between this feature and the response variable. It is possible that the population of students within walking distance of a transit station is driven by the availability of local transit, and not the other way around; that is, students particularly among a larger population will chose their housing locations based on availability of transit. In that case, the number of students is not a valid explanatory variable. Since the relationship is unclear and the features are outliers, we will remove all features derived from number of students from the model.
+The system error scores for \texttt{30net\_students} and \texttt{15net\_students} are much lower than for any other variable, while the station error for these features are also lower than any other features. As we will see, the single-feature OLS of either of these features produces a model that is approximately as good as any other model we will develop. This raises questions about the relationship between this feature and the response variable. It is possible that the population of students within walking distance of a transit station is driven by the availability of local transit, and not the other way around; that is, students may choose their housing locations based on availability of transit. In that case, the number of students is not a valid explanatory variable. Since the relationship is unclear and the features are outliers, we will remove all features derived from number of students from the model.
 
+There are 94 remaining possible features, while some transit networks have as few as 38 stations. Feature selection is necessary to prevent the model from being over-specified. We use two methods of feature selection for each of the five regression types: LASSO regression described in Section \ref{sec:lasso} and a stepwise forward selection method described in Section \ref{sec:fs}. 
+
+\subsection{Feature Selection}
+
+\subsubsection{Feature selection by LASSO regularization}\label{sec:lasso}
+
+
+Least Absolute Shrinkage and Selection Operator (LASSO) regression can be used to perform feature selection for regression analysis. The LASSO method adds a regularization term to an objective function to penalize regression coefficients. By forcing the sum of the absolute values of all regression coefficients to be less than a fixed value, some regression coefficients are set to zero, thereby eliminating them from the model. 
+
+Because LASSO constrains the magnitude of the coefficients, it is important that all coefficients are on the same scale. Therefore, for all LASSO feature selection methods, the features are normalized by z-score standardization. Each entry $x_{i,j}$ in the covariate matrix is scaled by
+$$ x_{i, j, scaled} = \frac{x_{i,j} - \mu_i}{\sigma_i}$$ where $\mu_i$ and $\sigma_i$ are the mean and standard deviation of the $i$-th column of the covariate matrix.
+
+ THE EXCEPTION IS POISSON WITH IDENTITY LINK, WHERE THE FEATURES ARE SCALED FROM 0 TO 1 BY
+$$ x_{ij, scaled} = \frac{x_{ij} - \min(x_i)}{\max(x_i) - \min(x_i)}.$$
+THE PRACTICAL RESULT OF THIS IS THAT ALL SCALED FEATURES ARE NON-NEGATIVE. 
+
+An important part of the LASSO solution is selection of $\lambdaup$, the penalty coefficient. The penalty in LASSO is divided into two parts: a loss function on the error of the predicted values and a penalty on the regression coefficients. For a sufficiently large value of $\lambda$, the optimum solution is for all regression coefficients to be zero, thus eliminating the regression coefficient penalty. Solving for the optimum $\lambda$ thus requires identifying the minimum $\lambda$ value for which the solution is all zero coefficients, a solution with zero degrees of freedom. This is typically done by a grid search; this is the method used by the \texttt{glmnet} package \cite{friedman2010}. From \texttt{glmnet}, we use the cross-validation methods that will automatically optimize $\lambda$. The minimum value of $\lambda$ where the solution has zero degrees of freedom is identified by grid search, and then cyclical coordinate descent is used to find the optimum $\lambda$ value. 
+
+LAD LASSO is performed using the \texttt{flare} package in R; this package does not have a built in cross-validation algorithm to optimize $\lambda$. Instead, the author created a $\lambdaup$ grid search algorithm comparable to that performed by \texttt{glmnet}. The optimum $\lambda$ is then identified by regular gradient descent. The Poisson LASSO with identity link is performed by author supplied code, where $\lambdaup$ is solved concurrently with the regression parameters ($\theta$) by an interior point solver, as detailed in section \ref{sec:poiss}.
+
+LASSO regression is performed six times for each LASSO regression type. A trial is made with each city as the test set and all other cities as the training set. Therefore, we identify six sets of selected features for each LASSO regression type. To choose a single set of features from these six sets, we choose all features that are selected by four or more of the six cross-validation trials. This is the feature set that will be reported in the results section.
+
+\subsubsection{Feature selection by stepwise forward selection}\label{sec:fs}
+ 
+Since the data set for this problem is small--with only 466 total stations--we can validate the LASSO results using a stepwise forward selection approach. This method is a greedy search of all possible features to find the best combination of features that minimizes our error metrics, performed in a multi-step process.
+
+In the first step, for all features, we perform a single-covariate regression--for whichever regression type--against the response variable, ridership. Each feature is evaluated in six-way cross validation, where each of the six transit networks is used as the test set once, while the other five are used for the training. Since there are two types of error defined in Section \ref{sec:metric}, station and system error, we use the arithmetic mean of the two error metrics to score each feature. We then take the arithmetic mean of the score from all six trial runs, and select the single feature with the lowest error score. If $k$ represents one of the six systems that is evaluated as the test set, then the error score for each feature is
+
+$$ E_{feature} = \displaystyle\frac{\sum\limits_{k\in 6\,systems}\displaystyle\frac{E_{k, system} + E_{k, station}}{2}}{6}.$$
+
+After choosing a feature in the first step, in the second step we perform a two covariate regression against ridership. The feature selected in the first round is used, and we test all other features as the second covariate. The second feature that yields the lowest error score is then selected. The subsequent steps continue with multiple regression using all of the already chosen features. 
+
+For each regression type, we perform 25 steps of forward selection, choosing 25 features in order. We then plot the error scores against number of features selected to find number of features that yields the lowest error score. This set of features is selected, and the error scores for this feature set and regression type are included in the results table (Table \ref{tab:rresults}).
 
 
 \subsection{Derivation of Regression methods}
-For the five regression types described, the methodolody and packages used are described below. A chart of packages used for implementation is presented in Table \ref{tab:regtype}.
+For the five regression types described, the methodology and packages used are described below. A chart of packages used for implementation is presented in Table \ref{tab:regtype}.
 
 \begin{table} [H]
 \centering
 \begin{tabular}{lll}
-\toprule Regression&Link&package\\
-\midrule Least Squares&Identity&LASSO: \texttt{glmnet} for Python\\
+\toprule Regression Method&Type&package\\
+\midrule Least Squares&Linear&LASSO: \texttt{glmnet} for Python\\
 &&Forward Selection: \texttt{statsmodels} for Python\\
-&Log&LASSO: Author-created\\
+&Log Transform&LASSO: \texttt{glmnet} for Python\\
 &&Forward Selection: \texttt{statsmodels} for Python\\
-LAD&Identity&LASSO: \texttt{flare} for R\\
+LAD&Linear&LASSO: \texttt{flare} for R\\
 &&Forward Selection: \texttt{statsmodels} for Python\\
-Poisson&Log&LASSO: \texttt{glmnet} for Python\\
+Poisson&Log Link&LASSO: \texttt{glmnet} for Python\\
 &&Forward Selection: \texttt{statsmodels} for Python\\
-&Identity&LASSO: Author-created\\
+&Identity Link&LASSO: Author-created\\
 &&Forward Selection: \texttt{statsmodels} for Python\\
 \bottomrule
 \end{tabular}
@@ -375,47 +398,45 @@ Poisson&Log&LASSO: \texttt{glmnet} for Python\\
 
 
 
-\subsubsection{Least squares regression}\label{sec:ols}
+\subsubsection{Least squares regression}\label{sec:lstsq}
 
-Ordinary Least Squares (OLS) regression is a model,
-\[Y = \theta X + \epsilon\] where $\theta$ is a parameterization and $\epsilon$ is assumed to be normally distributed. The expected value of any element of $Y$ is the corresponding element of $\theta X$:
-\[E(Y\,|\,X; \theta) = \theta X\]
-Here, $Y$ is length $m$ a vector of response variables; $\theta$ is a length $p$ vector of parameters and $X$ is an $m\times p$ matrix of covariates. The sum of squared residual measure of model fit gives us an objective function to minimize for a solution
-\[\hat{\theta} = \argmin_{\theta\in\mathbb{R}^p}\sum_{i=1}^m \left(y_i - \theta x_i\right)^2.\]
+Ordinary Least Squares (OLS) regression is a model where the $i$th of $m$ response variables $y_i$ is a linear function of the regressors,
+\[y_i = x_i\theta + \epsilon\] where $\theta$ is a parameterization and $\epsilon$ is assumed to be normally distributed. The expected value of any element of $Y$ is the corresponding element of $\theta X$:
+\[E(y_i\,|\,x_i; \theta) = x_i\theta\]
+Here, $y_i$ is one of $m$ response variables, $\theta\in\mathbb{R}^p$ is a length $p$ vector of parameters and $x_i$ is one of $m$ length $p$ vectors of covariates. An intercept is implemented by pre-pending a feature with constant value 1 to each vector $x_i$. For this model, the $p=95$ parameters correspond to the 94 implemented features and one intercept column. The response variables are the ridership of each individual station, so $m$ is the number of stations included in any model fitting.  
 
-For LASSO regression, an additional constraint on the parameters is introduced where 
-\[\sum_{j=1}^p |\theta_j|\leq t.\] We apply this constraint to OLS to solve for parameters such that
-\[\hat{\theta} = \argmin_{\theta\in\mathbb{R}^p} \frac{1}{N}\sum_{i=1}^m \left(y_i - x_i^\top\theta\right)^2 + \sum_{j=1}^p\lambda_j\theta_j.\]
-The tuning parameter $\lambda$ is proportional to the strength of the regularization penalty. The larger the $\lambda$, the fewer features will be selected. The LASSO solver used for both Least Squares and Poisson in this experiment is the \texttt{glmnet} package \cite{glmnet}; in this package, the optimal $\lambda$ is identified by using a grid search and cyclical coordinate descent.  
+For each response variable $y_i$, the residual is $y_i - \theta X$. For OLS, the measure of best fit is the sum of squared residuals, so we optimize the parameters by
+\[\hat{\theta} = \argmin_{\theta\in\mathbb{R}^p}\sum_{i=1}^m \left(y_i - x_i\theta\right)^2\] to obtain a least squares best fit solution $\hat{\theta}$.
 
-For least squares regression with a log link, or loglinear regression, we transform all entries in the $y$ vector of response variables by the natural logarithm so that 
-$$\log{y} = \theta X + \epsilon.$$
-With this transformation of the response variable, we perform a regular or LASSO regression as above. We then use the exponential function of predicted station level ridership so that the range of the predictions is in the same units across all regression types.
+For LASSO regularization \cite{Tibshirani1996}, an additional constraint on the parameters is introduced to limit the absolute magnitude of the sum of the parameters: 
+\[\sum_{j=1}^p |\theta_j|\leq t.\] This has the practical effect of selecting only a subset of the provided features. We apply this constraint to OLS to solve for parameters such that
+\[\hat{\theta} = \argmin_{\theta\in\mathbb{R}^p} \frac{1}{m}\sum_{i=1}^m \left(y_i - x_i\theta\right)^2 + \sum_{j=1}^p\lambda\theta_j.\]
+The tuning parameter $\lambda$ is proportional to the strength of the regularization penalty. The larger the $\lambda$, the fewer features will be selected. The LASSO solver used for both Least Squares and Poisson in this study is the \texttt{glmnet} package. This package identifies the optimal $\lambda$ by dividing the data set for cross-validation, then using a grid search and cyclical coordinate descent to identify the $\lambda$ associated with minimum error. .  
 
-\subsubsection{Poisson regression with Log link}
+For the least squares regression using the log transform, we transform the dependent variable $Y$ to $\log{Y}$ and perform the same OLS or LASSO regression.
 
-Poisson regression is performed with its canonical log link. The mean of the predicted Poisson distribution is given by 
-\[E(Y\,|\,X;\theta) = e^{\theta X}.\]
-The Poisson probability mass distribution becomes
-\[p(y_1, ..., y_m|x_1, ..., x_m; \theta) = \prod_{i=1}^m \frac{e^{y_i\theta x_i}e^{-e^{\theta x_i}}}{y_i!}\]
-with a negative log-likelihood expression
-\[-\mathcal{L}(\theta|X, Y) = \sum_{i=1}^m e^{\theta x_i}-y_i\theta x_i \]
-ignoring the constant factorial term which falls out in differentiation. This convex function is the objective function and is minimized over $\theta\in\mathbb{R}^p$.
+\subsubsection{Poisson regression} \label{sec:poiss}
+
+Poisson regression is performed both with its canonical log link and identity link. The mean of the predicted Poisson distribution is given by 
+\[E(y_i\,|\,x_i;\theta) = e^{x_i\theta},\]
+where $x$, $y$, and $\theta$ as as defined in the last section. 
+Using this mean as the parameter of a Poisson probability mass function, the joint distribution is
+\[p(y_1, ..., y_m|x_1, ..., x_m; \theta) = \prod_{i=1}^m \frac{e^{y_ix_i\theta}e^{-e^{x_i\theta}}}{y_i!}.\]
+This represents the probability of any set of ridership numbers given a feature set and parameterization. The optimal parameterization is obtained using the negative log-likelihood expression
+\[-\mathcal{L}(\theta|X, Y) = \sum_{i=1}^m e^{x_i\theta}-y_ix_i\theta. \]
+In this expression, we ignore the constant factorial term which falls out in differentiation. This convex function is the objective function for our optimization problem and is minimized over $\theta\in\mathbb{R}^p$.
 
 For LASSO regression, we minimize the parameters \cite{Young2007} over  
-\[\hat{\theta}(\lambda) = \argmin_{\theta\in\mathbb{R}^p}  \frac{1}{N}\sum_{i=1}^m e^{\theta x_i}-y_i\theta x_i  + \sum_{j=1}^p\lambda_j\theta_j.\]
+\[\hat{\theta}(\lambda) = \argmin_{\theta\in\mathbb{R}^p}  \frac{1}{N}\sum_{i=1}^m e^{x_i\theta}-y_ix_i\theta  + \sum_{j=1}^p\lambda\theta_j.\]
 
+\subsubsection{Poisson regression with Identity Link}
 
-\subsubsection{Poisson regression with Identity link} \label{sec:poisI}
-
-With no suitable package to perform LASSO regression using Poisson regression and the identity link, we implement this method using Python.
-
-For the identity link, the mean of the predicted Poisson distribution is given by $$E(Y\,|\,X;\theta) = \theta X$$ where $Y$ is length $m$ a vector of response variables; $\theta$ is a length $p$ vector of parameters and $X$ is an $m\times p$ matrix of covariates. This mean is entered into the Poisson probability mass distribution to get 
+For the identity link, the mean of the predicted Poisson distribution is given by $$E(y_i\,|\,x_i;\theta) = x_i\theta$$ which yields a joint distribution 
 $$p(y_1,...,y_m|x_1,...,x_m;\theta) = \prod_{i=1}^m \frac{\left(\theta x_i\right)^{y_i}e^{-\theta x_i}}{y_i!} $$
 The negative log likelihood of this distribution is the objective function
-$$-\mathcal{L}\left(\theta\,|\,X, Y\right) = \sum_{i=1}^m -y_i\log{\left(\theta x_i\right)} +\theta x_i. $$ This function is convex and so the minimum can be obtained using convex optimization methods. 
+$$-\mathcal{L}\left(\theta\,|\,X, Y\right) = \sum_{i=1}^m -y_i\log{\left(x_i\theta\right)} +x_i\theta. $$ This function is convex and so the minimum can be obtained using convex optimization methods. 
 
-To implement LASSO \cite{Tibshirani1996}, we use the primal-dual interior point method from Boyd and Vandenberghe \cite{Boyd2004}. There are no equality constraints for this problem, and only one inequality constraint.
+With no suitable package to perform LASSO regression using Poisson regression and the identity link, we implement a solution using Python. We use the primal-dual interior point method as outlined in Boyd and Vandenberghe \cite{Boyd2004}. There are no equality constraints for this problem, and only one inequality constraint.
 
 \begin{center}\begin{tabular}{ll}
 minimize &$f_0(x)$\\
@@ -423,13 +444,11 @@ subject to &$f_i(x) \leq 0, \quad i = 1, ..., m$.
 \end{tabular}\end{center}
 
 
- Both $f_0$ and $f_1$ must be convex and twice continuously differentiable. But in LASSO the constraint is $||\boldsymbol{\theta}|| < t$, which is a function of the absolute value of $\theta_i$; a non-differentiable function. Therefore, we define the constraints as 
-
-
+Both $f_0$ and $f_1$ must be convex and twice continuously differentiable. But the LASSO constraint is $||\boldsymbol{\theta}|| < t$, which is a function of the absolute value of $\theta_i$; a non-differentiable function. Therefore, we choose $f_0$ and $f_1$, with the additional constraint that the parameters must be non-negative for $f_1$ to be equivalent to the LASSO constraint:
 \begin{align}
-f_0(\theta) =& \sum_{i=1}^m -y_i\log{\left(\theta x_i\right)} +\theta x_i
-&\nabla f_0(\theta) = \sum_{i=1}^m \dfrac{x_i\left(y_i-\theta x_i\right)}{\theta x_i}\quad
-&\nabla^2 f_0(\theta) = \sum_{i=1}^m\dfrac{y_i x_i^2}{\left(\theta x_i\right)^2}\label{eq:objective}\\[0.2in]
+f_0(\theta) =& \sum_{i=1}^m -y_i\log{\left(x_i\theta\right)} +x_i\theta
+&\nabla f_0(\theta) = \sum_{i=1}^m \dfrac{x_i\left(y_i-x_i\theta\right)}{x_i\theta}\quad
+&\nabla^2 f_0(\theta) = \sum_{i=1}^m\dfrac{y_i x_i^2}{\left(x_i\theta\right)^2}\label{eq:objective}\\[0.2in]
 f_1(\theta) =& \sum_{j=1}^p\,-\theta_j
 &\nabla f_1(\theta) = \sum_{j=1}^p -1 = -p\quad
 &\nabla^2 f_1(\theta) = 0\label{eq:constraints}
@@ -492,9 +511,29 @@ The value of $\Delta\theta$ is solved from the linear equation in (\ref{eq:delbe
 
 Minimization over $\theta$ and $\lambdaup$ is obtained by by iteration, as shown in Algorithm \ref{alg:piip}. The duality gap, the difference between the primal and dual solutions, is not necessarily feasible during each iteration of the interior point method. Therefore, a surrogate duality gap is $\eta(\theta, \lambdaup) = -f_1(\theta)^\top\lambda = \theta\lambda$. A constant scaling constant for $\gamma$ is $\mu$; $p$ is the number of features in the covariate matrix, or the length of $\theta$ and $\lambdaup$. During each iteration, we update $\Delta\theta$ in accordance with (\ref{eq:delbeta}) and $\Delta\lambdaup$ in accordance with (\ref{eq:dellam}). The iterations repeat until both the surrogate duality gap and the dual residual are below a certain threshold ($\epsilon$).
 
-\vspace{50pt}
+\subsubsection{Least Absolute Deviations Regression} \label{sec:lad}
+
+Least absolute deviations regression is similar to OLS (defined in Section \ref{sec:lstsq}), except that instead of minimizing the sum of squared residuals loss function, it minimizes the sum of the absolute value of the residuals
+\[\hat{\theta} = \argmin_{\theta\in\mathbb{R}^p}\sum_{i=1}^m \left|\,y_i - \theta x_i\,\right|.\]
+
+We could add a weight factor to LAD regression so that the optimization takes the form
+
+\[\hat{\theta} = \argmin_{\theta\in\mathbb{R}^p}\sum_{i=1}^m w_0\left|\,y_i - \theta x_i\,\right|.\]
+
+if we choose $w_0 = 1 / y_i$, then the LAD loss function is the same as the station error ($E_{station}$) defined in Section \ref{sec:metric}:
+\[\hat{\theta} = \argmin_{\theta\in\mathbb{R}^p}\displaystyle\frac{\sum\limits_{i=1}^m \left|\,y_i - \theta x_i\,\right|}{\sum\limits_{i=1}^{m}y_i}.\] Therefore, this regression should minimize one of the two error metrics we have defined for this model. 
+
+For LASSO regularization, the the constraint on parameter absolute magnitude is included to get
+
+\[\hat{\theta} = \argmin_{\theta\in\mathbb{R}^p}\sum_{i=1}^m w_0\left|\,y_i - \theta x_i\,\right| + \sum_{j=1}^p\lambda_j\theta_j,\] where the weight factor is the same as above.
 
 
+
+
+
+%\vspace{50pt}
+
+\section{Results}
 
 \begin{table}[H]
 \begingroup\fontsize{8}{15}\selectfont
@@ -505,38 +544,40 @@ Regression Type&Feat Select Type& Min System Err&Min Station Err& \# Features Se
 \midrule
 LstSq - Linear&Pop and Emp only&0.0451&0.5324&2&0.5172&0.8307\\
 LstSq - Linear&Best Single Feat&0.0465&0.4731&1&0.2852&0.6700\\
-\midrule
-LstSq - Linear&Stepwise&0.0216&0.4461&12&0.1919&0.6197\\
-LstSq - Log&Stepwise&0.0450&0.4997&16&0.1741&0.5789\\
-Poisson - Log&Stepwise&0.0426&0.4861&15&0.2184&0.6218\\
-Poisson - Identity&Stepwise&0.0009&0.4113&8&0.1936&0.6071\\
-LAD&Stepwise&0.0005&0.3986&4&0.1792&0.5610\\
+LstSq - Linear&Random Forest&0.1181&0.4161&5&0.3214&0.6439\\
+LstSq - Linear&Random Forest&0.2146&0.4545&10&0.3900&0.7205\\
 \midrule
 LstSq - Linear&LASSO&0.0152&0.4717&9&0.3455&0.7057\\
-LstSq - Log&LASSO&0.0404&0.4501&19&0.4041&0.6773\\
-Poisson - Log&LASSO&0.0892&0.4753&10&0.4857&0.7731\\
+LstSq - Log Trans&LASSO&0.0404&0.4501&19&0.4041&0.6773\\
+Poisson - Log Link&LASSO&0.0892&0.4753&10&0.4857&0.7731\\
 Poisson - Identity&LASSO&0.0721&0.4516&10&0.4214&0.7142\\
 LAD&LASSO&0.0235&0.5867&23&0.6263&0.8629\\
+\midrule
+LstSq - Linear&Stepwise&0.0216&0.4461&12&0.1919&0.6197\\
+LstSq - Log Trans&Stepwise&0.0450&0.4997&16&0.1741&0.5789\\
+Poisson - Log Link&Stepwise&0.0426&0.4861&15&0.2184&0.6218\\
+Poisson - Identity&Stepwise&0.0009&0.4113&8&0.1936&0.6071\\
+LAD&Stepwise&0.0005&0.3986&4&0.1792&0.5610\\
 \end{tabular}
 \caption{Results of regression analysis, compared with some baseline measures}\label{tab:rresults}
 \endgroup
 \end{table}
 
+\subsection{Results table and baseline comparisons}
 
-\subsection{Feature selection by LASSO regularization}\label{sec:lasso}
+Table \ref{tab:rresults} shows the results of all the tested regression models. For each model, there are five result columns. Each model selects a set of features; feature selection by the LASSO method is described in section \ref{sec:lasso} while feature selection by forward selection is described in \ref{sec:fs}. For each of the six transit systems, a model of the appropriate regression type is made from this feature set and system and station error of model is calculated. Reported in the first two columns are the minimum system and station error for any of the six transit systems. The last two columns are the average of the system and station errors across all six transit systems. 
 
-Least Absolute Shrinkage and Selection Operator (LASSO) regression can be used to perform feature selection for regression analysis. The LASSO method adds a regularization term to an objective function to penalize regression coefficients. By forcing the sum of the absolute values of all regression coefficients to be less than a fixed value, some regression coefficients are set to zero, thereby eliminating them from the model. 
+In the top block of Table \ref{tab:rresults}, we include a series of baseline comparison measures. The first is a simple, two-variable OLS regression taking the two variables that are most obviously relevant to transit ridership: population within walking distance, and employment within walking distance. The second baseline comparison is the `best' single feature that we selected from our pool of 88 available features. The single best feature is the number of housing units built before 1940 within a 15 minute transit ride of the station of interest. 
 
-TALK ABOUT SCALING????
+The third and fourth baseline comparison is variable selection by random forest. A random forest model is created using 10 trees, selecting the top ten features per tree and averaging over 100 iterations. The top five and ten selected features are analyzed in the results table. The random forest feature sets outperform the population and employment based model, but do not outperform the best single feature. 
 
-PERHAPS ALL THIS TO THE INTRO ???
+An analysis of the accuracy of the methods shown in Table \ref{tab:rresults} is included in Section \ref{sec:acc}.
 
-
-An important part of the LASSO solution is selection of $\lambdaup$, the penalty coefficient. OLS and Poisson LASSO regression are performed using the \texttt{glmnet} package in Python, which does automatic $\lambdaup$ selection through a grid search (MORE DETAILS HERE!!!!!!). LAD LASSO is performed using the \texttt{flare} package in R.  For \texttt{flare} the author created a $\lambdaup$ grid search algorithm comparable to that performed by \texttt{glmnet}. The Poisson LASSO with identity link is performed by author supplied code, where $\lambdaup$ is solved concurrently with the regression parameters ($\theta$) by an interior point solver, as detailed in section \ref{sec:poisI}.  
+\subsection{LASSO regularization results}
 
 The various LASSO regression types have a large variance in number of features chosen, both between transit networks and between regression types, shown in Table \ref{tab:lassoFeatNum}. Since the six way cross validation produces a different set of selected features for each transit network, we must develop a means for determining a `best' feature set for a common comparison. To represent the results of the LASSO regression, all features that are selected by four or more of the six cross-validation trials are used. 
 
-The LAD LASSO regression chooses an average of 48 features across the six-way cross validation. This is far too high: the transit networks have between 37 and 138 stations. In order to use a more reasonable feature set; we increase the selection requirement for LAD LASSO to only those features selected by five or more of the six cross-validation trials are used. The large number of features selected by LAD LASSO regression may result from any differences in the $\lambda$ selection method used by the computing packages. 
+ENSURE THIS PARAGRAPH STILL APPLIES AFTER RE-RUNNING. The LAD LASSO regression chooses an average of 48 features across the six-way cross validation. This is far too high: the transit networks have between 37 and 138 stations. In order to use a more reasonable feature set; we increase the selection requirement for LAD LASSO to only those features selected by five or more of the six cross-validation trials are used. The large number of features selected by LAD LASSO regression may result from  differences in the $\lambda$ selection method used by the computing packages. 
 
 \begin{table}[H]
 \begingroup\fontsize{10}{15}\selectfont
@@ -545,29 +586,23 @@ The LAD LASSO regression chooses an average of 48 features across the six-way cr
 Regression Type&Atlanta&Boston&Chicago&Dallas&Denver&Los Angeles\\
 \midrule
 LstSq - Linear&10&2&8&9&10&17\\
-LstSq - Log&26&12&17&22&28&46\\
-Poisson - Log&11&5&12&26&27&29\\
-Poisson - Identity&12&15&13&12&11&12\\
+LstSq - Log Transform&26&12&17&22&28&46\\
+Poisson - Log Link&11&5&12&26&27&29\\
+Poisson - Identity Link&12&15&13&12&11&12\\
 LAD&36&52&48&54&47&53\\
 \end{tabular}
 \caption{Number of features selected by LASSO; by transit network and regression type}\label{tab:lassoFeatNum}
 \endgroup
 \end{table}
 
-The LASSO solution optimizes station-type error. The loss function for each LASSO method is dependent on the regression type: Least Squares loss, Poisson loss, or Least Absolute Deviation loss. In each case, the loss is the sum of a function of the predicted value, $\theta x_i$, and true value $y_i$, for each station. In this, the loss for each of these regression types resembles a station-type error. A system type error would be a loss function that is a function of the the predicted values summed over all stations, $\sum_i \theta x_i$, and the true values summed over all station, $\sum_i y_i$.
+%The LASSO solution optimizes station-type error, not system type error. The loss function for each LASSO method is dependent on the regression type: Least Squares loss, Poisson loss, or Least Absolute Deviation loss. In each case, the loss is the sum of a function of the predicted value, $\theta x_i$, and true value $y_i$, for each station. In this, the loss for each of these regression types resembles a station-type error. A system type error would be a loss function that is a function of the the predicted values summed over all stations, $\sum_i \theta x_i$, and the true values summed over all station, $\sum_i y_i$.
 
-The features selected by four of the six cross-validation trials (or five trials, in the case of LAD) are used as the basis for generating the overall metrics in Table \ref{tab:rresults}. For all regression types, the LASSO method of feature selection performs significantly worse than the forward selection method. Several of the LASSO selections have too many features, and some of the poor accuracy may be attributable to overfitting. The results in Table \ref{tab:rresults} allow a comparison of the LASSO regression against some baseline measures, such an Ordinary Least Squares regression using only population and employment within walking distance. The LASSO methods do not significantly outperform this very simple model.
-
-
-\subsection{Feature selection by stepwise forward selection}\label{sec:fs}
+For all regression types, the LASSO method of feature selection performs significantly worse than the forward selection method. Several of the LASSO selections have too many features, and some of the poor accuracy may be attributable to overfitting. The results in Table \ref{tab:rresults} allow a comparison of the LASSO regression against some baseline measures. In general, all of the LASSO methods perform poorly compared to the basline measures. For example, none of the LASSO methods outperform the five variable random forest model. 
 
 
-Since the data set for this problem is small--with only 466 total stations--we can validate the LASSO results using a stepwise forward selection approach. This method is a greedy search of all possible features to find the best combination of features that minimizes our error metrics. Each regression method and link function are tested in this way. First, for all features, we perform a single covariate regression against the response variable, ridership. Each feature is evaluated in six-way cross validation, where each of the six transit networks is used as the test set once, while the other five are used for the training set during each cross validation trial.
+\subsection{Forward selection results}
 
-
-MORE DETAILS ABOUT CRITERION FOR SELECTING A NEW FEATURES
-
-From the results of the single covariate regression, we choose the feature that gives us the lowest error score. Since LASSO selected features based on optimization of station-type error, we select the one feature that predicts ridership with the lowest station error. System error is ignored in order to ensure that our selection metrics are as similar as possible to LASSO's selection metrics. After choosing a feature in the first step; in the second step we perform a two covariate regression against ridership. The feature selected in the first round is used, and we test all other features as the second covariate. The second feature that yields the lowest station error is then selected. The subsequent steps continue with multiple regression using all of the already chosen features. We select the fist 25 features with this method and graph the resulting system and station error scores in Figure \ref{fig:bfscores}. 
+Using the method for feature selection described in Section \ref{sec:fs}, we select the fist 25 features and graph the resulting system and station error scores in Figure \ref{fig:bfscores}. The graphed data point for both system and station error is the average error from using each of the six transit systems as the test set. 
 
 \begin{figure}
 \centering
@@ -588,17 +623,24 @@ Blue - Least Squares Linear; Green - Least Squares Log; Red - Poisson Log; Magen
 \label{fig:bfscores}
 \end{figure}
 
-The error scores in Figure \ref{fig:bfscores} are averaged across the six-way cross validation. In general, each of the error scores decreases with the addition of new features up to a certain number of covariates, and then increases again. The minima for the system and station errors do not coincide with each other for any of the five regression methods, so there is a range of features which produce very similar error scores. In keeping with the optimization of LASSO on station-type loss functions, we will select as `best' the set of features that has the lowest station error. 
+In general, each of the error scores decreases with the addition of new features up to a certain number of covariates, and then increases again. The minima for the system and station errors do not coincide with each other for any of the five regression methods, so there is a range of features which produce very similar error scores. By using the arithmetic average of the system and station errors, we pick an optimum number of features for each regression type. %In keeping with the optimization of LASSO on station-type loss functions, we will select as `best' the set of features that has the lowest station error. 
 
-Our chosen metric of station error closely resembles the Least Absolute Deviation loss function. Therefore, it is not surprising that this regression type performs the best on the Station Error metric, having the lowest station error for up to 15 features. An interesting result of LAD regression is that the station error curve has its minimum much earlier than the other regression types, which show constant decreasing station error for at least the first six features. In the system error metric, the LAD regression loses its advantage. Instead, both the Least Squares regression methods produce low system error scores with increasing numbers of variables. 
+The station error is identical to the Least Absolute Deviation loss function. Therefore, it is not surprising that this regression type performs the best on the Station Error metric, having the lowest station error for up to 15 features. An interesting result of LAD regression is that the station error curve has its minimum much earlier than the other regression types, which show constant decreasing station error for at least the first six features. In the system error metric, the LAD regression loses its advantage. Instead, both the Least Squares regression methods produce low system error scores with increasing numbers of variables. 
 
-The minimum scores from each regression type are recorded in Table \ref{tab:rresults} along with the average score over the range of good features. The stepwise regression significantly outperforms the LASSO regression in creating feature combinations that can accurately predict ridership in unknown transit networks. An OLS regression of the best single feature (the number of housing units built before 1940 within a 15 minute transit ride) is provided in Table \ref{tab:rresults}. All the stepwise regression methods outperform this baseline method. 
+The minimum scores from each regression type are recorded in Table \ref{tab:rresults} along with the average score over the range of good features. The stepwise regression significantly outperforms the LASSO regression in creating feature combinations that can accurately predict ridership in unknown transit networks. All the stepwise regression methods outperform this baseline methods showin the first block of the results table. 
 
 \subsection{Analysis of selected features}
 
 A summary of selected features is given in Table \ref{tab:featuresum}. There are ten total regression methods used for feature selection; five LASSO methods and five forward selection methods. The count column in Table \ref{tab:featuresum} shows the number of times out of ten that each feature was selected. For example, the \texttt{near\_hospitality} feature was selected by all ten methods.
 
-As seen in Table \ref{tab:rresults}, some of the regression types are better than others. Therefore, instead of simply counting whether or not a feature is selected by a regression type, we can weight its selection by the effectiveness of the each regression type. For the two error metrics, system and station error, the each regression method's score from Table \ref{tab:rresults} is transformed to the range $[0, 1]$, so the best performing regression type in each metric is weighted as 1, while the worst is rated at 0. (EXPLAIN THE WEIGHTING!!!!) For each feature, selection is weighted according to the regression type that selected it. These weighted selection counts are then rescaled to the range $[0, 10]$ and displayed in Table \ref{tab:featuresum} as the System Weighted and Station Weighted columns.
+As seen in Table \ref{tab:rresults}, some of the regression types are better than others. Therefore, instead of simply counting whether or not a feature is selected by a regression type, we can weight its selection by the effectiveness of the each regression type. For the two error metrics, system and station error, each regression method's score from Table \ref{tab:rresults} is scaled so the worst method's score is zero, and this is used a a weight on selection of a feature. For each feature, the results are transformed to the range $[0, 10]$ to allow an easy comparison for the relative contribution of each feature to regression methods with low system and station error.
+
+Where $E_{a}$ is the system error score for regression type $a$, we weight a regression type by
+\[ w_a = E_{a} - \min\limits_{a\,\in\,types}(E_a).\]
+Where $I_{a, b}$ is an indicator variable designating whether feature $b$ was selected by regression type $a$, we sum and scale each feature's score, $S$, as
+\[S_b = 10\cdot \frac{w_a\,I_{a, b}}{\sum\limits_{a\,\in\,types}(w_a)}.\]
+
+Thus, a feature selected by all regression methods will have a score of ten, while a feature selected by none will have a score of zero. The weighted scores are displayed in Table \ref{tab:featuresum} as the System Weighted and Station Weighted columns. 
 
 The weighted columns give insight into which features were selected by the best methods. Features with weighted scores greater than their count were only selected by the most accurate regression types; for example \texttt{near\_medical}, the number of medical jobs within walking distance, or \texttt{near\_hunits\_large}, the number of housing units in apartment buildings of 20 or more units. Other features with weighted scores less than their count were selected by the least accurate regression types. Examples here are \texttt{15net\_hunits\_attached}, the number of townhomes and 2-4 unit apartments within a 15 minute transit ride, and \texttt{15net\_hospitality}, the number of restaurant and hotel jobs within a 15 minute transit ride. 
 
@@ -639,11 +681,18 @@ near\_hunits\_attached&3&1.4&1.8\\
 \endgroup
 \end{table}
 
-\section{Conclusion and Future Work}
+
+\section{Conclusion and Future Work}\label{sec:acc}
+
+All five regression types are able to give system-wide ridership estimates within 20\% of the true value for identified sets of features. This error compares favorably with the 48\% average ridership prediction  error reported for 25 transportation networks in Flyvbjerg \cite{Flyvbjerg2006}. Flyvjerg uses the same system error model identified in Section  \ref{sec:metric}. 
+
+In addition, this model produces ridership estimates based on information publicly available to citizens. To apply a model trained on public data from other cities in the United States, a city with no existing intra-urban rail transit system would only need to obtain zip-code level information available from the US Census Bureau's website. 
 
 The Mannheim-Florian four step model fundamentally depends on existing transit ridership information. For example, the starting point of a four step analysis for a new light rail line would be an existing bus line that runs a similar, hopefully identical, path. The advantage of this regression model is that it creates a new estimate from different sources, independent of any knowledge of the current system.
 
-All five regression types are able to give system-wide ridership estimates within 20\% of the true value for identified sets of features. This does not require any prior knowledge of ridership characteristics of any other local transit system and it compares favorably with the 48\% average ridership prediction  error reported for 25 transportation networks in Flyvbjerg \cite{Flyvbjerg2006}. It is justifiable to use this regression based ridership model to produce and validate new construction, system-wide cost estimates for urban rail transit in the United States. 
+A model trained on the transit system of the six US cities included in this work, and using any of the five regression methods tested would be sufficiently accurate to justify use for validating new construction, system-wide cost estimates for urban rail transit in the United States. 
+
+\subsection{Future Work}
 
 Future work in on this model could proceed in two directions. The first direction is to continue improvement of the source data. This project used only zip code shapes to estimate counting features, since job and housing data was available only for the zip code, but the population features exist in more granular detail at the Census Tract level. The author generated exclusion zones which were designed to prevent job and people from being located in parks and water could be improved by incorporating detailed city land use maps. Finally, there is a major deficiency in source data because neither federal, state nor local government workers are included in the employment data sources used by the model. Of particular concern are university employment; university jobs within walking distance was a selected feature in five of the six models. Several large universities are located on the transit networks of this study and were not accounted for, such as University of Illinois at Chicago, University of Colorado  Denver, and University of Massachusetts Boston. For other cities that have very large public universities, like Minneapolis, Austin, or Columbus, this would significantly affect the validity of any estimates, especially given the importance of university related features in Table \ref{tab:featuresum}.
 

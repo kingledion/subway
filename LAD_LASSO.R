@@ -43,80 +43,142 @@ dendata <- dendata[!(dendata$name=='Union Station'),]
 
 xalldata = rbind(bosdata, chidata, ladata, atldata, daldata, dendata)
 yalldata = xalldata[, "ridership"]
-xalldata = xalldata[, !(names(xalldata) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
+xalldata = xalldata[, !(names(xalldata) %in% c("name", "ridership", "lat", "lon", 'X30net_students', 'X15net_students', 'near_students'))]
 cvvector = rbind(matrix(1,113,1), matrix(2,138,1), matrix(3, 78, 1), matrix(4, 38, 1), matrix(5, 61, 1), matrix(6, 44, 1))
 
 
-xnotbos = rbind(chidata, ladata, atldata, daldata, dendata)
-ynotbos = xnotbos[, "ridership"]
-xnotbos = xnotbos[, !(names(xnotbos) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
-xnotchi = rbind(bosdata,ladata, atldata, daldata, dendata)
-ynotchi = xnotchi[, "ridership"]
-xnotchi = xnotchi[, !(names(xnotchi) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
-xnotla = rbind(bosdata, chidata, atldata, daldata, dendata)
-ynotla = xnotla[, "ridership"]
-xnotla = xnotla[, !(names(xnotla) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
-xnotatl = rbind(bosdata, chidata, ladata, daldata, dendata)
-ynotatl = xnotatl[, "ridership"]
-xnotatl = xnotatl[, !(names(xnotatl) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
-xnotdal = rbind(bosdata, chidata, ladata, atldata, dendata)
-ynotdal = xnotdal[, "ridership"]
-xnotdal = xnotdal[, !(names(xnotdal) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
-xnotden = rbind(bosdata, chidata, ladata, atldata, daldata)
-ynotden = xnotden[, "ridership"]
-xnotden = xnotden[, !(names(xnotden) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
 
 
-xbos = bosdata[, !(names(bosdata) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
+xbos = bosdata[, !(names(bosdata) %in% c("name", "ridership", "lat", "lon", 'X30net_students', 'X15net_students', 'near_students'))]
 ybos = bosdata[, "ridership"]
-xchi = chidata[, !(names(chidata) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
+xbos = xbos / sum(ybos)
+
+xchi = chidata[, !(names(chidata) %in% c("name", "ridership", "lat", "lon", 'X30net_students', 'X15net_students', 'near_students'))]
 ychi = chidata[, "ridership"]
-xla = ladata[, !(names(ladata) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
+xchi = xchi / sum(ychi)
+
+xla = ladata[, !(names(ladata) %in% c("name", "ridership", "lat", "lon", 'X30net_students', 'X15net_students', 'near_students'))]
 yla = ladata[, "ridership"]
-xatl = atldata[, !(names(chidata) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
+xla = xla / sum(yla)
+
+xatl = atldata[, !(names(chidata) %in% c("name", "ridership", "lat", "lon", 'X30net_students', 'X15net_students', 'near_students'))]
 yatl = atldata[, "ridership"]
-xdal = daldata[, !(names(daldata) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
+xatl = xatl / sum(yatl)
+
+xdal = daldata[, !(names(daldata) %in% c("name", "ridership", "lat", "lon", 'X30net_students', 'X15net_students', 'near_students'))]
 ydal = daldata[, "ridership"]
-xden = dendata[, !(names(dendata) %in% c("name", "ridership", "lat", "lon", '30net_students', '15net_students', 'near_students'))]
+xdal = xdal / sum(ydal)
+
+xden = dendata[, !(names(dendata) %in% c("name", "ridership", "lat", "lon", 'X30net_students', 'X15net_students', 'near_students'))]
 yden = dendata[, "ridership"]
+xden = xden / sum(yden)
+
+
+xnotbos = rbind(xchi, xla, xatl, xdal, xden)
+ynotbos = c(ychi, yla, yatl, ydal, yden)
+
+xnotchi = rbind(xbos, xla, xatl, xdal, xden)
+ynotchi = c(ybos, yla, yatl, ydal, yden)
+
+xnotla = rbind(xbos, xchi, xatl, xdal, xden)
+ynotla = c(ybos, ychi, yatl, ydal, yden)
+
+xnotatl = rbind(xbos, xchi, xla, xdal, xden)
+ynotatl = c(ybos, ychi, yla, ydal, yden)
+
+xnotdal = rbind(xbos, xchi, xla, xatl, xden)
+ynotdal = c(ybos, ychi, yla, yatl, yden)
+
+xnotden = rbind(xbos, xchi, xla, xatl, xdal)
+ynotden = c(ybos, ychi, yla, yatl, ydal)
 
 
 getErrs <- function(predicted, actual) {
   SysErr = (abs(sum(predicted) - sum(actual)))/sum(actual)
   StaErr = sum(abs(predicted - actual))/sum(actual)
-  print(Sta)
-  print(SysErr) 
+  print("System Error")
+  print(SysErr)
+  print("Station Error")
+  print(StaErr) 
 }
 
-lvec = seq(5, -6, -1)
+colSd <- function (x, na.rm=FALSE) apply(X=x, MARGIN=2, FUN=sd, na.rm=na.rm)
+
+ynot = data.matrix(ynotbos)
+xnot = data.matrix(xnotbos)
+y = data.matrix(ybos)
+x = data.matrix(xbos)
+
+#print(x[, c(1,2,3,4,5)])
+
+#min/max scale
+#mins = apply(xnot, 2, min)
+#maxs = apply(xnot, 2, max)
+#print(mins[c(1,2,3,4,5)])
+#print(maxs[c(1,2,3,4,5)])
+#xnot = sweep(sweep(xnot, 2, mins),2,(maxs - mins),  "/")
+#x = sweep(sweep(x, 2, mins),2,(maxs - mins),  "/")
+
+#normalize scale
+mn <- colMeans(xnot)
+std <- colSd(xnot)
+#print(mn[c(1,2,3,4,5)])
+#print(std[c(1,2,3,4,5)])
+xnot = sweep(sweep(xnot, 2, mn), 2, std, "/")
+x = sweep(sweep(x, 2, mn), 2, std, "/")
 
 
-#print(lvec)
+
+#print("Source Data")
+#print(xnotden)
+#print(ynotden)
+#print(xden)
+#print(yden)
+#print(colnames(x))
+#print(x[, c(1,2,3,4,5)])
+#print(y)
+
+lvec = seq(0, -4, -0.5)
+elvec = exp(lvec)
+
+print("First round")
+print(lvec)
 
 
-fit = slim(data.matrix(xnotdal), data.matrix(ynotdal), lambda = lvec, q=1)   #Two here
-results = data.matrix(xnotdal) %*% fit$beta                    # One here
-errs = sweep(results, 1, data.matrix(ynotdal))                # One here
-print(colSums(errs))
-idx  = which.min(abs(colSums(errs)))
+fit = slim(xnot, ynot, lambda = elvec, q=1)   #Two here
+results = x %*% fit$beta                    # One here
+syserrs = abs(colSums(results) - sum(y))/sum(y)
+staerrs = colSums(abs(sweep(results, 1, y)))/sum(y)
+print(syserrs)
+print(staerrs)
+print(syserrs + staerrs)
+idx  = which.min(syserrs + staerrs)
 print(idx)
 
-#idx = 4
+#idx = 9
 
-lvec = seq(idx-2, idx, 0.25)
-lvec = exp(-lvec)
+lvec = seq(lvec[idx]+0.5, lvec[idx]-0.5, -.1)
+elvec = exp(lvec)
+print("Second round")
+print(lvec)
 
-fit = slim(data.matrix(xnotdal), data.matrix(ynotdal), lambda = lvec, q=1)    # Two here
-results = data.matrix(xnotdal) %*% fit$beta          # One here
-errs = sweep(results, 1, data.matrix(ynotdal))      # One here
-print(colSums(errs))
-idx  = which.min(abs(colSums(errs)))
+fit = slim(xnot, ynot, lambda = elvec, q=1)    # Two here
+results = x %*% fit$beta          # One here
+syserrs = abs(colSums(results) - sum(y))/sum(y)
+staerrs = colSums(abs(sweep(results, 1, y)))/sum(y)
+print(syserrs)
+print(staerrs)
+print(syserrs + staerrs)
+idx  = which.min(syserrs + staerrs)
 print(idx)
 
-print(data.matrix(fit$beta[, idx]))
+params = data.matrix(fit$beta[, idx])
+print(params)
 
-results = data.matrix(xdal) %*% fit$beta       # One here
-getErrs(results[, idx], ydal)                  # One here
+results = x %*% params       # One here
+getErrs(results, y)                  # One here
+
+
 
 
 

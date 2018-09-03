@@ -3,6 +3,7 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: final_draft.aux
 The style file: unsrt.bst
 Database file #1: bibrefs.bib
+Warning--I didn't find a database entry for "glmnet"
 Warning--can't use both author and editor fields in tcrp95
 Warning--empty publisher in McNally2008
 Warning--empty institution in ST3_2015
@@ -16,7 +17,7 @@ Warning--empty journal in Flyvbjerg2006
 Warning--empty year in Young2007
 You've used 22 entries,
             1791 wiz_defined-function locations,
-            600 strings with 7625 characters,
+            601 strings with 7637 characters,
 and the built_in function-call counts, 4575 in all, are:
 = -- 393
 > -- 185
@@ -55,4 +56,4 @@ warning$ -- 11
 while$ -- 40
 width$ -- 24
 write$ -- 235
-(There were 11 warnings)
+(There were 12 warnings)

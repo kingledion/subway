@@ -49,7 +49,7 @@ def graddesc(X, y, eps = 1e-10):
     
     
 
-def ipsolver(X, y, poisson = True, eps = 1e-10):
+def ipsolver(X, y, poisson = True, eps = 1e-6):
     
     if poisson:
         def objective(X, y, beta):
@@ -78,7 +78,7 @@ def ipsolver(X, y, poisson = True, eps = 1e-10):
     X = np.array(X)
     y = np.array(y)
     
-    print(X)
+    #print(X)
     
     p = X.shape[1] # number of columns
     n = X.shape[0] # number of rows
@@ -105,10 +105,10 @@ def ipsolver(X, y, poisson = True, eps = 1e-10):
     
     while not CONVERGE:
         
-        print('Convergence Loop')
-        print("Beta:", beta)
+        #print('Convergence Loop')
+        #print("Beta:", beta)
         #print("Lambda:", lamb)
-        print()
+        #print()
         
         
         
@@ -130,8 +130,8 @@ def ipsolver(X, y, poisson = True, eps = 1e-10):
         
         FINISHED = False
         stepsize = -lamb / del_lambda
-        print("delta beta, delta lambda and stepsize")
-        print(del_beta)
+        #print("delta beta, delta lambda and stepsize")
+        #print(del_beta)
         #print(del_lambda)
         #print(stepsize)
         #print()
@@ -144,7 +144,7 @@ def ipsolver(X, y, poisson = True, eps = 1e-10):
         while (not all ([i > 0 for i in beta + stepsize * del_beta])):
             stepsize = stepsize * sigma
             
-        print(stepsize)
+        #print(stepsize)
         #stepsize_orig = stepsize
         #beta_orig = beta
         #LOWER_THRESH = False
@@ -154,14 +154,14 @@ def ipsolver(X, y, poisson = True, eps = 1e-10):
             rdual = gradient(X, y, betatilde) - (lamb + stepsize * del_lambda)
             rcent = (lamb + stepsize * del_lambda)*betatilde - 1/gamma
             normnew = np.sqrt(np.sum([rdual**2, rcent**2]))
-            print(normnew, normold)
+            #print(normnew, normold)
             if (normnew < (1 - kappa*stepsize) * normold):# or (LOWER_THRESH and normnew < normold):
                 FINISHED = True
             else:
                 stepsize = stepsize * sigma
             if stepsize < 0.5 * eps:
                 #if LOWER_THRESH:
-                print("Cancelled stepsize selection")
+                #print("Cancelled stepsize selection")
                 FINISHED = True
                 CONVERGE = True
                 #else:
@@ -184,12 +184,12 @@ def ipsolver(X, y, poisson = True, eps = 1e-10):
         if np.sqrt(np.sum(rdual**2)) < eps and eta < eps:
             CONVERGE = True
             
-        input()
+        #input()
             
     
     #print(beta)
     ret = np.array([b if b > eps else 0 for b in beta])
-    print(ret)
+    #print(ret)
     return ret
             
             

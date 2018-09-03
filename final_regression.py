@@ -13,23 +13,20 @@ import itertools, numpy as np
 
 def printScores():
     
-# =============================================================================
-#     cycle = [(linFeat, 'Linear', linearF),
-#              (logFeat, 'Log', logF),
-#              (poissFeat, 'Poisson', poissonF),
-#              (poissIFeat, 'PoissIdent', poissIdentF),
-#              (LADFeat, 'LAD', LADF),
-#              (linFeatL, 'LinearLASSO', linearF),
-#              (logFeatL, 'LogLASSO', logF),
-#              (poissFeatL, 'PoissonLASSO', poissonF),
-#              (poissIFeatL, 'PoissIdentLASSO', poissIdentF),
-#              (LADFeatL, 'LADLASSO', LADF)]
-#     
-# =============================================================================
-    
-    
-    cycle = [(basefeat, 'Pop + Emp', linearF),
-            (singlefeat, 'Single', linearF)]
+    cycle = [(linFeat, 'Linear', linearF),
+             (logFeat, 'Log', logF),
+             (poissFeat, 'Poisson', poissonF),
+             (poissIFeat, 'PoissIdent', poissIdentF),
+             #(LADFeat, 'LAD', LADF),
+             (linFeatL, 'LinearLASSO', linearF),
+             (logFeatL, 'LogLASSO', logF),
+             (poissFeatL, 'PoissonLASSO', poissonF),
+             (poissIFeatL, 'PoissIdentLASSO', poissIdentF),
+             #(LADFeatL, 'LAD LASSO', LADF),
+             (basefeat, 'Pop + Emp', linearF),
+             (singlefeat, 'Single', linearF),
+             (rf5Feat, 'RF 5', linearF),
+             (rf10Feat, 'RF 10', linearF)]
     
     pairs = []
     combs = list(itertools.combinations(citylist, r=5))
@@ -75,22 +72,22 @@ linFeatL = ['15net_hospitality',
         ]
 
 logFeat = ['30net_entertainment',
-    'near_house_w_child',
-    'near_family',
-    'near_population',
-    'near_pop_child',
-    'near_employment',
-    'near_hunits_large',
-    'near_hospitality',
-    '15net_entertainment',
-    '30net_university',
-    'near_emp_pay',
-    '15net_university',
-    'near_finance',
-    'near_entertainment',
-    'parking',
-    'near_hunits_old',
-    ]
+        'near_house_w_child',
+        'near_family',
+        'near_population',
+        'near_pop_child',
+        'near_employment',
+        'near_hunits_large',
+        'near_hospitality',
+        '15net_entertainment',
+        '30net_university',
+        'near_emp_pay',
+        '15net_university',
+        'near_finance',
+        'near_entertainment',
+        'parking',
+        'near_hunits_old',
+        ]
 
 logFeatL = ['near_entertainment',
         'near_hospitality',
@@ -194,6 +191,11 @@ LADFeatL = ['near_business',
         '15net_hunits_medium',
         '30net_hunits_medium'
         ]
+
+rf5Feat = ['near_emp_pay', 'near_employment', '15net_hospitality', '15net_hunits_medium', 'near_hospitality']
+
+rf10Feat = ['near_emp_pay', 'near_employment', '15net_hospitality', '15net_hunits_medium', 'near_hospitality',
+            '15net_bachelors', '15net_emp_pay', '15net_pop_rich', '15net_employment', '15net_hunits_old']
 
 basefeat = ['near_population', 'near_employment']
 singlefeat = ['15net_hunits_old']

@@ -38,11 +38,11 @@
 \newlabel{alg:rejsamp}{{1}{7}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Illustration of nearest zip code estimation for zip code 02127.\relax }}{8}}
 \newlabel{fig:f1}{{2}{8}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Variance of Monte Carlo estimates}{8}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Indications of variance for Monte Carlo estimates of the population feature\relax }}{9}}
-\newlabel{fig:mcvar}{{3}{9}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Standard deviation versus mean by transit station}}}{9}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Coefficient of variation versus mean by transit station}}}{9}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Variance of Monte Carlo estimates}{9}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Indications of variance for Monte Carlo estimates of the population feature.\relax }}{10}}
+\newlabel{fig:mcvar}{{3}{10}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Standard deviation versus mean by transit station.}}}{10}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Coefficient of variation versus mean by transit station.}}}{10}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.6}Generation of network-dependent features}{10}}
 \newlabel{sec:net}{{2.6}{10}}
 \@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces Algorithm for calculating network characteristic counts\relax }}{10}}
@@ -84,49 +84,58 @@
 \newlabel{tab:regr2}{{3}{18}}
 \@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Error for single variable OLS for selected features\relax }}{19}}
 \newlabel{tab:students}{{4}{19}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Derivation of Regression methods}{19}}
-\citation{glmnet}
-\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Regression types and packages used in analysis.\relax }}{20}}
-\newlabel{tab:regtype}{{5}{20}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1}Least squares regression}{20}}
-\newlabel{sec:ols}{{3.3.1}{20}}
-\citation{Young2007}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2}Poisson regression with Log link}{21}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Feature Selection}{19}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1}Feature selection by LASSO regularization}{19}}
+\newlabel{sec:lasso}{{3.3.1}{19}}
+\citation{friedman2010}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2}Feature selection by stepwise forward selection}{21}}
+\newlabel{sec:fs}{{3.3.2}{21}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Derivation of Regression methods}{22}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Regression types and packages used in analysis.\relax }}{22}}
+\newlabel{tab:regtype}{{5}{22}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.1}Least squares regression}{22}}
+\newlabel{sec:lstsq}{{3.4.1}{22}}
 \citation{Tibshirani1996}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.2}Poisson regression}{23}}
+\newlabel{sec:poiss}{{3.4.2}{23}}
+\citation{Young2007}
 \citation{Boyd2004}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.3}Poisson regression with Identity link}{22}}
-\newlabel{sec:poisI}{{3.3.3}{22}}
-\newlabel{eq:objective}{{1}{22}}
-\newlabel{eq:constraints}{{2}{22}}
-\newlabel{eq:rdual}{{3}{23}}
-\newlabel{eq:dualeq}{{5}{23}}
-\newlabel{eq:centeq}{{6}{23}}
-\newlabel{eq:dellam}{{7}{23}}
-\newlabel{eq:delbeta}{{8}{23}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces Algorithm for solving interior point primal-dual problem\relax }}{24}}
-\newlabel{alg:piip}{{3}{24}}
-\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Results of regression analysis, compared with some baseline measures\relax }}{24}}
-\newlabel{tab:rresults}{{6}{24}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Feature selection by LASSO regularization}{25}}
-\newlabel{sec:lasso}{{3.4}{25}}
-\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Number of features selected by LASSO; by transit network and regression type\relax }}{26}}
-\newlabel{tab:lassoFeatNum}{{7}{26}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Feature selection by stepwise forward selection}{26}}
-\newlabel{sec:fs}{{3.5}{26}}
-\newlabel{fig:bfscores}{{9}{27}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Station Error against number of variables selected}}}{27}}
-\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {System Error against number of variables seleted}}}{27}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}Analysis of selected features}{28}}
-\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces Selected features highly rated by regression methodologies\relax }}{30}}
-\newlabel{tab:featuresum}{{8}{30}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.3}Poisson regression with Identity Link}{24}}
+\newlabel{eq:objective}{{1}{24}}
+\newlabel{eq:constraints}{{2}{24}}
+\newlabel{eq:rdual}{{3}{25}}
+\newlabel{eq:dualeq}{{5}{25}}
+\newlabel{eq:centeq}{{6}{25}}
+\newlabel{eq:dellam}{{7}{25}}
+\newlabel{eq:delbeta}{{8}{25}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces Algorithm for solving interior point primal-dual problem\relax }}{26}}
+\newlabel{alg:piip}{{3}{26}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.4}Least Absolute Deviations Regression}{26}}
+\newlabel{sec:lad}{{3.4.4}{26}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Results}{27}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Results of regression analysis, compared with some baseline measures\relax }}{27}}
+\newlabel{tab:rresults}{{6}{27}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Results table and baseline comparisons}{27}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}LASSO regularization results}{28}}
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Number of features selected by LASSO; by transit network and regression type\relax }}{29}}
+\newlabel{tab:lassoFeatNum}{{7}{29}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Forward selection results}{29}}
+\newlabel{fig:bfscores}{{9}{30}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Station Error against number of variables selected}}}{30}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {System Error against number of variables seleted}}}{30}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Analysis of selected features}{30}}
 \citation{Flyvbjerg2006}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Conclusion and Future Work}{31}}
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces Selected features highly rated by regression methodologies\relax }}{32}}
+\newlabel{tab:featuresum}{{8}{32}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusion and Future Work}{33}}
+\newlabel{sec:acc}{{5}{33}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Future Work}{33}}
 \bibstyle{unsrt}
-\@writefile{toc}{\contentsline {section}{\numberline {A}Data sources}{32}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.1}Ridership data}{32}}
-\newlabel{app:ridership}{{A.1}{32}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {A.2}US Census feature data sources}{32}}
-\newlabel{app:features}{{A.2}{32}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Data sources}{35}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.1}Ridership data}{35}}
+\newlabel{app:ridership}{{A.1}{35}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2}US Census feature data sources}{35}}
+\newlabel{app:features}{{A.2}{35}}
 \bibdata{bibrefs}
 \bibcite{Boyle2006}{1}
 \bibcite{tcrp95}{2}
@@ -146,7 +155,7 @@
 \bibcite{Pickrell1989}{16}
 \bibcite{Flyvbjerg2006}{17}
 \bibcite{Hardy2010}{18}
-\bibcite{glmnet}{19}
-\bibcite{Young2007}{20}
-\bibcite{Tibshirani1996}{21}
+\bibcite{friedman2010}{19}
+\bibcite{Tibshirani1996}{20}
+\bibcite{Young2007}{21}
 \bibcite{Boyd2004}{22}
