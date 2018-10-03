@@ -350,9 +350,9 @@ Least Absolute Shrinkage and Selection Operator (LASSO) regression can be used t
 Because LASSO constrains the magnitude of the coefficients, it is important that all coefficients are on the same scale. Therefore, for all LASSO feature selection methods, the features are normalized by z-score standardization. Each entry $x_{i,j}$ in the covariate matrix is scaled by
 $$ x_{i, j, scaled} = \frac{x_{i,j} - \mu_i}{\sigma_i}$$ where $\mu_i$ and $\sigma_i$ are the mean and standard deviation of the $i$-th column of the covariate matrix.
 
- THE EXCEPTION IS POISSON WITH IDENTITY LINK, WHERE THE FEATURES ARE SCALED FROM 0 TO 1 BY
-$$ x_{ij, scaled} = \frac{x_{ij} - \min(x_i)}{\max(x_i) - \min(x_i)}.$$
-THE PRACTICAL RESULT OF THIS IS THAT ALL SCALED FEATURES ARE NON-NEGATIVE. 
+% THE EXCEPTION IS POISSON WITH IDENTITY LINK, WHERE THE FEATURES ARE SCALED FROM 0 TO 1 BY
+%$$ x_{ij, scaled} = \frac{x_{ij} - \min(x_i)}{\max(x_i) - \min(x_i)}.$$
+%THE PRACTICAL RESULT OF THIS IS THAT ALL SCALED FEATURES ARE NON-NEGATIVE. 
 
 An important part of the LASSO solution is selection of $\lambdaup$, the penalty coefficient. The penalty in LASSO is divided into two parts: a loss function on the error of the predicted values and a penalty on the regression coefficients. For a sufficiently large value of $\lambda$, the optimum solution is for all regression coefficients to be zero, thus eliminating the regression coefficient penalty. Solving for the optimum $\lambda$ thus requires identifying the minimum $\lambda$ value for which the solution is all zero coefficients, a solution with zero degrees of freedom. This is typically done by a grid search; this is the method used by the \texttt{glmnet} package \cite{friedman2010}. From \texttt{glmnet}, we use the cross-validation methods that will automatically optimize $\lambda$. The minimum value of $\lambda$ where the solution has zero degrees of freedom is identified by grid search, and then cyclical coordinate descent is used to find the optimum $\lambda$ value. 
 
@@ -577,7 +577,8 @@ An analysis of the accuracy of the methods shown in Table \ref{tab:rresults} is 
 
 The various LASSO regression types have a large variance in number of features chosen, both between transit networks and between regression types, shown in Table \ref{tab:lassoFeatNum}. Since the six way cross validation produces a different set of selected features for each transit network, we must develop a means for determining a `best' feature set for a common comparison. To represent the results of the LASSO regression, all features that are selected by four or more of the six cross-validation trials are used. 
 
-ENSURE THIS PARAGRAPH STILL APPLIES AFTER RE-RUNNING. The LAD LASSO regression chooses an average of 48 features across the six-way cross validation. This is far too high: the transit networks have between 37 and 138 stations. In order to use a more reasonable feature set; we increase the selection requirement for LAD LASSO to only those features selected by five or more of the six cross-validation trials are used. The large number of features selected by LAD LASSO regression may result from  differences in the $\lambda$ selection method used by the computing packages. 
+%ENSURE THIS PARAGRAPH STILL APPLIES AFTER RE-RUNNING. 
+The LAD LASSO regression chooses an average of 48 features across the six-way cross validation. This is far too high: the transit networks have between 37 and 138 stations. In order to use a more reasonable feature set; we increase the selection requirement for LAD LASSO to only those features selected by five or more of the six cross-validation trials are used. The large number of features selected by LAD LASSO regression may result from  differences in the $\lambda$ selection method used by the computing packages. 
 
 \begin{table}[H]
 \begingroup\fontsize{10}{15}\selectfont

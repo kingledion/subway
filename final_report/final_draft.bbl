@@ -15,14 +15,14 @@ Daniel Boyle.
 
 \bibitem{McNally2008}
 Michael~G. McNally.
-\newblock {\em The Four-Step Model}, chapter~3, pages 35--53.
-\newblock 2008.
+\newblock The four-step model.
+\newblock In Kenneth~J. Button, editor, {\em Handbook of Transport Modelling
+  (Handbooks in Transport, Volume 1)}, chapter~3, pages 35--53. 2008.
 
 \bibitem{Mannheim1979}
 Marvin~L Manheim.
 \newblock {\em Fundamentals of transportation systems analysis}.
-\newblock Cambridge, Mass. : MIT Press, 1979.
-\newblock Includes index.
+\newblock MIT Press, Cambridge, MA, 1979.
 
 \bibitem{Florian1988}
 Michael Florian, Marc Gaudry, and Christian Lardinois.
@@ -48,24 +48,26 @@ Michael Kuby, Anthony Barranda, and Christopher Upchurch.
 \newblock Factors influencing light-rail station boardings in the united
   states.
 \newblock {\em Transportation Research, Part A: Policy and Practice},
-  38(3):223--247, 3 2004.
+  38(3):223--247, March 2004.
 
 \bibitem{Taylor2008}
 Brian~D. Taylor, Douglas Miller, Hiroyuki Iseki, and Camille Fink.
 \newblock Nature and/or nurture? analyzing the determinants of transit
   ridership across us urbanized areas.
-\newblock 2008.
+\newblock {\em Transportation Research Park A: Policy and Practice},
+  43(1):60--77, January 2009.
 
 \bibitem{Currie2011}
 Graham Currie, A~Ahern, and Alexa Delbosc.
 \newblock Exploring the drivers of light rail ridership: An empirical route
   level analysis of selected australian, north american and european systems.
-\newblock 38:545--560, 05 2011.
+\newblock {\em Transportation}, 38(3):545--560, May 2011.
 
 \bibitem{Durning2015}
 Matthew Durning and Craig Townsend.
 \newblock Direct ridership model of rail rapid transit systems in canada.
-\newblock 2537:96--102, 01 2015.
+\newblock {\em Transportation Research Record: Journal of the Transportation
+  Research Board}, 2537:96--102, January 2015.
 
 \bibitem{Gutierrez2011}
 Javier Gutiérrez, Osvaldo~Daniel Cardozo, and Juan~Carlos García-Palomares.
@@ -87,22 +89,22 @@ Erick Guerra, Robert Cervero, and Daniel Tischler.
   Research Board}, 2276:101--109, 2012.
 
 \bibitem{ElGeneidy2014}
-Ahmed El-Geneidy, Michael Grimsrud, Wasfi Rania, Paul Tétreault, and Julien
+Ahmed El-Geneidy, Michael Grimsrud, Wasfi Rania, Paul Tetreault, and Julien
   Surprenant-Legault.
 \newblock New evidence on walking distances to transit stops: Identifying
   redundancies and gaps using variable service areas.
-\newblock 41, 01 2014.
+\newblock {\em Transportation}, 41(1):193--210, January 2014.
 
 \bibitem{Pickrell1989}
 Don Pickrell.
 \newblock Urban rail transit projects: Forecast versus actual ridership and
   costs. final report.
-\newblock 10 1989.
+\newblock Technical report, Transportation Systems Center, October 1989.
 
 \bibitem{Flyvbjerg2006}
-Bent Flyvbjerg, Mette Skamris, and Søren L.~Buhl.
+Bent Flyvbjerg, Mette Skamris, and Soren L.~Buhl.
 \newblock Inaccuracy in traffic forecasts.
-\newblock 26:1--24, 01 2006.
+\newblock {\em Transport Reviews}, 26(1):1--24, January 2006.
 
 \bibitem{Hardy2010}
 Matthew~H. Hardy, Soongwan Doh, Junyang Yuan, Xin Zhou, and Kenneth~J. Button.
@@ -124,10 +126,10 @@ Robert Tibshirani.
   (Methodological)}, 58(1):267--288, 1996.
 
 \bibitem{Young2007}
-Park~Mee Young and Hastie Trevor.
-\newblock L1‐regularization path algorithm for generalized linear models.
+Mee~Young Park and Trevor Hastie.
+\newblock L1 regularization path algorithm for generalized linear models.
 \newblock {\em Journal of the Royal Statistical Society: Series B (Statistical
-  Methodology)}, 69(4):659--677.
+  Methodology)}, 69(4):659--677, 2007.
 
 \bibitem{Boyd2004}
 Stephen Boyd and Lieven Vandenberghe.

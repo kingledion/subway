@@ -1,59 +1,51 @@
-This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
-Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+This is BibTeX, Version 0.99d (TeX Live 2017/Debian)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: final_draft.aux
 The style file: unsrt.bst
 Database file #1: bibrefs.bib
-Warning--I didn't find a database entry for "glmnet"
 Warning--can't use both author and editor fields in tcrp95
 Warning--empty publisher in McNally2008
 Warning--empty institution in ST3_2015
 Warning--empty institution in ST3_add
-Warning--empty booktitle in Taylor2008
-Warning--empty journal in Currie2011
-Warning--empty journal in Durning2015
-Warning--empty journal in ElGeneidy2014
-Warning--empty journal in Pickrell1989
-Warning--empty journal in Flyvbjerg2006
-Warning--empty year in Young2007
 You've used 22 entries,
             1791 wiz_defined-function locations,
-            601 strings with 7637 characters,
-and the built_in function-call counts, 4575 in all, are:
-= -- 393
-> -- 185
+            605 strings with 7754 characters,
+and the built_in function-call counts, 4743 in all, are:
+= -- 419
+> -- 189
 < -- 2
-+ -- 72
-- -- 50
-* -- 319
-:= -- 740
++ -- 73
+- -- 51
+* -- 353
+:= -- 773
 add.period$ -- 68
 call.type$ -- 22
-change.case$ -- 19
+change.case$ -- 21
 chr.to.int$ -- 0
-cite$ -- 33
-duplicate$ -- 206
-empty$ -- 466
-format.name$ -- 50
-if$ -- 1009
+cite$ -- 26
+duplicate$ -- 205
+empty$ -- 479
+format.name$ -- 51
+if$ -- 1050
 int.to.chr$ -- 0
 int.to.str$ -- 22
-missing$ -- 25
-newline$ -- 115
-num.names$ -- 22
-pop$ -- 71
+missing$ -- 23
+newline$ -- 114
+num.names$ -- 24
+pop$ -- 51
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 70
+skip$ -- 66
 stack$ -- 0
-substring$ -- 279
-swap$ -- 24
+substring$ -- 315
+swap$ -- 28
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
-warning$ -- 11
-while$ -- 40
+warning$ -- 4
+while$ -- 43
 width$ -- 24
-write$ -- 235
-(There were 12 warnings)
+write$ -- 244
+(There were 4 warnings)
