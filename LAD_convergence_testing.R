@@ -25,6 +25,8 @@ yden = dendata[, "ridership"]
 
 
 getErrs <- function(predicted, actual) {
+  
+  #print(predicted)
   SysErr = (abs(sum(predicted) - sum(actual)))/sum(actual)
   StaErr = sum(abs(predicted - actual))/sum(actual)
   print("System Error")
@@ -35,10 +37,7 @@ getErrs <- function(predicted, actual) {
 
 colSd <- function (x, na.rm=FALSE) apply(X=x, MARGIN=2, FUN=sd, na.rm=na.rm)
 
-ynot = data.matrix(ydal)
-xnot = data.matrix(xdal)
-y = data.matrix(yden)
-x = data.matrix(xden)
+
 
 #min/max scale
 #mins = apply(xnot, 2, min)
@@ -52,10 +51,12 @@ x = data.matrix(xden)
 
 assessLAD <- function(xnot, ynot, x, y, lvec) {
   
-  #print(x)
-  #print(y)
+  #print(xnot)
+  #print(ynot)
   
-  fit = slim(xnot, ynot, lambda = exp(lvec), q=1)   
+  elvec = exp(lvec)
+  
+  fit = slim(xnot, ynot, lambda = elvec, q=1)   
   results = x %*% fit$beta                    
   staerrs = colSums(abs(sweep(results, 1, y)))/sum(y)
   print(staerrs)
@@ -63,17 +64,26 @@ assessLAD <- function(xnot, ynot, x, y, lvec) {
   
   print("Parameters")
   params = data.matrix(fit$beta[, idx])
+  intercept = data.matrix(fit$intercept[ ,idx])[1,1]
+  print(intercept)
   print(params)
+
   
   print("Error Scores")
-  results = x %*% params       
-  getErrs(results, y)   
+  predicted = x %*% params + intercept
+  getErrs(predicted, y)   
   
 }
 
 
 
 print("Not normalized")
+
+ynot = data.matrix(ydal)
+xnot = data.matrix(xdal)
+y = data.matrix(yden)
+x = data.matrix(xden)
+
 lvec = seq(0, -8, -0.5)
 
 assessLAD(xnot, ynot, x, y, lvec)
@@ -90,7 +100,6 @@ mn <- colMeans(xnot)
 std <- colSd(xnot)
 xnot = sweep(sweep(xnot, 2, mn), 2, std, "/")
 x = sweep(sweep(x, 2, mn), 2, std, "/")
-
 
 assessLAD(xnot, ynot, x, y, lvec)      
 

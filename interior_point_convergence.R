@@ -358,12 +358,14 @@ getErrs <- function(predicted, actual) {
 
 colSd <- function (x, na.rm=FALSE) apply(X=x, MARGIN=2, FUN=sd, na.rm=na.rm)
 
+print("Not-Normalized")
+
 ynot = data.matrix(ydal)
 xnot = data.matrix(xdal)
 y = data.matrix(yden)
 x = data.matrix(xden)
-
-print("Not-Normalized")
+xnot <- cbind(rep(1, length(ynot)), xnot)
+x <- cbind(rep(1, length(y)), x)
 
 rets <- nnreginteriorpoint(xnot, ynot, objective, gradient, Hessian)
 
@@ -378,10 +380,18 @@ getErrs(results, y)
 print(x %*% params)
 
 print("Normalized")
+ynot = data.matrix(ydal)
+xnot = data.matrix(xdal)
+y = data.matrix(yden)
+x = data.matrix(xden)
+
 mn <- colMeans(xnot)
 std <- colSd(xnot)
 xnot = sweep(sweep(xnot, 2, mn), 2, std, "/")
 x = sweep(sweep(x, 2, mn), 2, std, "/")
+
+xnot <- cbind(rep(1, length(ynot)), xnot)
+x <- cbind(rep(1, length(y)), x)
 
 
 rets <- nnreginteriorpoint(xnot, ynot, objective, gradient, Hessian)
