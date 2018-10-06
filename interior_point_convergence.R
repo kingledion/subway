@@ -405,3 +405,18 @@ results = x %*% params
 getErrs(results, y)   
 
 print(x %*% params)
+
+
+prit("With Preset-Beta")
+
+rets <- nnreginteriorpoint(xnot, ynot, objective, gradient, Hessian, beta = c(1000,1,1))
+
+print("Parameters")
+params = data.matrix(rets$beta)
+print(params)
+
+print("Error Scores")
+results = x %*% params       
+getErrs(results, y)   
+
+print(x %*% params)

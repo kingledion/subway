@@ -27,10 +27,10 @@ yden = dendata[, "ridership"]
 getErrs <- function(predicted, actual) {
   
   #print(predicted)
-  SysErr = (abs(sum(predicted) - sum(actual)))/sum(actual)
+  #SysErr = (abs(sum(predicted) - sum(actual)))/sum(actual)
   StaErr = sum(abs(predicted - actual))/sum(actual)
-  print("System Error")
-  print(SysErr)
+  #print("System Error")
+  #print(SysErr)
   print("Station Error")
   print(StaErr) 
 }
@@ -57,7 +57,7 @@ assessLAD <- function(xnot, ynot, x, y, lvec) {
   elvec = exp(lvec)
   
   fit = slim(xnot, ynot, lambda = elvec, q=1)   
-  results = x %*% fit$beta                    
+  results = sweep(x %*% fit$beta, 2, fit$intercept, "+")               
   staerrs = colSums(abs(sweep(results, 1, y)))/sum(y)
   print(staerrs)
   idx  = which.min(staerrs)
@@ -84,7 +84,7 @@ xnot = data.matrix(xdal)
 y = data.matrix(yden)
 x = data.matrix(xden)
 
-lvec = seq(0, -8, -0.5)
+lvec = seq(4, -10, -0.5)
 
 assessLAD(xnot, ynot, x, y, lvec)
   
