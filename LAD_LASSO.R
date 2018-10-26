@@ -104,10 +104,12 @@ getErrs <- function(predicted, actual) {
 
 colSd <- function (x, na.rm=FALSE) apply(X=x, MARGIN=2, FUN=sd, na.rm=na.rm)
 
-ynot = data.matrix(ynotbos)
-xnot = data.matrix(xnotbos)
-y = data.matrix(ybos)
-x = data.matrix(xbos)
+ynot = data.matrix(ynotla)
+xnot = data.matrix(xnotla)
+y = data.matrix(yla)
+x = data.matrix(xla)
+
+print(colnames(xla))
 
 #print(x[, c(1,2,3,4,5)])
 
@@ -138,7 +140,7 @@ x = sweep(sweep(x, 2, mn), 2, std, "/")
 #print(x[, c(1,2,3,4,5)])
 #print(y)
 
-lvec = seq(0, -4, -0.5)
+lvec = seq(2, -8, -0.5)
 elvec = exp(lvec)
 
 print("First round")
@@ -146,7 +148,7 @@ print(lvec)
 
 
 fit = slim(xnot, ynot, lambda = elvec, q=1)   #Two here
-results = x %*% fit$beta                    # One here
+results = sweep(x %*% fit$beta, 2, fit$intercept, "+") 
 syserrs = abs(colSums(results) - sum(y))/sum(y)
 staerrs = colSums(abs(sweep(results, 1, y)))/sum(y)
 print(syserrs)
@@ -162,8 +164,8 @@ elvec = exp(lvec)
 print("Second round")
 print(lvec)
 
-fit = slim(xnot, ynot, lambda = elvec, q=1)    # Two here
-results = x %*% fit$beta          # One here
+fit = slim(xnot, ynot, lambda = elvec, q=1)    
+results = sweep(x %*% fit$beta, 2, fit$intercept, "+") 
 syserrs = abs(colSums(results) - sum(y))/sum(y)
 staerrs = colSums(abs(sweep(results, 1, y)))/sum(y)
 print(syserrs)
@@ -173,10 +175,11 @@ idx  = which.min(syserrs + staerrs)
 print(idx)
 
 params = data.matrix(fit$beta[, idx])
+intercept = data.matrix(fit$intercept[ ,idx])[1,1]
+print(intercept)
 print(params)
 
-results = x %*% params       # One here
-getErrs(results, y)                  # One here
+getErrs(x %*% params + intercept, y)                  
 
 
 

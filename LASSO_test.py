@@ -124,10 +124,12 @@ def poissIdentNet(Xtrain, ytrain, Xtest):
     Xtrain = np.array(Xtrain, dtype='float64')
     ytrain = np.array(ytrain, dtype='float64')
     Xtest = np.array(Xtest, dtype='float64')
+       
+    Xtrain, Xtest = normalize(Xtrain, Xtest)
     
-    Xtrain, Xtest = minmaxscale(Xtrain, Xtest)
-    Xtrain = Xtrain * 100
-    Xtest = Xtest * 100
+    # prepend intercept columns
+    Xtrain = np.hstack((np.ones((Xtrain.shape[0], 1)), Xtrain))
+    Xtest = np.hstack((np.ones((Xtest.shape[0], 1)), Xtest))
     
     coef = ipsolver(Xtrain, ytrain)
     
@@ -135,7 +137,7 @@ def poissIdentNet(Xtrain, ytrain, Xtest):
     
     #print(coef.shape, pred.shape)
     
-    return np.insert(coef, 0, 1), pred
+    return coef, pred
 
 def normalize(Xtrain, Xtest): 
     
@@ -187,7 +189,11 @@ if __name__ == "__main__":
         ytest = df2['riders']
         
         print(list(l2)[0])
-        coef, ypred = poissonNet(Xtrain, ytrain, Xtest) 
+        coef, ypred = poissIdentNet(Xtrain, ytrain, Xtest) 
+        
+        #print(coef.shape, len(cols))
+        #for name, val in zip(cols, coef):
+        #    print(name, val)
         
         all_coefs[list(l2)[0]] =  [1 if i else 0 for i in coef[1:]]
                        

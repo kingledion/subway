@@ -4,48 +4,45 @@ The top-level auxiliary file: final_draft.aux
 The style file: unsrt.bst
 Database file #1: bibrefs.bib
 Warning--can't use both author and editor fields in tcrp95
-Warning--empty publisher in McNally2008
-Warning--empty institution in ST3_2015
-Warning--empty institution in ST3_add
-You've used 22 entries,
+You've used 23 entries,
             1791 wiz_defined-function locations,
-            605 strings with 7754 characters,
-and the built_in function-call counts, 4743 in all, are:
-= -- 419
-> -- 189
-< -- 2
-+ -- 73
-- -- 51
+            613 strings with 7951 characters,
+and the built_in function-call counts, 4869 in all, are:
+= -- 434
+> -- 193
+< -- 3
++ -- 75
+- -- 52
 * -- 353
-:= -- 773
-add.period$ -- 68
-call.type$ -- 22
-change.case$ -- 21
+:= -- 801
+add.period$ -- 71
+call.type$ -- 23
+change.case$ -- 22
 chr.to.int$ -- 0
-cite$ -- 26
-duplicate$ -- 205
-empty$ -- 479
-format.name$ -- 51
-if$ -- 1050
+cite$ -- 24
+duplicate$ -- 212
+empty$ -- 491
+format.name$ -- 52
+if$ -- 1080
 int.to.chr$ -- 0
-int.to.str$ -- 22
+int.to.str$ -- 23
 missing$ -- 23
-newline$ -- 114
-num.names$ -- 24
-pop$ -- 51
+newline$ -- 119
+num.names$ -- 25
+pop$ -- 50
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 66
+skip$ -- 67
 stack$ -- 0
 substring$ -- 315
-swap$ -- 28
-text.length$ -- 2
+swap$ -- 29
+text.length$ -- 3
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
-warning$ -- 4
-while$ -- 43
-width$ -- 24
-write$ -- 244
-(There were 4 warnings)
+warning$ -- 1
+while$ -- 44
+width$ -- 25
+write$ -- 258
+(There was 1 warning)

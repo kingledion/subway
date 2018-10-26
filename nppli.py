@@ -75,6 +75,7 @@ def ipsolver(X, y, poisson = True, eps = 1e-6):
             
     
     # no error checking!
+    # prepend an intercept column to the covariate array
     X = np.array(X)
     y = np.array(y)
     
@@ -88,12 +89,14 @@ def ipsolver(X, y, poisson = True, eps = 1e-6):
     
     #print(X.shape, y.shape)
     #beta = np.array([i if i>= 0 else eps for i in X.T @ y])
-    beta = np.ones(p) * 1e-3
+    # beta_0 = [mean(y), 0, 0, ...]
+    beta = np.ones(p)
+    beta[0] = np.mean(y)
     
     #if not poisson:
     #    beta = beta / 1e9
         
-    lamb = 1 / beta 
+    lamb = 1 / beta
         
 
     mu = 10   # why?
