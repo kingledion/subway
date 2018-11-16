@@ -23,9 +23,7 @@ def linearNet(Xtrain, ytrain, Xtest):
     Xtest = np.array(Xtest, dtype='float64')
     
     Xtrain, Xtest = normalize(Xtrain, Xtest)
-    
-    #print(Xtest)
-    
+      
     #nfit = glmnet(x=Xtrain, y=ytrain, alpha=1)
     fit = cvglmnet(x=Xtrain, y=ytrain, alpha=1)
     coef = cvglmnetCoef(fit, s = "lambda_1se")
@@ -189,7 +187,9 @@ if __name__ == "__main__":
         ytest = df2['riders']
         
         print(list(l2)[0])
-        coef, ypred = poissIdentNet(Xtrain, ytrain, Xtest) 
+        coef, ypred = poissonNet(Xtrain, np.array(ytrain).reshape(ytrain.shape[0],1), Xtest) 
+        sparsity = np.sum(np.abs(coef))/np.sqrt(np.sum(coef**2))
+        print("Sparsity", sparsity, sparsity**2)
         
         #print(coef.shape, len(cols))
         #for name, val in zip(cols, coef):

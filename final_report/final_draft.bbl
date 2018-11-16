@@ -133,6 +133,12 @@ Robert Tibshirani.
 \newblock {\em Journal of the Royal Statistical Society. Series B
   (Methodological)}, 58(1):267--288, 1996.
 
+\bibitem{nelder1972}
+J.~A. Nelder and R.~W.~M. Wedderburn.
+\newblock Generalized linear models.
+\newblock {\em Journal of the Royal Statistical Society. Series A (General)},
+  135(3):370--384, 1972.
+
 \bibitem{Young2007}
 Mee~Young Park and Trevor Hastie.
 \newblock L1 regularization path algorithm for generalized linear models.
@@ -143,5 +149,32 @@ Mee~Young Park and Trevor Hastie.
 Stephen Boyd and Lieven Vandenberghe.
 \newblock {\em Convex Optimization}.
 \newblock Cambridge University Press, New York, NY, USA, 2004.
+
+\bibitem{Breiman2001}
+Leo Breiman.
+\newblock Random forests.
+\newblock {\em Machine Learning}, 45(1):5--32, 2001.
+
+\bibitem{Breiman1984}
+R.~A.~Olshen Leo~Breiman, Jerome~Freidman and Charles~J. Stone.
+\newblock {\em Classification and Regression Trees}.
+\newblock Taylor and Francis, New York, NY, USA, 1984.
+
+\bibitem{Hoyer2004}
+Patrik Hoyer.
+\newblock Non-negative matrix factorization with sparseness constraints.
+\newblock {\em Journal of Machine Learning Research}, 5:1457--1469, 2004.
+
+\bibitem{Hurley2009}
+Niall Hurley and Scott Rickard.
+\newblock Comparing measures of sparsity.
+\newblock {\em IEEE Transactions on Information Theory}, 55(10):4723--4741,
+  2009.
+
+\bibitem{Zou2005}
+Hui Zou and Trevor Hastie.
+\newblock Regularization and variable selection via the elastic net.
+\newblock {\em Journal of the Royal Statistical Society, Series B},
+  67:301--320, 2005.
 
 \end{thebibliography}

@@ -104,12 +104,12 @@ getErrs <- function(predicted, actual) {
 
 colSd <- function (x, na.rm=FALSE) apply(X=x, MARGIN=2, FUN=sd, na.rm=na.rm)
 
-ynot = data.matrix(ynotla)
-xnot = data.matrix(xnotla)
-y = data.matrix(yla)
-x = data.matrix(xla)
+ynot = data.matrix(ynotbos)
+xnot = data.matrix(xnotbos)
+y = data.matrix(ybos)
+x = data.matrix(xbos)
 
-print(colnames(xla))
+#print(colnames(xla))
 
 #print(x[, c(1,2,3,4,5)])
 
@@ -179,7 +179,15 @@ intercept = data.matrix(fit$intercept[ ,idx])[1,1]
 print(intercept)
 print(params)
 
-getErrs(x %*% params + intercept, y)                  
+getErrs(x %*% params + intercept, y)   
+
+l1norm = sum(abs(params))
+l2norm = sqrt(sum(params^2))
+print("Sparsity")
+print(l1norm)
+print(l2norm)
+print(l1norm/l2norm)
+print((l1norm/l2norm)^2)
 
 
 

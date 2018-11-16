@@ -164,13 +164,13 @@ are assigned to Andrew station. Similarly, 7391 people are assigned to Broadway 
 
 \subsection{Variance of Monte Carlo estimates}
 
-With any Monte Carlo method for estimation, there is variance in the estimates generated. In this case, the variance will come primarily from the random locations of the points. It is possible that in different Monte Carlo trials, a station may get significantly more or less points nearby it. This is especially significant in areas of high population density; one extra or missing point could be worth hundreds or thousands of jobs in the densest areas of downtown Chicago or Boston. To keep variance to an acceptably low level, we must generate enough sample points that variation between trials is minimal. 
+With any Monte Carlo method for estimation, there is variance in the estimates generated. In this case, the variance comes primarily from the random locations of the points. It is possible that in different Monte Carlo trials, a station may get significantly more or less points nearby it. This is especially significant in areas of high population density; one extra or missing point could be worth hundreds or thousands of jobs in the densest areas of downtown Chicago or Boston. To keep variance to an acceptably low level, we must generate enough sample points that variation between trials is minimal. 
 
-The land area of the zip codes near the studied transit networks vary in size from as small as 30 hectare in downtown Chicago to as much as 18100 hectares at the suburban end of transit lines in Dallas. To provide an appropriate balance between accuracy and processing speed, we use one random point per hectare, but with a minimum limit of 1000 points per zip code. This effectively provides over 10 points per hectare in for the zip codes in the densest parts of the studied networks: the downtown areas of Chicago and Boston. These areas also have the densest network of transit stations, with many stations within a kilometer of each other. In these denser areas, it is important to have enough points that the division of points between stations does not result in too much variance. 
+The number of points that will be accepted by rejection sampling is set beforehand. We generate random points, and use rejection sampling to see if they are inside the shape of the zipcode and outside of any exclusion zones. We continue generating points until we have reached the desired number of accepted points.
+
+The land area of the zip codes near the studied transit networks vary in size from as small as 30 hectare in downtown Chicago to as much as 18100 hectares at the suburban end of transit lines in Dallas. To provide an appropriate balance between accuracy and processing speed, we use one accepted point per hectare, but with a minimum limit of 1000 accepted points per zip code. This effectively provides over 10 points per hectare in for the zip codes in the densest parts of the studied networks: the downtown areas of Chicago and Boston. These areas also have the densest network of transit stations, with many stations within a kilometer of each other. In these denser areas, it is important to have enough points that the division of points between stations does not result in too much variance. 
 
 We generate 100 sets of estimates for the a single feature (total population) for all stations in the six transit networks. Figure \ref{fig:mcvar}(a) shows a graph of means of total population estimates against standard deviation of the population estimates, while Figure \ref{fig:mcvar}(b) is means against coefficient of variation. The standard deviation shows an increasing linear relationship with the population mean. The coefficient of variation is never greater than 10.4\% and generally decreases with increasing estimated mean population. The mean coefficient of variance over all studied stations is 5.3\%. By this method, the relative accuracy of any single station estimate of population or employment relative to the mean of 100 estimates of the same feature $\pm$10\% .
-
-SAY SOMETHING ABOUT THE ACCEPTANCE PROBABILITY WITHIN EACH REGION. EFFECTIVELY \_\_ POINTS = RETAINED POINTS.
 
 \begin{figure}[H]
 \centering
@@ -208,7 +208,7 @@ The transit network is laid out as a directed graph, where nodes represent the t
 
 An illustration of the calculation of travel time between Sullivan Square and South Station in Boston is provided in Figure \ref{fig:f2}. Starting at Sullivan Square on the Orange Line southbound, there are four edge traversals totaling seven minutes to get to Downtown Crossing. From there, there is a 2.5 minute wait until a Red Line (also Southbound) train arrives, and 2.5 more minutes of travel to South Station. The total travel time is thus twelve minutes. 
 
-HOW ARE COMPUTATIONS DONE HERE? THESE ARE SHORTEST PATH TYPE PROBLEMS
+For any given station, we find a set of all stations within aX distance by selecting an ego graph out of the entire transit network. An ego graph is a sub-graph containing all nodes that are within a specified distance of the central node. 
 
 For each station $A$ and for the set of all stations ($S$) within 15 minutes of $A$; the counts of each `Need Index' type feature is summed over all stations of $S$. This is the count used for the corresponding network type feature of $A$. The same procedure is repeated for all stations within 30 minutes of $A$. Thus, for each `Need Index' type feature associated with a station in the feature set, there are two additional features: one summing the counts of that feature within 15 minutes and one within 30 minutes.
 
@@ -373,9 +373,25 @@ In the first step, for all features, we perform a single-covariate regression ag
 
 $$ E_{feature} = \displaystyle\frac{\sum\limits_{k\in 6\,systems}\displaystyle\frac{E_{k, system} + E_{k, station}}{2}}{6}.$$
 
-After choosing a feature in the first step, in the second step we perform a two covariate regression against ridership. The feature selected in the first round is used, and we test all other features as the second covariate. The second feature that yields the lowest error score is then selected. The subsequent steps continue with multiple regression using all of the already chosen features. INCLUDE ALGORITHM
+After choosing a feature in the first step, in the second step we perform a two covariate regression against ridership. The feature selected in the first round is used, and we test all other features as the second covariate. The second feature that yields the lowest error score is then selected. The subsequent steps continue with multiple regression using all of the already chosen features. 
 
-For each regression type, we perform 25 steps of forward selection, identifying 25 features, in order, according to Algorithm REFERENCE HERE. We then plot the error scores against number of features to find number of features that yields the lowest error score; and example of these graphs is Figure \ref{fig:bfscores}. The set of features that produces the lowest error scores for this regression type is included in the results in Table \ref{tab:rresults}.
+\begin{algorithm}\begingroup\fontsize{10}{10}\selectfont
+\begin{algorithmic}
+\State{ Let $F$ be set of all features}
+\State{ $R = \emptyset$ }
+\For{$i \gets 1$ to $25$}
+	\For{ $f \in F$}
+		\State{Predict test set using regression with features $f \bigcup R$ of the training set}
+		\State{Calculate error score for $f$}
+	\EndFor
+	\State{$r = \text{min}(f)$; $r$ is feature $f \subset F$ with lowest error score}
+	\State{$R = R \bigcup r$}
+	\State{$F = F - r$}
+\EndFor
+\end{algorithmic}\endgroup\caption{Algorithm for choosing variables by stepwise forward selection}\label{alg:sfs}
+\end{algorithm} 
+
+For each regression type, we perform 25 steps of forward selection, identifying 25 features, in order, according to Algorithm \ref{alg:sfs}. We then plot the error scores against number of features to find number of features that yields the lowest error score; and example of these graphs is Figure \ref{fig:bfscores}. The set of features that produces the lowest error scores for this regression type is included in the results in Table \ref{tab:rresults}.
 
 
 \subsection{Derivation of Regression methods}\label{sec:derive}
@@ -423,9 +439,11 @@ For the least squares regression using the log transform, we transform the depen
 
 \subsubsection{Poisson regression} \label{sec:poiss}
 
-REFERENCES TO GLMS
+Poisson regression is case of the generalized linear model (GLM) \cite{nelder1972}. GLM generalizes linear regression by relating the expected value of the response variable to the linear predictor through a link function. 
 
-Poisson regression is performed both with its canonical log link and identity link. For the log link, the mean of the predicted Poisson distribution is given by 
+\[E(\mathbf{Y}) = g^{-1}(\mathbf{X}\beta)\]
+
+The distribution of the response variable follows a probability distribution from the exponential family. For Poisson regression, the variance follows a Poisson distribution. We perform Poisson regression with both its canonical log link and identity link. For the log link, the mean of the predicted Poisson distribution is given by 
 \[E(y_i\,|\,x_i;\theta) = e^{x_i^\top\theta},\]
 where $x$, $y$, and $\theta$ are as defined in the last section. 
 Using this mean as the parameter of a Poisson probability mass function, the joint distribution is
@@ -440,55 +458,83 @@ For LASSO regression, we minimize the parameters \cite{Young2007} over
 \subsubsection{Poisson regression with Identity Link}
 
 For the identity link, the mean of the predicted Poisson distribution is given by $$E(y_i\,|\,x_i;\theta) = x_i^\top\theta$$ which yields a joint distribution 
-$$p(y_1,...,y_m|x_1,...,x_m;\theta) = \prod_{i=1}^m \frac{\left(x_i^\top\theta\right)^{y_i}e^{-x_i^\top\theta}}{y_i!} $$
+$$p(y_1,...,y_m|x_1,...,x_m;\theta) = \prod_{i=1}^m \frac{\left(x_i^\top\theta\right)^{y_i}e^{-x_i^\top\theta}}{y_i!}. $$
 The negative log likelihood of this distribution is the objective function
-$$-\mathcal{L}\left(\theta\,|\,X, Y\right) = \sum_{i=1}^m -y_i\log{\left(x_i^\top\theta\right)} +x_i^\top\theta. $$ This function is convex and so the minimum can be obtained using convex optimization methods. 
+\begin{equation}-\mathcal{L}\left(\theta\,|\,X, Y\right) = \sum_{i=1}^m -y_i\log{\left(x_i^\top\theta\right)} +x_i^\top\theta. \label{eq:piloglik}\end{equation} This function is convex and so the minimum can be obtained using convex optimization methods. 
 
-With no suitable package to perform LASSO regression using Poisson regression and the identity link, we implement a solution using Python. We use the primal-dual interior point method as outlined in Boyd and Vandenberghe \cite{Boyd2004}. There are no equality constraints for this problem, and only one inequality constraint.
+With no suitable package available to perform LASSO regression using Poisson regression and the identity link, we implement a solution using Python. We use the primal-dual interior point method as outlined in Boyd and Vandenberghe \cite{Boyd2004}. We will set up a problem of the form 
 
 \begin{center}\begin{tabular}{ll}
 minimize &$f_0(x)$\\
 subject to &$f_i(x) \leq 0, \quad i = 1, ..., m$.
 \end{tabular}\end{center}
 
-YOU NEED TO EXPLAIN HOW YOU CONVERT THE PROBLEM
+There are no equality constraints of the form $Ax = b$ in this problem setup; there are only inequality constraints related to LASSO.
 
-Both $f_0$ and $f_1$ must be convex and twice continuously differentiable. But the LASSO constraint is $||\boldsymbol{\theta}|| < t$, which is a function of the absolute value of $\theta_i$; a non-differentiable function. Therefore, we choose $f_0$ and $f_1$, with the additional constraint that the parameters must be non-negative for $f_1$ to be equivalent to the LASSO constraint:
+The function to be minimized, $f_0$, is the negative log likelihood in Equation \ref{eq:piloglik}. The inequality constraint for LASSO is that the $\ell_1$ norm of the parameter vector is less than some constant $t$, $||\boldsymbol{\theta}||_1 < t$, or $||\boldsymbol{\theta}||_1 - t \leq 0$. The $\ell_1$ norm is the sum of the absolute values of the parameters. Both $f_0$ and $f_1$ must be convex and twice continuously differentiable, but the LASSO constraint is a non-differentiable function. Therefore we split the absolute value constraint into two parts,
+\begin{equation}\theta_j = \theta_j^+ - \theta_j^-\label{eq:thetasplit}\end{equation} where 
 \begin{align}
-f_0(\theta) =& \sum_{i=1}^m -y_i\log{\left(x_i\theta\right)} +x_i\theta
-&\nabla f_0(\theta) = \sum_{i=1}^m \dfrac{x_i\left(y_i-x_i\theta\right)}{x_i\theta}\quad
-&\nabla^2 f_0(\theta) = \sum_{i=1}^m\dfrac{y_i x_i^2}{\left(x_i\theta\right)^2}\label{eq:objective}\\[0.2in]
-f_1(\theta) =& \sum_{j=1}^p\,-\theta_j
-&\nabla f_1(\theta) = \sum_{j=1}^p -1 = -p\quad
-&\nabla^2 f_1(\theta) = 0\label{eq:constraints}
+\theta_j^+ = \left\{\begin{array}{ll}\theta_j, \quad& \theta_j > 0\\0, \quad& \theta_j \leq 0\\\end{array}\right.&&
+\theta_j^- = \left\{\begin{array}{ll}\theta_j, \quad& \theta_j < 0\\0, \quad& \theta_j \geq 0\\\end{array}\right.
+\label{eg:thetadefs}\end{align}
+so that
+$$|\theta_j| = \theta_j^+ + \theta_j^-.$$
+
+There are $p$ entries in $\boldsymbol{\theta}$; and, for each entry, both terms from Equation (\ref{eq:thetasplit}) must be non-negative. Therefore, the LASSO constraint is expanded to $2p$ separate terms that must all be non-negative. All the terms associated with either $\theta_j^+$ or $\theta_j^-$ are grouped into two separate constraint equations, $f_1$ or $f_2$, respectively. 
+
+Therefore, we choose $f_0$, $f_1$, and $f_2$ with the additional constraint that the parameters must be non-negative for $f_1$ to be equivalent to the LASSO constraint. The selected functions, plus their derivatives and gradients are:
+\begin{align}
+f_0(\theta) =& \sum_{i=1}^m -y_i\log{\left(x_i^\top\theta\right)} +x_i\theta
+&&\nabla f_0(\theta) = \sum_{i=1}^m \begin{bmatrix}\dfrac{x_i\left(-y_i+x_i^\top\theta\right)}{x_i^\top\theta}\\\dfrac{x_i\left(y_i+x_i^\top\theta\right)}{x_i^\top\theta}\end{bmatrix}
+&&\nabla^2 f_0(\theta) = \sum_{i=1}^m
+\begin{bmatrix}\dfrac{y_i x_i^2}{\left(x_i^\top\theta\right)^2}&
+\dfrac{-y_i x_i^2}{\left(x_i^\top\theta\right)^2}\\
+\dfrac{-y_i x_i^2}{\left(x_i^\top\theta\right)^2}&
+\dfrac{y_i x_i^2}{\left(x_i^\top\theta\right)^2}
+\end{bmatrix}
+\label{eq:objective}\\[0.2in]
+f_1(\theta^+) =& -\theta_j^+\quad\forall j\in\,\{1...p\}
+&&\nabla f_1(\theta^+) = \begin{bmatrix}-1&\hdots&-1\\0&\hdots&0\end{bmatrix}  
+&&\nabla^2 f_1(\theta^+) = 0\label{eq:constraint1}\\
+f_2(\theta^-) =& -\theta_j^-\quad\forall j\in\,\{1...p\}
+&&\nabla f_2(\theta^-) = \begin{bmatrix}0&\hdots&0\\-1&\hdots&-1\end{bmatrix} 
+&&\nabla^2 f_2(\theta^-) = 0\label{eq:constraint2}
 \end{align}
+The constraints $f_1$ and $_2$ are such that all elements in the vectors $\boldsymbol{\theta}^+$ and $\boldsymbol{\theta}^-$ must be less than or equal to zero.
+Note that $\theta_j = \theta_j^+ - \theta_j^-$ is retained in the definitions of $f_0$. The constraints $f_1$ and $f_2$ combine to
+$$-\theta_j^+ - \theta_j^- = -|\theta_j|$$ which ensures that the LASSO constraint is also met by the non-negativity requirement of $f_1$ and $f_2$.
 
-We establish the modified Karush-Kuhn-Tucker (KKT) equations for solving this problem using a Newton method. The objective function to be minimzed is $f_0$ and the inequality constraint is $f_1$. There is no equality constraint, which takes the form $Ax = b$ in the usual KKT conditions; therefore these terms are not present in our equations. Given that there are $p$ features and $m$ data points in our problem, then $f_0, f_1, f_2: \mathbb{R}^p \rightarrow \mathbb{R}.$ 
+We establish the modified Karush-Kuhn-Tucker (KKT) equations for solving this problem using a Newton method. There is no equality constraint, which takes the form $Ax = b$ in the usual KKT conditions; therefore these terms are not present in our equations. Given that there are $p$ features and $m$ data points in our problem, then $f_0, f_1, f_2: \mathbb{R}^p \rightarrow \mathbb{R}.$ 
 
+To solve the multiple constraints, we define 
+\begin{align*}
+f(\theta^+, \theta^-) = \begin{bmatrix}f_1(\theta^+)\\f_2(\theta^-)\end{bmatrix} = \begin{bmatrix}\theta_1^+\\\vdots\\\theta_p^+\\\theta_1^-\\\vdots\\\theta_p^-\end{bmatrix},&& 
+D\,f(\theta^+, \theta^-) =\begin{bmatrix}\nabla f_1(\theta^+)^\top\\\nabla f_2(\theta^-)^\top\end{bmatrix} = \begin{bmatrix}-1&\hdots&-1&0&\hdots&0\\0&\hdots&0&-1&\hdots&-1\end{bmatrix}
+\end{align*}
 The Newton steps for solving the modified KKT equations are given by 
-
 \[r_\gamma(\theta, \lambda) = \begin{bmatrix}
-\nabla f_0(\theta) + \lambdaup\nabla f_1(\theta)\\
--\text{diag}(\lambdaup)f_1(\theta) - \frac{1}{\gamma}\mathbb{I}
-\end{bmatrix} = \begin{bmatrix}
-r_{dual}\\r_{cent}
-\end{bmatrix}\,.\]
-With the values for the constraint function ($f_1$) and its derivatives from (\ref{eq:constraints}), we define  $r_{dual}$ and $r_{cent}$ as 
-\begin{align}
-r_{dual}&= \nabla f_0(\theta) - \lambda\label{eq:rdual}\\
-r_{cent}&= \text{diag}(\lambdaup)\theta - \frac{1}{\gamma}\mathbb{I}
-\end{align}
+\nabla f_0(\theta^+,\theta^-) + \lambdaup D\,f(\theta^+, \theta^-)\\
+-\text{diag}(\lambdaup)f(\theta^+, \theta^-) - \frac{1}{\gamma}\mathbb{I}
+\end{bmatrix}.\]
+% = \begin{bmatrix}r_{dual}\\r_{cent}\end{bmatrix}\,
+%With the values for the constraint function ($f_1$) and its derivatives from (\ref{eq:constraint1}) and (\ref{eq:constraint2}), we define  $r_{dual}$ and $r_{cent}$ as 
+%\begin{align}
+%r_{dual}&= \nabla f_0(\theta) - \lambda\label{eq:rdual}\\
+%r_{cent}&= \text{diag}(\lambdaup)\theta - \frac{1}{\gamma}%\mathbb{I}
+%\end{align}
+
 For a current point $y = \left(\theta, \lambdaup\right)$, the next Newton step will be $\Delta y = \left(\Delta\theta, \Delta\lambdaup\right)$. The Newton step is characterized by the linear equation
 \[r_\gamma(y + \Delta y) \approx r_t(y) + \nabla r_t(y)\Delta y = 0\] or 
+
 \[\begin{bmatrix}
-\nabla^2f_0(\theta) + \lambdaup\nabla^2f_1(\theta)&\nabla f_1(\theta)\\
--\text{diag}(\lambdaup)\nabla f_1(\theta)&-\text{diag}\left(f_1(\theta)\right)
+\nabla^2f_0(\theta^+, \theta^-) + \lambdaup\nabla^2f_1(\theta^+)+ \lambdaup\nabla^2f_2(\theta^-)&D\,f(\theta^+, \theta^-)^\top\\
+-\text{diag}(\lambdaup)D\,f(\theta^+, \theta^-)&-\text{diag}\left(f(\theta^+, \theta^-)\right)
 \end{bmatrix}\begin{bmatrix}
 \Delta\theta \\ \Delta\lambdaup
 \end{bmatrix} = - \begin{bmatrix}
 r_{dual}\\r_{cent}
 \end{bmatrix}.\]
-We retain the objective function $f_0$ and its gradient and Hessian as defined in (\ref{eq:objective}) but we plug in values for the constraint function from (\ref{eq:constraints}) to get a set of two linear equations:
+We retain the objective function $f_0$ and its gradient and Hessian as defined in (\ref{eq:objective}) but we plug in values for the constraint functions from (\ref{eq:constraint1}) and (\ref{eq:constraint2}) to get a set of two linear equations. The identity of $\theta$ allows us to eliminate $\theta^+$ and $\theta^-$.
 \begin{align}
 \nabla^2f_0(\theta)\Delta\theta - \Delta\lambdaup &= -r_{dual}\label{eq:dualeq}\\
 \text{diag}(\lambdaup)\Delta\theta + \text{diag}(\theta)\Delta\lambdaup &= -r_{cent}\,\label{eq:centeq}
@@ -579,15 +625,45 @@ Table \ref{tab:rresults} shows the results of all the tested regression models. 
 
 In the top block of Table \ref{tab:rresults}, we include a series of baseline comparison measures. The first is a simple, two-variable OLS regression taking the two variables that are most obviously relevant to transit ridership: population within walking distance, and employment within walking distance. The second baseline comparison is the `best' single feature that we selected from our pool of 94 available features. The single best feature is the number of housing units built before 1940 within a 15 minute transit ride of the station of interest. 
 
-The third and fourth baseline comparisons use features selected by random forest. A random forest model is created using 10 trees, selecting the top ten features per tree and averaging over 100 iterations. The top five and ten selected features are analyzed in the results table. The random forest feature sets outperform the population and employment based model, but does not outperform the best single feature. 
+The third and fourth baseline comparisons use features selected by random forest regression \cite{Breiman2001}. A random forest model is implemented using the python programming language's \texttt{scikit-learn} package. The feature matrix is sampled randomly and distributed independently into a forest of 10 trees. Using least squares error, the random forest model predicts the response variables. However, we are interested in feature selection. The 'Gini importance' metric, which is the decreases in Gini impunity criterion for each feature summed over the entire forest \cite{Breiman1984}, is used to score each feature by its relative importance.  
 
-HOW IS THE AVERAGING DONE? PROVIDE REFERENCES!
+We run 100 iterations of the random forest model, and sum the feature scores for each run. The top five and ten selected features are analyzed in the results table. The random forest feature sets outperform the population and employment based model, but does not outperform the best single feature. 
+
 
 An analysis of the accuracy of the methods shown in Table \ref{tab:rresults} is included in Section \ref{sec:acc}.
 
 \subsection{LASSO regularization results}
 
-The various LASSO regression types have a large variance in number of features chosen, both between transit networks and between regression types, shown in Table \ref{tab:lassoFeatNum}. Since the six way cross validation produces a different set of selected features for each transit network, we must develop a means for determining a `best' feature set for a common comparison. To represent the results of the LASSO regression, all features that are selected by four or more of the six cross-validation trials are used. 
+The various LASSO regression types have a large variance in number of features chosen, both between transit networks and between regression types, shown in Table \ref{tab:lassoFeat0Norm}. Since the six way cross validation produces a different set of selected features for each transit network, we must develop a means for determining a `best' feature set for a common comparison. To represent the results of the LASSO regression, all features that are selected by four or more of the six cross-validation trials are used. 
+
+\begin{table}[H]
+\begingroup\fontsize{10}{15}\selectfont
+\centering
+\begin{tabular}{l|cccccc|cc}
+Regression Type&Atlanta&Boston&Chicago&Dallas&Denver&Los Angeles&Average&Selected\\
+\midrule
+LstSq - Linear&10&2&8&9&10&17&9.3&9\\
+LstSq - Log Transform&26&12&17&22&28&46&25.2&19\\
+Poisson - Log Link&11&5&12&26&27&29&18.3&10\\
+Poisson - Identity Link&12&15&13&12&11&12&12.5&10\\
+LAD&0&26&15&27&49&49&27.7&12\\
+\end{tabular}
+\caption{Number of features selected by LASSO; by transit network and regression type}\label{tab:lassoFeat0Norm}
+\endgroup
+\end{table}
+
+
+
+The LAD LASSO is unusual in its high variability between different trial runs. On average, the six trials selected 28 features, compared to only 12 features that were selected by four different trials. On the opposite side of the spectrum, linear least squares LASSO selected an average of 9 features per trial, and 9 features were selected by four or more trials. For linear least squares, the different trials substantially agreed when selecting variables.
+
+Another way to compare the results of the different trials and methods is to measure the sparsity  of the coefficients. Sparsity is a measure of the `empty space' in the paramaterization of the model. We choose a non-normalized variant of the Hoyer measure for sparseness \cite{Hoyer2004} as our metric: 
+$$\text{sparseness}(\beta) = \left(\frac{||\,\beta\,||_1}{||\,\beta\,||_2}\right)^2.$$
+
+The Hoyer measure is proven to meet the intuitive attributes of a sparsity measure \cite{Hurley2009}, but is normalized on the range $[0, 1]$. We desire our variant to have a range related to the number of features selected, to provide additional information about the quality of LASSO feature selection. For a vector with minimum sparseness, $\beta_{min} = \left[a\,0\,0\, ...\right]$, 
+\[\text{sparseness}(\beta_{min}) = \left(\frac{|\,a\,|}{\sqrt{a^2}}\right)^2 = 1.\]
+
+For a vector with maximum sparseness, $\beta_{max} = \left[a\,a\,a\,...\right]$,
+\[\text{sparseness}(\beta_{max}) = \left(\frac{k|\,a\,|}{\sqrt{ka^2}}\right)^2 = k\] where $k$ is the length of vector $\beta$. The maximum possible sparseness score, for a parameter vector with equal coefficients for all features, would be the number of features. For our application, there are 94 features, so the range of the sparseness metric is $[1, 94]$.
 
 \begin{table}[H]
 \begingroup\fontsize{10}{15}\selectfont
@@ -595,19 +671,18 @@ The various LASSO regression types have a large variance in number of features c
 \begin{tabular}{l|cccccc}
 Regression Type&Atlanta&Boston&Chicago&Dallas&Denver&Los Angeles\\
 \midrule
-LstSq - Linear&10&2&8&9&10&17\\
-LstSq - Log Transform&26&12&17&22&28&46\\
-Poisson - Log Link&11&5&12&26&27&29\\
-Poisson - Identity Link&12&15&13&12&11&12\\
-LAD&36&52&48&54&47&53\\
+LstSq - Linear&3.5&1.7&2.8&3.4&4.2&6.0\\
+LstSq - Log Transform&1.6&1.3&1.4&1.6&2.1&7.2\\
+Poisson - Log Link&1.2&1.1&1.2&1.6&1.7&2.3\\
+Poisson - Identity Link&4.1&3.6&4.2&3.8&4.0&4.3\\
+LAD&NaN&12.9&8.5&9.6&15.9&15.7\\
 \end{tabular}
-\caption{Number of features selected by LASSO; by transit network and regression type}\label{tab:lassoFeatNum}
+\caption{Number of features selected by LASSO; by transit network and regression type}\label{tab:lassoFeatSparse}
 \endgroup
 \end{table}
 
-COMPARE L1 NORMS.
+The LAD regression is notable both for the high sparseness of its parameterizations and for the case of Atlanta where no variables are selected. Also notable is that Los Angeles has a higher sparseness than any other city for four of the five regression methods; and has the second highest sparseness for the fifth.
 
-%The LASSO solution optimizes station-type error, not system type error. The loss function for each LASSO method is dependent on the regression type: Least Squares loss, Poisson loss, or Least Absolute Deviation loss. In each case, the loss is the sum of a function of the predicted value, $\theta x_i$, and true value $y_i$, for each station. In this, the loss for each of these regression types resembles a station-type error. A system type error would be a loss function that is a function of the the predicted values summed over all stations, $\sum_i \theta x_i$, and the true values summed over all station, $\sum_i y_i$.
 
 For all regression types, the LASSO method of feature selection performs significantly worse than the forward selection method.  The results in Table \ref{tab:rresults} allow a comparison of the LASSO regression against some baseline measures. None of the LASSO methods outperform the five variable random forest model or the best single variable, in either error metric. 
 
@@ -693,9 +768,11 @@ A model trained on the transit system of the six US cities included in this work
 
 \subsection{Future Work}
 
-Future work in on this model could proceed in two directions. The first direction is to continue improvement of the source data. This project used only zip code shapes to estimate counting features, since job and housing data was available only for the zip code, but the population features exist in more granular detail at the Census Tract level. The author generated exclusion zones which were designed to prevent job and people from being located in parks and water could be improved by incorporating detailed city land use maps. Finally, there is a major deficiency in source data because neither federal, state nor local government workers are included in the employment data sources used by the model. Of particular concern are university employment; university jobs within walking distance was a selected feature in five of the six models. Several large universities are located on the transit networks of this study and were not accounted for, such as University of Illinois at Chicago, University of Colorado  Denver, and University of Massachusetts Boston. For other cities that have very large public universities, like Minneapolis, Austin, or Columbus, this would significantly affect the validity of any estimates, especially given the importance of university related features in Table \ref{tab:featuresum}.
+Future work in on this model could proceed in two directions. The first direction is to continue improvement of the source data. This project used only zip code shapes to estimate counting features, since job and housing data was available only for the zip code, but the population features exist in more granular detail at the Census Tract level. The author generated exclusion zones which were designed to prevent job and people from being located in parks and water could be improved by incorporating detailed city land use maps. Finally, there is a major deficiency in source data because neither federal, state nor local government workers are included in the employment data sources used by the model. Of particular concern are university employment; university jobs within walking distance was a selected feature in five of the six models. Several large universities are located on the transit networks of this study and were not accounted for, such as University of Illinois at Chicago, University of Colorado--Denver, and University of Massachusetts--Boston. There are other cities not included in this study that have very large public universities, like Minneapolis, Austin, or Columbus. Under-representation of university jobs in these cities would negatively affect the validity of any estimates, especially given the importance of university related features in Table \ref{tab:featuresum}.
 
-The second direction for future work is improvement of the model itself. The feature summary for this paper only analyzed whether or not a feature was selected by any of the LASSO or forward selection regression methods. There remains to be done an analysis of the magnitude and direction of each feature's coefficient, to ensure that frequently selected features are significant. A feature selected four times, but with coefficient magnitudes both positive and negative is not as significant as a selected feature that only has positive or negative coefficients. Additionally, the R package \texttt{glmnet} is capable of performing ElasticNet regression (PROVIDE REFERENCES); but for this work, only $\ell_1$, LASSO regularization was used. For OLS and Poisson, a mixed regularization may be able to improve the performance of the feature selection. 
+The second direction for future work is improvement of the model itself. The feature summary for this paper only analyzed whether or not a feature was selected by any of the LASSO or forward selection regression methods. There remains to be done an analysis of the magnitude and direction of each feature's coefficient, to ensure that frequently selected features are significant. A feature selected four times, but with coefficient magnitudes both positive and negative is not as significant as a selected feature that only has positive or negative coefficients. 
+
+In this work, only $\ell_1$, LASSO regularization was used. However, the R package \texttt{glmnet} is capable of performing ElasticNet regression as well. ElasticNet \cite{Zou2005} is a linear mixture of the $\ell_1$ and $\ell_2$ penalties from the LASSO and ridge regression methods. For OLS and Poisson, a mixed regularization may be able to improve the performance of the feature selection. 
 
 
 \pagebreak
@@ -757,15 +834,6 @@ Number of jobs in entertainment fields&Table CB1500CZ21, NAICS code 71, Estimate
 \endgroup
 
 \end{appendices}
-
-
-
-
-
-
-
-
-
 
  
 \bibliographystyle{unsrt}
