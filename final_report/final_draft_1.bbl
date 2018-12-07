@@ -1,0 +1,180 @@
+\begin{thebibliography}{10}
+
+\bibitem{Boyle2006}
+Daniel Boyle.
+\newblock {\em Fixed-Route Transit Ridership Forcasting and Service Planning
+  Methods}.
+\newblock Transportation Reserach Board, Washington, DC, 2006.
+
+\bibitem{tcrp95}
+{Transportation Research Board and National Academies of Sciences, Engineering,
+  and Medicine}.
+\newblock {\em {Traveler Response to Transportation System Changes Handbook,
+  Third Edition: Chapter 1, Introduction}}.
+\newblock The National Academies Press, Washington, DC, 2013.
+
+\bibitem{McNally2008}
+Michael~G. McNally.
+\newblock The four-step model.
+\newblock In Kenneth~J. Button, editor, {\em Handbook of Transport Modelling
+  (Handbooks in Transport, Volume 1)}, chapter~3, pages 35--53. University of
+  California, 2008.
+
+\bibitem{Mannheim1979}
+Marvin~L Manheim.
+\newblock {\em Fundamentals of transportation systems analysis}.
+\newblock MIT Press, Cambridge, MA, 1979.
+
+\bibitem{Florian1988}
+Michael Florian, Marc Gaudry, and Christian Lardinois.
+\newblock {A two-dimensional framework for the understanding of transportation
+  planning models}.
+\newblock {\em Transportation Research Part B: Methodological}, 22(6):411--419,
+  December 1988.
+
+\bibitem{ST3_2015}
+{Sound Transit}.
+\newblock {ST3 Regional High-Capacity Transity System Plan: Transit Ridership
+  Forecasting Methodology Report}.
+\newblock Technical report, Sound Transit, March 2015.
+
+\bibitem{ST3_add}
+{Sound Transit}.
+\newblock {ST3 Regional High-Capacity Transity System Plan: Addendum to Transit
+  Ridership Forecasting Methodology Report}.
+\newblock Technical report, Sound Transit, April 2015.
+
+\bibitem{NCTR}
+Xuehao Chu.
+\newblock Ridership models at the stop level.
+\newblock Technical Report NCTR-473-04, National Center for Transit Research,
+  Center for Urban Transportation Research, University of South Florida,
+  December 2004.
+
+\bibitem{Kuby2004}
+Michael Kuby, Anthony Barranda, and Christopher Upchurch.
+\newblock Factors influencing light-rail station boardings in the united
+  states.
+\newblock {\em Transportation Research, Part A: Policy and Practice},
+  38(3):223--247, March 2004.
+
+\bibitem{Taylor2008}
+Brian~D. Taylor, Douglas Miller, Hiroyuki Iseki, and Camille Fink.
+\newblock Nature and/or nurture? analyzing the determinants of transit
+  ridership across us urbanized areas.
+\newblock {\em Transportation Research Park A: Policy and Practice},
+  43(1):60--77, January 2009.
+
+\bibitem{Currie2011}
+Graham Currie, A~Ahern, and Alexa Delbosc.
+\newblock Exploring the drivers of light rail ridership: An empirical route
+  level analysis of selected australian, north american and european systems.
+\newblock {\em Transportation}, 38(3):545--560, May 2011.
+
+\bibitem{Durning2015}
+Matthew Durning and Craig Townsend.
+\newblock Direct ridership model of rail rapid transit systems in canada.
+\newblock {\em Transportation Research Record: Journal of the Transportation
+  Research Board}, 2537:96--102, January 2015.
+
+\bibitem{Gutierrez2011}
+Javier Gutiérrez, Osvaldo~Daniel Cardozo, and Juan~Carlos García-Palomares.
+\newblock Transit ridership forecasting at station level: an approach based on
+  distance-decay weighted regression.
+\newblock {\em Journal of Transport Geography}, 19(6):1081 -- 1092, 2011.
+\newblock Special section on Alternative Travel futures.
+
+\bibitem{Yao2007}
+Xiaobai Yao.
+\newblock Where are public transit needed - examining potential demand for
+  public transit for commuting trips.
+\newblock {\em Computers, Environment and Urban Systems}, 31:535--550, 2007.
+
+\bibitem{Guerra2012}
+Erick Guerra, Robert Cervero, and Daniel Tischler.
+\newblock Half-mile circle.
+\newblock {\em Transportation Research Record: Journal of the Transportation
+  Research Board}, 2276:101--109, 2012.
+
+\bibitem{ElGeneidy2014}
+Ahmed El-Geneidy, Michael Grimsrud, Wasfi Rania, Paul Tetreault, and Julien
+  Surprenant-Legault.
+\newblock New evidence on walking distances to transit stops: Identifying
+  redundancies and gaps using variable service areas.
+\newblock {\em Transportation}, 41(1):193--210, January 2014.
+
+\bibitem{Pickrell1989}
+Don Pickrell.
+\newblock Urban rail transit projects: Forecast versus actual ridership and
+  costs. final report.
+\newblock Technical report, Transportation Systems Center, October 1989.
+
+\bibitem{Flyvbjerg2006}
+Bent Flyvbjerg, Mette Skamris, and Soren L.~Buhl.
+\newblock Inaccuracy in traffic forecasts.
+\newblock {\em Transport Reviews}, 26(1):1--24, January 2006.
+
+\bibitem{Hardy2010}
+Matthew~H. Hardy, Soongwan Doh, Junyang Yuan, Xin Zhou, and Kenneth~J. Button.
+\newblock The accuracy of transit system ridership forecasts and capital cost
+  estimates.
+\newblock {\em International Journal of Transport Economics / Rivista
+  internazionale di economia dei trasporti}, 37(2):155--168, 2010.
+
+\bibitem{friedman2010}
+Jerome Friedman, Trevor Hastie, and Robert Tibshirani.
+\newblock Regularization paths for generalized linear models via coordinate
+  descent.
+\newblock {\em Journal of Statistical Software}, 33(1):1--22, 2010.
+
+\bibitem{Tibshirani1996}
+Robert Tibshirani.
+\newblock Regression shrinkage and selection via the lasso.
+\newblock {\em Journal of the Royal Statistical Society. Series B
+  (Methodological)}, 58(1):267--288, 1996.
+
+\bibitem{nelder1972}
+J.~A. Nelder and R.~W.~M. Wedderburn.
+\newblock Generalized linear models.
+\newblock {\em Journal of the Royal Statistical Society. Series A (General)},
+  135(3):370--384, 1972.
+
+\bibitem{Young2007}
+Mee~Young Park and Trevor Hastie.
+\newblock L1 regularization path algorithm for generalized linear models.
+\newblock {\em Journal of the Royal Statistical Society: Series B (Statistical
+  Methodology)}, 69(4):659--677, 2007.
+
+\bibitem{Boyd2004}
+Stephen Boyd and Lieven Vandenberghe.
+\newblock {\em Convex Optimization}.
+\newblock Cambridge University Press, New York, NY, USA, 2004.
+
+\bibitem{Breiman2001}
+Leo Breiman.
+\newblock Random forests.
+\newblock {\em Machine Learning}, 45(1):5--32, 2001.
+
+\bibitem{Breiman1984}
+R.~A.~Olshen Leo~Breiman, Jerome~Freidman and Charles~J. Stone.
+\newblock {\em Classification and Regression Trees}.
+\newblock Taylor and Francis, New York, NY, USA, 1984.
+
+\bibitem{Hoyer2004}
+Patrik Hoyer.
+\newblock Non-negative matrix factorization with sparseness constraints.
+\newblock {\em Journal of Machine Learning Research}, 5:1457--1469, 2004.
+
+\bibitem{Hurley2009}
+Niall Hurley and Scott Rickard.
+\newblock Comparing measures of sparsity.
+\newblock {\em IEEE Transactions on Information Theory}, 55(10):4723--4741,
+  2009.
+
+\bibitem{Zou2005}
+Hui Zou and Trevor Hastie.
+\newblock Regularization and variable selection via the elastic net.
+\newblock {\em Journal of the Royal Statistical Society, Series B},
+  67:301--320, 2005.
+
+\end{thebibliography}
