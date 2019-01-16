@@ -1,39 +1,132 @@
-\documentclass[11pt]{article}
+\documentclass[11pt]{report}
 \usepackage{amsmath}
 \usepackage{mathtools}
 \usepackage{txfonts}
-\usepackage[margin=1.0in]{geometry}
+\usepackage[margin=1.25in]{geometry}
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{booktabs}
 \usepackage[caption=true]{subfig}
 \graphicspath{ {images/} }
-\usepackage{appendix}
 \usepackage{url}
 %\usepackage{wrapfig}
 \usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
 \usepackage{caption}
+\usepackage[noadjust,verbose,sort]{cite}
+\usepackage{titlesec}
+\usepackage[toc]{appendix}
+\usepackage{setspace}
+
+\addtolength{\oddsidemargin}{.25in}
+\addtolength{\evensidemargin}{-.25in}
 
 
 \setlength{\parskip}{\baselineskip}%
 \setlength{\parindent}{0pt}%
-\renewcommand{\baselinestretch}{1.4}
 
-\title{Regression models for predicting rail transit ridership at the station level}
-\author{Daniel Hartig}
-\date{\vspace{-5ex}}
 
 \DeclareMathOperator*{\argmin}{arg\,min}
+\def\siglinewithspace{\rule{2.8 in}{0.4 pt}}
 
+\titleformat
+{\chapter}[hang]
+{\bfseries\centering\Large}
+{Chapter \ \thechapter: }
+{0 pt}
+{}
 
+\pagenumbering{gobble}
 \begin{document}
-\maketitle
-\begin{abstract}
-Methods for predicting ridership for future urban rail systems or extensions often have poor accuracy. One study shows that predicted ridership is overestimated by about 50\%, on average, for a broad sample of urban rail systems worldwide.  The ridership estimates produced by most transit agencies in the United States are not based on regression models. This thesis presents a framework for feature generation and regression modeling for estimating urban rail ridership in the  United States.  Features are generated using publicly available data from the US Census Bureau at the zip code level. Monte Carlo geographic sampling from zip code shapefiles generates features for each station on a rail network, representing characteristics within walking distance of that station. Network connections and travel times are used to generate a second set of features representing characteristics within commuting distance of each station. Several models are developed using different regression types and are compared in terms of accuracy and selected features. Some of the generated models provide system-level ridership predictions within 20\% of the true value for a sample set of six US urban rail systems. 
-\end{abstract}
+% SIGNATURE PAGE
+\null\vskip .1in
+\begin{center}
+\underline{REGRESSION MODELS FOR PREDICTING RAIL TRANSIT RIDERSHIP AT THE STATION LEVEL}\\[0.2 in]
+by \\ [0.2 in]
+Daniel Hartig \\
+A Thesis \\
+Submitted to the\\
+Graduate Faculty\\
+of\\
+George Mason University\\
+in Partial fulfillment of\\
+The Requirements for the Degree\\
+of\\
+Master of Science\\
+Statistics\\[0.5 in]
+\end{center}
+Committee:\\[16 pt]
+\siglinewithspace\hspace{0.1in} Dr. Martin Slawski, Thesis Director \\[0.2 in]
+\siglinewithspace\hspace{0.1in} Dr. Clifton Sutton, Committee Member        \\[0.2 in]
+\siglinewithspace\hspace{0.1in} Dr. Larry Tang, Committee Member       \\[0.2 in]
+%        \siglinewithspace \@thirdmember        \\[\intercommspace]
+\siglinewithspace\hspace{0.1in} Dr. William Rosenberger, Chairman, Department\\
+\phantom{\siglinewithspace\!\!}\hspace{0.15in} of Statistics \\[0.2 in]
+\siglinewithspace\hspace{0.1in} Dr. Kenneth S. Ball, Dean, Volgenau School \\
+\phantom{\siglinewithspace\!\!}\hspace{0.15in}   of Engineering \\[0.2 in]
+Date: \rule{5.96 cm}{0.4 pt} \hspace{0.5 cm} \!\!Spring 2019\\
+ \phantom{Date: \rule{5.96 cm}{0.4 pt} \hspace{0.5 cm} \!\!}George Mason University \\
+\phantom{Date: \rule{5.96 cm}{0.4 pt} \hspace{0.5 cm} \!\!}Fairfax, VA
+\newpage
 
-\section{Introduction}
+% TITLE PAGE
+
+\null\vskip .5825in 
+\begin{center}
+Regression Models for Predicting Rail Transit Ridership at the Station Level\\[10 pt]
+\end{center}
+A thesis submitted in partial fulfillment of the requirements for
+the degree of \\ Master of Science at George Mason University \\[10 pt]%[35 pt]
+\begin{center}
+By \\[35 pt]
+Daniel Hartig \\
+Bachelor of Science\\
+United States Naval Academy , 2008\\[39 pt]
+Director: Martin Slawski, Assistant Professor \\
+Department of Statistics \\[35 pt]
+Fall 2018 \\
+George Mason University \\
+Fairfax, VA
+\end{center}
+\vfill\newpage
+
+% COPYRIGHT PAGE
+\null\vspace*{2.375 in}%{1.6875 in}%{2 in} %{2.125 in}
+\pagenumbering{roman}
+\setcounter{page}{2}
+\begin{center}
+Copyright\ \copyright\ 2018 by Daniel Hartig\\
+All Rights Reserved
+\end{center}
+\vfill\newpage
+
+\tableofcontents\clearpage
+\addcontentsline{toc}{chapter}{List of Tables}
+\listoftables\clearpage
+\addcontentsline{toc}{chapter}{List of Figures}
+\listoffigures\clearpage
+
+%\newpage
+\addcontentsline{toc}{chapter}{Abstract}
+\pagenumbering{gobble}
+\null\vskip 0.75in
+\begin{center}
+\textbf{\Large Abstract}\\
+\end{center}
+REGRESSION MODELS FOR PREDICTION RAIL TRANSIT RIDERSHIP AT THE STATION LEVEL\\
+Daniel Hartig, MS \\
+George Mason University, 2019 \\
+Thesis Director: Dr. Martin Slawski \\[0.5 in]
+
+\begin{doublespace}
+Methods for predicting ridership for future urban rail systems or extensions often have poor accuracy. One study shows that predicted ridership is overestimated by about 50\%, on average, for a broad sample of urban rail systems worldwide.  The ridership estimates produced by most transit agencies in the United States are not based on regression models. This thesis presents a framework for feature generation and regression modeling for estimating urban rail ridership in the  United States.  Features are generated using publicly available data from the US Census Bureau at the zip code level. Monte Carlo geographic sampling from zip code shapefiles generates features for each station on a rail network, representing characteristics within walking distance of that station. Network connections and travel times are used to generate a second set of features representing characteristics within commuting distance of each station. Several models are developed using different regression types and are compared in terms of accuracy and selected features. Some of the generated models provide system-level ridership predictions within 20\% of the true value for a sample set of six US urban rail systems.
+\end{doublespace}
+
+\renewcommand{\baselinestretch}{1.3}\selectfont
+\newpage
+\pagenumbering{arabic}
+\chapter{Introduction}
+\section{Summary}
 
 The United States is undergoing a rail boom. Since 2010, new light rail lines have opened in Dallas, Los Angeles, Salt Lake City, Denver, Minneapolis, Houston, Seattle and more.  A new heavy rail line opened in Washington DC, and a commuter rail system in Orlando. As transit expands in cities in the United States, there is an opportunity to validate predictive rail ridership models. 
 
@@ -47,7 +140,7 @@ A significant weakness of the four-step method is that it relies on already know
 
 A regression based ridership model could provide an alternative estimate of ridership without depending on previously known transit ridership counts. Only seven of the 35 surveyed agencies used regression models to predict future transit ridership. This thesis proposes a regression-based model using data from the United States Census Bureau at the zip code level. The model will be trained on the zip code characteristics and ridership data from existing light and heavy rail transit systems. The resulting model will be used to predict ridership on other rail transit systems.  
 
-\subsection{Original Contributions}
+\section{Original Contributions}
 
 There are two main objectives of this thesis. The first objective is to investigate the utility of various data from the US Census Bureau as predictor variables in a regression model for urban rail ridership. The second objective is to determine what generalized linear regression methods--in terms of the choice of loss function and link function--are best suited to modeling urban rail ridership given the available data.
 
@@ -55,9 +148,9 @@ This thesis diverges from previous regression modeling by investigating an expan
 
 With features for regression analysis in hand, this thesis benchmarks several different regression methods. Previous regression based analyses of urban rail ridership have exclusively used ordinary least squares regression. This thesis expands the model base to include other loss functions and link functions and reports accuracy metrics for each model. 
 
-\section{Data Sources and Feature Generation}
+\chapter{Data Sources and Feature Generation}
 
-\subsection{Selection of Transit Systems}
+\section{Selection of Transit Systems}
 
 The response variable for the regression analysis is average weekday ridership over a period of at least one year. Ridership data for agencies that publish annual ridership reports is used to validate the model (for ridership data sources, see Appendix \ref{app:ridership}). Six cities were selected for this study: Boston, Chicago, Los Angeles, Atlanta, Dallas, and Denver. Several cities were eliminated from analysis for various reasons. The author was unable to locate ridership information for several cities such as Houston and Miami. A limitation of the Census dataset is that it does not include government employment. While state level employment is significant in all potential cities, state employment levels are relatively constant from city to city. Federal employment varies greatly, however; Washington DC and San Diego with its military installations had to be eliminated due to the large impact of un-recorded federal employment. San Francisco and Philadelphia were eliminated because they have multiple rail systems without integrated fares. New York City was eliminated because its subway has higher ridership than all other intra-urban rail systems in the country combined.
 
@@ -65,7 +158,7 @@ Ridership data is captured by different methods in different cities, but the sam
 
 The data closest to 2015 is used when possible to get an accurate relation between ridership and census data. The census data as well as Chicago, Dallas, and Denver's ridership statistics are from 2015. Boston's ridership is from 2014, Los Angeles' is from 2013-2014, and Atlanta's is from 2010-2013. 
 
-\subsection{Data Sources for Predictor Variables}\label{sec:data}
+\section{Data Sources for Predictor Variables}\label{sec:data}
 
 The zip code level data for feature generation comes from the US Census Bureau and is available at \texttt{factfinder.census.gov}. There over one thousand potential data sets available. We refer to the data available for each zip code as characteristics of the zip code. Selection of features is guided by Kuby \cite{Kuby2004}, Taylor \cite{Taylor2008}, and Currie \cite{Currie2011}, who demonstrate the significance of characteristics such as employment, population, universities, poverty, airports, park and ride stations, and rental housing units. The characteristics can be divided into two categories: counting characteristics and dummy variables. 
 
@@ -101,7 +194,7 @@ In Yao \cite{Yao2007}, a distinction is made between `Need Index' features, a se
 
 We translate zip code level data into transit station specific data by sampling each zip code's geographic area to determine proximity to a transit station. For each zip code near the transit network, a set of random points within that zip code is generated using rejection sampling. For each of the those points, one or more closest stations are determined. Each point is assigned to one or more station within walking distance, using the method defined in Section \ref{sec:walk}. Counts for the characteristics of each zip code, such as population or employment, are then assigned to each station proportional to the number of points assigned to each station.
 
-\subsection{Definition of `Walking Distance'}\label{sec:walk}
+\section{Definition of `Walking Distance'}\label{sec:walk}
 
 The area within walking distance of a station is called its `catchment'. To generate a feature for a transit station, the total count of some characteristic within the catchment of that stations is considered. The standard transit catchment distance in literature for rail stations is one half mile (800 m). Guerra \cite{Guerra2012} suggests that one half mile is more appropriate for population as a feature while one quarter mile (400 m) is better for employment as a feature. A case study \cite{ElGeneidy2014} from a 2003 Montreal transit riders origin-destination survey concluded that approximately 50\% of riders of the city's urban rail transit walk less than 500 meters to their stations, while 90\% walk less than 1000 meters. The maximum walking distance is approximately 1500 meters. In another regression-based study of catchment sizes, Gutierrez \cite{Gutierrez2011} found the optimal distance for  for assigning population and employment to a station was between 600 and 900 meters in straight line distance. A straight line distance is measured as the crow flies as opposed to a distance following pedestrian walkways; this distance measurement is consistent with the distances used in this analysis.
 
@@ -109,7 +202,7 @@ A significant concern when tabulating catchments is that in many of the densest 
 
 Given this information, we choose cutoffs of 500 meters and 1000 meters for calculating station distances. For any location that has residents, jobs, or other desired countable characteristics, all stations within 500 meters will be considered equally likely to capture a share of that resident or job's transit demand. If there are no stations within 500 meters; then all stations within 1000 meters will be considered. 
 
-\subsection{Rejection Sampling of Zip Code Shapefiles}\label{sec:sampling}
+\section{Rejection Sampling of Zip Code Shapefiles}\label{sec:sampling}
 
 We translate zip code level data into transit station specific data by using a Monte Carlo method to estimate feature counts near transit stations. Sample points are generated within each zip code near the transit network. Those points are assigned to whichever stations are within walking distance of the station, as defined in Section \ref{sec:walk}. If there are multiple stations within walking distance, then equal fractions of that one point are assigned to each station. The ratio of points assigned to each station to total points generated for each zip code is used to assign feature counts to each station, such that
 \[\text{count}(station_i) = \sum_j w_{ij} \cdot \text{count}(zipcode_j)\]
@@ -165,7 +258,7 @@ An example using zip code 02127, the South Boston neighborhood of Boston, illust
 \end{align*}
 are assigned to Andrew station. Similarly, 7391 people are assigned to Broadway station. Summed over all zip codes near Andrew and Broadway stations, this shows how the total population within walking distance of the station is estimated. This calculation is performed for all countable features and all zip codes and summed total counts for each characteristic are used as a feature for each transit station. 
 
-\subsection{Variance of Monte Carlo estimates}
+\section{Variance of Monte Carlo estimates}
 
 With any Monte Carlo method for estimation, there is variance in the estimates generated. In this case, the variance comes primarily from the random locations of the points. It is possible that in different Monte Carlo trials, a station may get significantly more or less points nearby it. This is especially significant in areas of high population density; one extra or missing point could be worth hundreds or thousands of jobs in the densest areas of downtown Chicago or Boston. To keep variance to an acceptably low level, we must generate enough sample points that variation between trials is minimal. 
 
@@ -182,7 +275,7 @@ We generate 100 sets of estimates for the a single feature (total population) fo
 \caption{Indications of variance for Monte Carlo estimates of the population feature.}\label{fig:mcvar}
 \end{figure}
 
-\subsection{Generation of network-dependent features}\label{sec:net}
+\section{Generation of network-dependent features}\label{sec:net}
 
 For each `Need Index' type feature generated by rejection sampling, a set of corresponding network-based features are generated to represent the sum total of a certain characteristic (such as population or employment) within a given travel time of that station. An algorithm for calculating network characteristics is shown in Algorithm \ref{alg:network}. 
 
@@ -217,7 +310,7 @@ For each station $A$ and for the set of all stations ($S$) within 15 minutes of 
 
 These features are important for providing a measure of centrality to the network. Stations near the center of the network and at transfer points between lines will have higher counts of network features than peripheral stations. The other important function of the network features is to provide estimates of the total scale of system ridership. The more people, jobs, and other characteristics near transit stations, the higher the overall system ridership is expected to be. This is a key component of the model's portability between different city's transit networks. 
 
-\subsection{Analysis of zip code characteristics by city}
+\section{Analysis of zip code characteristics by city}
 %\vspace{-15pt}
 \begin{figure}
 \centering
@@ -268,9 +361,9 @@ Area of marker represents ridership of the station.}\label{fig:networkvars}
 \end{figure}
 
 
-\section{Model generation and Error Metrics}
+\chapter{Model generation and Error Metrics}
 
-\subsection{Metrics for assessing accuracy of predictions}\label{sec:metric}
+\section{Metrics for assessing accuracy of predictions}\label{sec:metric}
 
 In general, the projected ridership forecasts of new transit infrastructure investments significantly overestimates transit ridership. The pioneering study in this field by Pickrell in 1989 \cite{Pickrell1989} found that for ten rail projects completed between 1977 and 1985, and assessed between 1986 and 1989, the actual ridership was between 28\% and 85\% lower than projected. A 2006 study \cite{Flyvbjerg2006} of 25 major passenger rail projects in 14 nations found that 21 of the projects had actual ridership below projections, with the average true system ridership 48\% below the projection. Accurate assessment of projection accuracy is imperative for creating ridership estimates that serve the public interest.
 
@@ -311,7 +404,7 @@ We refer to this metric as station error.
 \end{figure}
 
 
-\subsection{Data distribution and regression selection}
+\section{Data distribution and regression selection}
 
 Regression models for station level ridership have used ordinary least squares regression \cite{Kuby2004, Taylor2008, Currie2011, Durning2015, Gutierrez2011} to generate predictions. We investigate the applicability of more complex regression models, and whether or not these other regression types can provide better modeling accuracy.
 
@@ -352,9 +445,9 @@ The system error scores for \texttt{30net\_students} and \texttt{15net\_students
 
 There are 94 remaining features, while some transit networks have as few as 38 stations. Feature selection is necessary to prevent the model from being over-specified. We use two methods of feature selection for each of the five regression types: LASSO regression described in Section \ref{sec:lasso} and a stepwise forward selection method described in Section \ref{sec:fs}. 
 
-\subsection{Feature Selection}
+\section{Feature Selection}
 
-\subsubsection{Feature selection by LASSO regularization}\label{sec:lasso}
+\subsection{Feature selection by LASSO regularization}\label{sec:lasso}
 
 
 Least Absolute Shrinkage and Selection Operator (LASSO) regression can be used to perform feature selection for regression analysis. The LASSO method adds a regularization term to an objective function to penalize regression coefficients. By forcing the sum of the absolute values of all regression coefficients to be less than a fixed value, some regression coefficients are set to zero, thereby eliminating them from the model. 
@@ -368,7 +461,7 @@ LAD LASSO is performed using the \texttt{flare} package in R; this package does 
 
 LASSO regression is performed six times for each LASSO regression type. A trial is made with each city as the test set and all other cities as the training set. Therefore, we identify six sets of selected features for each LASSO regression type. To choose a single set of features from these six sets, we choose all features that are selected by four or more of the six cross-validation trials. This is the feature set that will be reported in the results section.
 
-\subsubsection{Feature selection by stepwise forward selection}\label{sec:fs}
+\subsection{Feature selection by stepwise forward selection}\label{sec:fs}
  
 Since the data set for this problem is small--with only 466 total stations--we can validate the LASSO results using a stepwise forward selection approach. This method is a greedy search of all possible features to find the best combination of features that minimizes our error metrics, performed in a multi-step process. This process is performed for each of the five regression types defined in Table \ref{tab:regtype}. 
 
@@ -397,7 +490,7 @@ After choosing a feature in the first step, in the second step we perform a two 
 For each regression type, we perform 25 steps of forward selection, identifying 25 features, in order, according to Algorithm \ref{alg:sfs}. We then plot the error scores against number of features to find number of features that yields the lowest error score; and example of these graphs is Figure \ref{fig:bfscores}. The set of features that produces the lowest error scores for this regression type is included in the results in Table \ref{tab:rresults}.
 
 
-\subsection{Derivation of Regression methods}\label{sec:derive}
+\section{Derivation of Regression methods}\label{sec:derive}
 For the five regression types described, the methodology and packages used are described below. A chart of packages used for implementation is presented in Table \ref{tab:regtype}.
 
 \begin{table} [H]
@@ -422,7 +515,7 @@ Poisson&Log Link&LASSO: \texttt{glmnet} in Python\\
 
 
 
-\subsubsection{Least squares regression}\label{sec:lstsq}
+\subsection{Least squares regression}\label{sec:lstsq}
 
 Ordinary Least Squares (OLS) regression is a model where the $i$th of $m$ response variables $y_i$ is a linear function of the regressors,
 \[y_i = x_i^\top\theta + \epsilon_i\] where $\theta$ is a parameterization. The error component $\epsilon_i$ is assumed to be normally distributed. The expected value of any element of $Y$ is the corresponding element of $X \theta$:
@@ -440,7 +533,7 @@ The tuning parameter $\lambda$ is proportional to the strength of the regulariza
 
 For the least squares regression using the log transform, we transform the dependent variable $Y$ to $\log{Y}$ and perform the same OLS or LASSO regression.
 
-\subsubsection{Poisson regression} \label{sec:poiss}
+\subsection{Poisson regression} \label{sec:poiss}
 
 Poisson regression is case of the generalized linear model (GLM) \cite{nelder1972}. GLM generalizes linear regression by relating the expected value of the response variable to the linear predictor through a link function. 
 
@@ -458,7 +551,7 @@ In this expression, we ignore the constant factorial term which falls out in dif
 For LASSO regression, we minimize the parameters \cite{Young2007} over  
 \[\hat{\theta}(\lambda) = \argmin_{\theta\in\mathbb{R}^p}  \frac{1}{m}\sum_{i=1}^m e^{x_i^\top\theta}-y_ix_i^\top\theta  + \sum_{j=1}^p\lambda\left|\theta_j\right|.\]
 
-\subsubsection{Poisson regression with Identity Link}
+\subsection{Poisson regression with Identity Link}
 
 For the identity link, the mean of the predicted Poisson distribution is given by $$E(y_i\,|\,x_i;\theta) = x_i^\top\theta$$ which yields a joint distribution 
 $$p(y_1,...,y_m|x_1,...,x_m;\theta) = \prod_{i=1}^m \frac{\left(x_i^\top\theta\right)^{y_i}e^{-x_i^\top\theta}}{y_i!}. $$
@@ -594,7 +687,7 @@ The update direction $\Delta\theta^{\pm}$ is computed from the linear equation i
 
 Minimization over $\theta^{\pm}$ and $\mu$ is obtained by by iteration, as shown in Algorithm \ref{alg:piip}. The duality gap, the difference between the primal and dual solutions, is not necessarily feasible during each iteration of the interior point method. Therefore, a surrogate duality gap is $\eta(\theta^{\pm}, \mu) = -\sum_{k=1}^2 \sum_{j=1}^p \mu_{kj} f_{kj}(\theta^{\pm})  = \mu^{\top} \theta^{\pm}$. A scaling constant for $\gamma$ is $\nu$. During each iteration, we obtain an update direction $\Delta\theta^{\pm}$ in accordance with (\ref{eq:delbeta}) and $\Delta\mu$ in accordance with (\ref{eq:dellam}). The iterations repeat until both the surrogate duality gap and the dual residual are below a certain threshold $\epsilon$.
 
-\subsubsection{Least Absolute Deviations Regression} \label{sec:lad}
+\subsection{Least Absolute Deviations Regression} \label{sec:lad}
 
 Least absolute deviations regression is similar to OLS (defined in Section \ref{sec:lstsq}), except that instead of minimizing the sum of squared residuals loss function, it minimizes the sum of the absolute value of the residuals
 \[\hat{\theta} = \argmin_{\theta\in\mathbb{R}^p}\sum_{i=1}^m \left|\,y_i - x_i^{\top} \theta \,\right|.\]
@@ -616,7 +709,9 @@ For LASSO regularization, the the constraint on parameter absolute magnitude is 
 
 %\vspace{50pt}
 
-\section{Results}
+\chapter{Results}
+
+\section{Results table and baseline comparisons}
 
 \begin{table}[H]
 \begingroup\fontsize{8}{15}\selectfont
@@ -646,7 +741,7 @@ LAD&Stepwise&0.0005&0.3986&4&0.1792&0.5610\\
 \endgroup
 \end{table}
 
-\subsection{Results table and baseline comparisons}
+
 
 Table \ref{tab:rresults} shows the results of all the tested regression models. For each model, there are five result columns. Each model selects a set of features; feature selection by the LASSO method is described in section \ref{sec:lasso} while feature selection by forward selection is described in \ref{sec:fs}. For each of the six transit systems, a model of the appropriate regression type is made from the other five transit systems. The model uses the selected feature set and we calculate the system and station errors. Reported in the first two columns are the minimum system and station error for any of the six models. The last two columns are the average of the system and station errors across all six models. 
 
@@ -659,7 +754,7 @@ We run 100 iterations of the random forest model, and sum the feature scores for
 
 An analysis of the accuracy of the methods shown in Table \ref{tab:rresults} is included in Section \ref{sec:acc}.
 
-\subsection{LASSO regularization results}
+\section{LASSO regularization results}
 
 The various LASSO regression types have a large variance in number of features chosen, both between transit networks and between regression types, shown in Table \ref{tab:lassoFeat0Norm}. Since the six way cross validation produces a different set of selected features for each transit network, we must develop a means for determining a `best' feature set for a common comparison. To represent the results of the LASSO regression, all features that are selected by four or more of the six cross-validation trials are used. 
 
@@ -714,7 +809,7 @@ The LAD regression is notable both for the high sparseness of its parameterizati
 For all regression types, the LASSO method of feature selection performs significantly worse than the forward selection method.  The results in Table \ref{tab:rresults} allow a comparison of the LASSO regression against some baseline measures. None of the LASSO methods outperform the five variable random forest model or the best single variable, in either error metric. 
 
 
-\subsection{Forward selection results}
+\section{Forward selection results}
 
 Using the method for feature selection described in Section \ref{sec:fs}, we select the fist 25 features and graph the resulting system and station error scores in Figure \ref{fig:bfscores}. The graphed data point for both system and station error is the average error from using each of the six transit systems as the test set. 
 
@@ -743,7 +838,7 @@ The station error is identical to the Least Absolute Deviation loss function. Th
 
 The minimum scores from each regression type are recorded in Table \ref{tab:rresults} along with the average score over the range of good features. The stepwise regression significantly outperforms the LASSO regression in creating feature combinations that can accurately predict ridership in unknown transit networks. All the stepwise regression methods outperform all of the baseline methods showing the first block of the results table, in both error metrics. 
 
-\subsection{Analysis of selected features}
+\section{Analysis of selected features}
 
 A summary of selected features is given in Table \ref{tab:featuresum}. There are ten total regression methods used for feature selection; five LASSO methods and five forward selection methods. The count columns in Table \ref{tab:featuresum} shows the number of times each feature was selected by each regression method. For example, the \texttt{near\_hospitality} feature was selected by all ten methods, five LASSO and five forward selection.
 
@@ -783,7 +878,7 @@ near\_pop\_old&2&1&3\\
 \end{table}
 
 
-\section{Conclusion and Future Work}\label{sec:acc}
+\chapter{Conclusion and Future Work}\label{sec:acc}
 
 Ultimately, the error scores for the forward selection models for all five regression variants in Table \ref{tab:rresults} are very similar. There is little evidence that one regression type is significantly more effective than any other. All five regression types are able to give system-wide ridership estimates within 20\% of the true value for identified sets of features. This error compares favorably with the 48\% average ridership prediction  error reported for 25 transportation networks in Flyvbjerg \cite{Flyvbjerg2006}, where Flyvjerg uses the same system error model identified in Section \ref{sec:metric}. 
 
@@ -793,7 +888,7 @@ The Mannheim-Florian four step model fundamentally depends on existing transit r
 
 A model trained on the transit system of the six US cities included in this work, and using any of the five regression methods tested would be sufficiently accurate to justify use for validating new construction, system-wide cost estimates for urban rail transit in the United States. 
 
-\subsection{Future Work}
+\section{Future Work}
 
 Future work in on this model could proceed in two directions. The first direction is to continue improvement of the source data. This project used only zip code shapes to estimate counting features, since job and housing data was available only for the zip code, but the population features exist in more granular detail at the Census Tract level. The author generated exclusion zones which were designed to prevent job and people from being located in parks and water could be improved by incorporating detailed city land use maps. Finally, there is a major deficiency in source data because neither federal, state nor local government workers are included in the employment data sources used by the model. Of particular concern are university employment; university jobs within walking distance was a selected feature in five of the six models. Several large universities are located on the transit networks of this study and were not accounted for, such as University of Illinois at Chicago, University of Colorado--Denver, and University of Massachusetts--Boston. There are other cities not included in this study that have very large public universities, like Minneapolis, Austin, or Columbus. Under-representation of university jobs in these cities would negatively affect the validity of any estimates, especially given the importance of university related features in Table \ref{tab:featuresum}.
 
@@ -803,11 +898,14 @@ In this work, only $\ell_1$, LASSO regularization was used. However, the R packa
 
 
 \pagebreak
+%\appendix
+\renewcommand{\appendixname}{Appendix}
 \begin{appendices}
 
-\section{Data sources}
+%\section{Data sources}
 
-\subsection{Ridership data}\label{app:ridership}
+\chapter{Ridership data}\label{app:ridership}
+%\appchapter[An Appendix]{Ridership data}\label{app:ridership}
 \begingroup
 \fontsize{9}{10}\selectfont
 \begin{tabular}{ll}
@@ -821,7 +919,7 @@ Dallas:& \url{https://www.dart.org/about/dartreferencebookmar16.pdf}\\
 \end{tabular}
 \endgroup
 
-\subsection{US Census feature data sources}\label{app:features}
+\chapter{US Census feature data sources}\label{app:features}
 
 All feature data is accessed through the American Factfinder website at \url{factfinder.census.gov}.
 
@@ -865,6 +963,13 @@ Number of jobs in entertainment fields&Table CB1500CZ21, NAICS code 71, Estimate
  
 \bibliographystyle{unsrt}
 \pagebreak\bibliography{bibrefs}
+
+\newpage
+\begin{center}
+BIOGRAPHY\\ [0.5 in]
+\end{center}
+Daniel Hartig graduated the United States Naval Academy in 2008 with a Bachelor of Science in Computer Science. After graduation and commissiong, he served aboard USS ROBERT G BRADLEY (FFG 49) in Operations Department, and USS GEORGE H W BUSH (CVN 77) in Reactor Department, completing two deployments to West Africa, the Mediterranean, and the Persian Gulf. Daniel resigned from the Navy in 2015 and now works as a software engineer. 
+
 
 
 

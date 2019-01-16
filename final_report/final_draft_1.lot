@@ -1,0 +1,16 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {2.1}{\ignorespaces Examples of characteristics associated with zipcodes\relax }}{5}
+\contentsline {table}{\numberline {2.2}{\ignorespaces Network wide characteristics for the six transit networks considered in this thesis\relax }}{16}
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {3.1}{\ignorespaces Regression of Population and Employment against ridership\relax }}{21}
+\contentsline {table}{\numberline {3.2}{\ignorespaces Error for single variable OLS for selected features\relax }}{22}
+\contentsline {table}{\numberline {3.3}{\ignorespaces Regression types and packages used in analysis.\relax }}{25}
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {4.1}{\ignorespaces Results of regression analysis, compared with some baseline measures\relax }}{32}
+\contentsline {table}{\numberline {4.2}{\ignorespaces Number of features selected by LASSO; by transit network and regression type\relax }}{34}
+\contentsline {table}{\numberline {4.3}{\ignorespaces Number of features selected by LASSO; by transit network and regression type\relax }}{35}
+\contentsline {table}{\numberline {4.4}{\ignorespaces Features that were frequently selected by regression methodologies\relax }}{38}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }

@@ -1,0 +1,35 @@
+\contentsline {chapter}{List of Tables}{v}
+\contentsline {chapter}{List of Figures}{vi}
+\contentsline {chapter}{Abstract}{}
+\contentsline {chapter}{\numberline {1}Introduction}{1}
+\contentsline {section}{\numberline {1.1}Summary}{1}
+\contentsline {section}{\numberline {1.2}Original Contributions}{2}
+\contentsline {chapter}{\numberline {2}Data Sources and Feature Generation}{4}
+\contentsline {section}{\numberline {2.1}Selection of Transit Systems}{4}
+\contentsline {section}{\numberline {2.2}Data Sources for Predictor Variables}{5}
+\contentsline {section}{\numberline {2.3}Definition of `Walking Distance'}{7}
+\contentsline {section}{\numberline {2.4}Rejection Sampling of Zip Code Shapefiles}{8}
+\contentsline {section}{\numberline {2.5}Variance of Monte Carlo estimates}{10}
+\contentsline {section}{\numberline {2.6}Generation of network-dependent features}{12}
+\contentsline {section}{\numberline {2.7}Analysis of zip code characteristics by city}{14}
+\contentsline {chapter}{\numberline {3}Model generation and Error Metrics}{18}
+\contentsline {section}{\numberline {3.1}Metrics for assessing accuracy of predictions}{18}
+\contentsline {section}{\numberline {3.2}Data distribution and regression selection}{19}
+\contentsline {section}{\numberline {3.3}Feature Selection}{22}
+\contentsline {subsection}{\numberline {3.3.1}Feature selection by LASSO regularization}{22}
+\contentsline {subsection}{\numberline {3.3.2}Feature selection by stepwise forward selection}{23}
+\contentsline {section}{\numberline {3.4}Derivation of Regression methods}{25}
+\contentsline {subsection}{\numberline {3.4.1}Least squares regression}{25}
+\contentsline {subsection}{\numberline {3.4.2}Poisson regression}{26}
+\contentsline {subsection}{\numberline {3.4.3}Poisson regression with Identity Link}{27}
+\contentsline {subsection}{\numberline {3.4.4}Least Absolute Deviations Regression}{31}
+\contentsline {chapter}{\numberline {4}Results}{32}
+\contentsline {section}{\numberline {4.1}Results table and baseline comparisons}{32}
+\contentsline {section}{\numberline {4.2}LASSO regularization results}{33}
+\contentsline {section}{\numberline {4.3}Forward selection results}{35}
+\contentsline {section}{\numberline {4.4}Analysis of selected features}{36}
+\contentsline {chapter}{\numberline {5}Conclusion and Future Work}{39}
+\contentsline {section}{\numberline {5.1}Future Work}{40}
+\contentsline {chapter}{Appendices}{41}
+\contentsline {chapter}{\numberline {A}Ridership data}{41}
+\contentsline {chapter}{\numberline {B}US Census feature data sources}{42}

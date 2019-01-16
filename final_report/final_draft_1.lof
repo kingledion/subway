@@ -1,0 +1,29 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Single covariates against the response variable with ordinary least squares (OLS) line of best fit.\relax }}{6}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {An example of a positive association}}}{6}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {An example of a negative association}}}{6}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Illustration of nearest zip code estimation for zip code 02127.\relax }}{9}
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Indications of variance for Monte Carlo estimates of the population feature.\relax }}{11}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Standard deviation versus mean by transit station.}}}{11}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Coefficient of variation versus mean by transit station.}}}{11}
+\contentsline {figure}{\numberline {2.4}{\ignorespaces Illustration of travel time calculation for Sullivan Square to South Station, in Boston.\relax }}{13}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Boston - Blue; Chicago - Red; Los Angeles - Green}}}{15}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Atlanta - Blue; Dallas - Red; Denver - Green}}}{15}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Boston - Blue; Chicago - Red; Los Angeles - Green}}}{17}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Atlanta - Blue; Dallas - Red; Denver - Green}}}{17}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Analysis of population regression\relax }}{20}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Analysis of employment regression\relax }}{20}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Ridership against population. Linear regression in red, log regression in blue.}}}{20}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Residual from linear regression against population}}}{20}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Residual from log regression against population}}}{20}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Ridership against employment. Linear regression in red, log regression in blue.}}}{20}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Residual from linear regression against employment}}}{20}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Residual from log regression against employment}}}{20}
+\addvspace {10\p@ }
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Station Error against number of variables selected}}}{36}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {System Error against number of variables seleted}}}{36}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
